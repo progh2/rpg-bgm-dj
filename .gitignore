@@ -1,0 +1,8 @@
+# scrape intermediates & logs (regenerable via tools/)
+data/*.log
+data/gapfill.json
+data/classified_channels.json
+data/oembed_cache.json
+__pycache__/
+*.pyc
+.DS_Store
