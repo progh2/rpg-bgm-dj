@@ -7,7 +7,7 @@ today = datetime.date.today().isoformat()
 
 def track(t):
     return {"id": t["id"], "title": t["title"], "artist": t["artist"], "videoId": t["videoId"],
-            "focus": t["focus"], "license": t["license"]}
+            "focus": t["focus"], "length": t["length"], "license": t["license"]}
 
 lines = [
  "// bgm-scenes.js — auto-generated %s" % today,

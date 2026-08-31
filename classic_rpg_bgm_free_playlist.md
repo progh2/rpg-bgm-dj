@@ -13,7 +13,7 @@
 | 라이선스 | 곡 수 | 비고 |
 |---|---|---|
 | CC BY 4.0 | 537 | 출처 표기만 하면 상업 이용 포함 자유 |
-| Free with attribution | 268 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
+| Free with attribution | 269 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (non-commercial) | 92 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free (DOVA-SYNDROME license) | 64 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (senses-circuit.com) | 54 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
@@ -23,9 +23,9 @@
 | CC BY 3.0/4.0 | 37 | 출처 표기 |
 | Free with attribution (musmus.main.jp) | 33 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (maou.audio terms) | 33 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
-| CC0 | 32 | 표기 불필요(퍼블릭 도메인 헌정) |
-| Free with attribution (hmix.net terms) | 14 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
-| CC0 / CC BY | 8 | 출처 표기 권장 |
+| CC0 | 33 | 표기 불필요(퍼블릭 도메인 헌정) |
+| Free with attribution (hmix.net terms) | 13 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
+| CC0 / CC BY | 7 | 출처 표기 권장 |
 | Free with attribution (shw.in) | 1 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 
 > **재생기 크레딧 문구 예시**: `Music: PeriTune (CC BY 4.0), Kevin MacLeod (incompetech.com, CC BY 4.0), Steven O'Brien (CC BY 4.0), 魔王魂, DOVA-SYNDROME ...` — 재생 중인 곡의 `artist`/`license`를 그대로 표시하면 충분.
@@ -33,7 +33,7 @@
 
 ## 아티스트별 곡 수
 
-Kevin MacLeod 92, Alexander Nakarada 74, Scott Buckley 74, Darren Curtis 66, PeriTune 61, Eric Matyas (Soundimage.org) 59, Derek & Brandon Fiechter 55, Senses Circuit 54, TeknoAXE 51, DOVA-SYNDROME (official) 49, Ben Burnes (Abstraction) 46, HeatleyBros 44, Tim Beek 40, PANICPUMPKIN (みそか) 39, Alexandr Zhelanov 37, Vindsvept 37, MusMus 33, 魔王魂 (森田交一) 33, Loyalty Freak Music / Komiku 32, Lee Rosevere 30, Nihilore 28, Visager 26, Kai Engel 25, Ross Bugden 24, Sergey Cheremisinov 20, Matthew Pablo 20, Meydän 18, Sappheiros 18, H/MIX GALLERY (秋山裕和) 14, Punch Deck 14, Aaron Krogh 11, ハヤシユウ 11, Kyatto 10, Trevor Lentz 10, Chris Zabriskie 9, cynicmusic (Alex Smith) 8, Patrick de Arteaga 8, Steven O'Brien 7, 騒音のない世界 (Noiseless World) 6, しゃろう (Sharou) 4, Bit By Bit Sound 2, SHW (Hamashio) 和風 1
+Kevin MacLeod 92, Alexander Nakarada 74, Scott Buckley 74, Darren Curtis 66, PeriTune 61, Eric Matyas (Soundimage.org) 60, Derek & Brandon Fiechter 55, Senses Circuit 54, TeknoAXE 51, DOVA-SYNDROME (official) 49, Ben Burnes (Abstraction) 46, HeatleyBros 44, Tim Beek 40, PANICPUMPKIN (みそか) 39, Alexandr Zhelanov 37, Vindsvept 37, MusMus 33, 魔王魂 (森田交一) 33, Loyalty Freak Music / Komiku 33, Lee Rosevere 30, Nihilore 28, Visager 26, Kai Engel 25, Ross Bugden 24, Sergey Cheremisinov 20, Matthew Pablo 20, Meydän 18, Sappheiros 18, Punch Deck 14, H/MIX GALLERY (秋山裕和) 13, Aaron Krogh 11, ハヤシユウ 11, Kyatto 10, Trevor Lentz 10, Chris Zabriskie 9, Patrick de Arteaga 8, Steven O'Brien 7, cynicmusic (Alex Smith) 7, 騒音のない世界 (Noiseless World) 6, しゃろう (Sharou) 4, Bit By Bit Sound 2, SHW (Hamashio) 和風 1
 
 
 ## 소분류별 목록
@@ -191,7 +191,7 @@ _(+25곡 더 — JSON 참조)_
 | 5 | Ave Marimba | Kevin MacLeod | 2:50 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=sYWLpw6tQgs) |
 | 5 | ピアノ30 Departure | 魔王魂 (森田交一) | 2:40 | Free with attr | [▶](https://www.youtube.com/watch?v=lwabLQr6JOM) |
 | 4 | Komiku - The adventure goes on, vol2 | Loyalty Freak Music /  | 20:25 | CC0 | [▶](https://www.youtube.com/watch?v=VGOIOC6s1hc) |
-| 4 | Monplaisir - Adventure with Anxiety Original Soundtrack | Loyalty Freak Music /  | 16:00 | CC0 | [▶](https://www.youtube.com/watch?v=kdy5gj6rkzY) |
+| 4 | Loyalty Freak Music - BUILD YOUR OWN ADVENTURE ! | Loyalty Freak Music /  | 14:23 | CC0 | [▶](https://www.youtube.com/watch?v=hFnHM7tzvAM) |
 | 4 | Journey Without; Journey Within - Mindful Reflection | Ben Burnes (Abstractio | 9:19 | Free with attr | [▶](https://www.youtube.com/watch?v=Oodhccub1Eg) |
 | 4 | GENRE EXPLORATION - Melodic Minimal Techno (part 3 - Media B | Alexander Nakarada | 8:30 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=OOejkG_2lUU) |
 | 4 | GENRE EXPLORATION - Melodic Minimal Techno (Part 1 - Making  | Alexander Nakarada | 8:09 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=Ceu-dWyruz8) |
@@ -596,11 +596,10 @@ _(+25곡 더 — JSON 참조)_
 
 _(+25곡 더 — JSON 참조)_
 
-### D5_heroic · 당당/영웅적 행진 — 40곡 (작업용 focus≥4: 28)
+### D5_heroic · 당당/영웅적 행진 — 40곡 (작업용 focus≥4: 27)
 
 | focus | 제목 | 아티스트 | 길이 | 라이선스 | 링크 |
 |---|---|---|---|---|---|
-| 4 | 戦-Ikusa- Epic Batlle Music 10曲 | H/MIX GALLERY (秋山裕和) | 23:05 | Free with attr | [▶](https://www.youtube.com/watch?v=St5xGcm4xl8) |
 | 4 | Hollow Knight inspired music to study to | Bit By Bit Sound | 22:12 | Free with attr | [▶](https://www.youtube.com/watch?v=wYfzG7bk4Ik) |
 | 4 | Sketchbook - March 2024 (CC-0 Public Domain Music) | Ben Burnes (Abstractio | 17:16 | Free with attr | [▶](https://www.youtube.com/watch?v=2i1AYOfCYBg) |
 | 4 | "Twilight_Gallop” Asian style brave orchestra | PeriTune | 15:13 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=kTtvLO2x00Q) |
@@ -615,6 +614,7 @@ _(+25곡 더 — JSON 참조)_
 | 4 | Fi r Music for Games / 2021 March / by Tim Beek | Tim Beek | 5:29 | Free with attr | [▶](https://www.youtube.com/watch?v=IISKNCodApA) |
 | 4 | Epic Dramatic Balkan and Orchestral Hybrid Music "Warrior's  | Darren Curtis | 5:19 | Free with attr | [▶](https://www.youtube.com/watch?v=MCkJNC5FBxc) |
 | 4 | Anthem for Tomorrow - Synthwave | TeknoAXE | 5:01 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=2JdmOJfwe4c) |
+| 4 | Heroic Demise by Matthew Pablo Epic Orchestral Music FL Stud | Matthew Pablo | 4:58 | CC BY 3.0 | [▶](https://www.youtube.com/watch?v=yRdl0ZsFLpM) |
 
 _(+25곡 더 — JSON 참조)_
 
@@ -688,7 +688,6 @@ _(+25곡 더 — JSON 참조)_
 
 | focus | 제목 | 아티스트 | 길이 | 라이선스 | 링크 |
 |---|---|---|---|---|---|
-| 5 | Monplaisir - American Dreams Soundtrack | Loyalty Freak Music /  | 29:20 | CC0 | [▶](https://www.youtube.com/watch?v=tCBtyyoUQtU) |
 | 5 | Anonymous420 - THIS IS ALL A DREAM | Loyalty Freak Music /  | 22:57 | CC0 | [▶](https://www.youtube.com/watch?v=6NTA5cOnhOI) |
 | 5 | Enchanted - ambient Taylor Swift songs full ep stream | Lee Rosevere | 16:38 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=cqqQWysoy1o) |
 | 5 | Cosmic Tingles | Lee Rosevere | 13:39 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=edc28TyLTJU) |
@@ -703,6 +702,7 @@ _(+25곡 더 — JSON 참조)_
 | 5 | The Moon Seems Unaffected - 07 - Insomnia | Ben Burnes (Abstractio | 6:28 | Free with attr | [▶](https://www.youtube.com/watch?v=d1sPzAfDqoY) |
 | 5 | Alexandr Zhelanov - Magic of North (FREE TO USE) | Alexandr Zhelanov | 6:27 | CC BY 3.0/4.0 | [▶](https://www.youtube.com/watch?v=dj4PYl5GN1I) |
 | 5 | After the Storm Dreams mix by The Cynic Project 720p | cynicmusic (Alex Smith | 6:21 | CC0 / CC BY | [▶](https://www.youtube.com/watch?v=6UidIrA8EIU) |
+| 5 | Dream Catcher | Kevin MacLeod | 6:17 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=1-ruU5DNb8o) |
 
 _(+25곡 더 — JSON 참조)_
 

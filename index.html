@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPG BGM DJ — 작업용 장면별 BGM 재생기</title>
+<meta name="description" content="옛날 콘솔 RPG의 장면 분류 34종을 기반으로, 저작권 문제 없는 무료 라이선스 BGM 1,300곡을 골라 틀어주는 작업용 재생기. 치비 DJ가 몇 가지 질문으로 취향에 맞는 재생목록을 즉석에서 만들어 줍니다.">
+<meta property="og:title" content="RPG BGM DJ">
+<meta property="og:description" content="치비 DJ가 골라주는 작업용 RPG BGM 재생기. 윈앰프 감성 스킨 7종.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/DungGeunMo.woff.css">
+<link rel="stylesheet" href="assets/css/player.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%2314141a'/><circle cx='16' cy='16' r='9' fill='none' stroke='%235fd6c0' stroke-width='1.5'/><circle cx='16' cy='16' r='3' fill='%235fd6c0'/></svg>">
+</head>
+<body>
+
+<div id="yt-host"><div id="yt-player"></div></div>
+
+<div class="stage">
+
+  <header class="site-head">
+    <h1>RPG BGM DJ</h1>
+    <span class="tag">고전 RPG 장면 34종 · 무료 라이선스 <strong id="stat-count">—</strong>곡</span>
+    <span class="mood-chip" id="mood-chip">평온</span>
+    <nav class="links">
+      <a href="https://github.com/progh2/rpg-bgm-dj" target="_blank" rel="noopener">GitHub</a>
+      <a href="classic_rpg_bgm_by_scene.md">분류 조사</a>
+      <a href="classic_rpg_bgm_free_playlist.md">음원 목록</a>
+    </nav>
+  </header>
+
+  <!-- ===== 좌측: 재생기 ===== -->
+  <main>
+
+    <!-- 메인 창 -->
+    <section class="win" aria-label="재생기">
+      <div class="win-bar">
+        <span>RPG BGM DJ</span>
+        <span class="grip" aria-hidden="true"></span>
+        <button class="win-btn" id="btn-shuffle-all" title="전곡에서 무작위로 다시 채우기">↻</button>
+      </div>
+      <div class="win-body">
+
+        <div class="lcd">
+          <div class="lcd-top">
+            <span class="lcd-time" id="lcd-time">--:--</span>
+            <div class="lcd-badges">
+              <span class="lcd-badge" id="badge-play">PLAY</span>
+              <span class="lcd-badge" id="badge-shuffle">SHUF</span>
+              <span class="lcd-badge" id="badge-repeat">REP</span>
+              <span class="lcd-badge" id="badge-scene">—</span>
+            </div>
+          </div>
+          <div class="marquee" id="marquee"><span>재생기를 준비하는 중…</span></div>
+          <div class="viz" id="viz" aria-hidden="true"></div>
+        </div>
+
+        <!-- 턴테이블 -->
+        <div class="decks">
+          <div class="deck" id="deck-a">
+            <span class="deck-tag">DECK A</span>
+            <div class="platter"><div class="label"><span>—</span><i class="spindle"></i></div></div>
+            <svg class="tonearm" viewBox="0 0 100 100" aria-hidden="true">
+              <line class="arm" x1="88" y1="12" x2="30" y2="74"/>
+              <circle class="pivot" cx="88" cy="12" r="8"/>
+              <rect class="head" x="20" y="68" width="16" height="9" rx="2" transform="rotate(-47 28 72)"/>
+            </svg>
+          </div>
+          <div class="deck" id="deck-b">
+            <span class="deck-tag">DECK B</span>
+            <div class="platter"><div class="label"><span>—</span><i class="spindle"></i></div></div>
+            <svg class="tonearm" viewBox="0 0 100 100" aria-hidden="true">
+              <line class="arm" x1="88" y1="12" x2="30" y2="74"/>
+              <circle class="pivot" cx="88" cy="12" r="8"/>
+              <rect class="head" x="20" y="68" width="16" height="9" rx="2" transform="rotate(-47 28 72)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="transport">
+          <button class="tbtn" id="btn-prev"  title="이전 곡"   aria-label="이전 곡">|◀◀</button>
+          <button class="tbtn wide" id="btn-play" title="재생/일시정지" aria-label="재생">▶</button>
+          <button class="tbtn" id="btn-stop"  title="정지"      aria-label="정지">■</button>
+          <button class="tbtn" id="btn-next"  title="다음 곡"   aria-label="다음 곡">▶▶|</button>
+          <button class="tbtn" id="btn-shuffle" title="셔플" aria-label="셔플" aria-pressed="false">⤨</button>
+          <button class="tbtn" id="btn-repeat"  title="반복" aria-label="반복" aria-pressed="true">↺</button>
+        </div>
+
+        <div class="sliders">
+          <label class="slider-wrap">VOL
+            <input type="range" id="vol" min="0" max="100" value="45" aria-label="볼륨">
+            <span id="vol-num" style="min-width:2.4em">45</span>
+          </label>
+          <label class="slider-wrap">SEEK
+            <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
+          </label>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 플레이리스트 창 -->
+    <section class="win" aria-label="재생목록">
+      <div class="win-bar">
+        <span>PLAYLIST</span>
+        <span class="grip" aria-hidden="true"></span>
+        <button class="win-btn" id="btn-reshuffle" title="순서 섞기">⤨</button>
+      </div>
+      <div class="win-body">
+        <div class="pl-list" id="pl-list" role="listbox" aria-label="재생목록"></div>
+        <div class="pl-foot">
+          <span id="pl-count">0곡</span>
+          <span id="pl-desc"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 곡 정보 -->
+    <section class="win" aria-label="곡 정보">
+      <div class="win-bar"><span>TRACK INFO</span><span class="grip" aria-hidden="true"></span></div>
+      <div class="win-body info" id="info">
+        <p class="empty">재생을 시작하면 곡 정보와 라이선스가 표시됩니다.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 우측: DJ 부스 ===== -->
+  <aside class="booth">
+
+    <section class="win" aria-label="DJ">
+      <div class="win-bar"><span>DJ BOOTH</span><span class="grip" aria-hidden="true"></span></div>
+      <div class="win-body">
+        <div class="dj-stage" id="dj-stage" data-state="idle"></div>
+        <div class="bubble" id="bubble">
+          <span class="who" id="dj-name">NOISE</span>
+          <span id="bubble-text">불러오는 중…</span>
+        </div>
+        <div class="qa" id="qa"></div>
+        <div class="qa-progress" id="qa-progress" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="win" aria-label="스킨">
+      <div class="win-bar"><span>SKINS</span><span class="grip" aria-hidden="true"></span></div>
+      <div class="win-body">
+        <div class="skin-grid" id="skin-grid"></div>
+        <label class="skin-lock">
+          <input type="checkbox" id="skin-lock">
+          <span>스킨 고정 (끄면 곡 분위기에 맞춰 자동 변경)</span>
+        </label>
+      </div>
+    </section>
+
+  </aside>
+
+  <footer class="credits">
+    <h2>CREDITS &amp; LICENSE</h2>
+    <p>
+      이 재생기가 트는 모든 곡은 무료 라이선스 음원입니다. CC BY 계열은 <strong>출처 표기가 라이선스 조건</strong>이므로,
+      재생 중 곡의 아티스트명과 라이선스가 항상 화면에 표시됩니다.
+      <strong>Vindsvept</strong>와 <strong>Derek &amp; Brandon Fiechter</strong>는 비상업 조건이므로 수익화된 환경에서는 사용하지 마세요.
+    </p>
+    <p id="credit-list"></p>
+    <p>
+      데이터 수집·분류 방법은 <a href="https://github.com/progh2/rpg-bgm-dj">저장소</a>에 정리되어 있습니다.
+      YouTube의 “크리에이티브 커먼즈” 검색 필터 결과는 업로더 오표기(저작권 음원)가 확인되어 의도적으로 제외했습니다.
+    </p>
+  </footer>
+
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

@@ -37,7 +37,10 @@ NOISE = re.compile(r"\b(tutorial|how to|vlog|livestream|live stream|stream archi
 # Covers reproduce a copyrighted COMPOSITION even when the recording is CC-licensed. Excluded.
 COVER = re.compile(r"\b(cover(ed|s)?|tribute|arrange(d|ment)? of|remix of|instrumental of|originally by|as heard in)\b|\[COVER\]|カバー|カヴァー|歌ってみた|弾いてみた", re.I)
 # Full albums / compilations / medleys are not single tracks; unusable in a per-track player.
-MIX = re.compile(r"\b(mix vol|full album|album stream|compilation|megamix|medley|playlist|best of|collection vol|\d+\s*tracks? in)\b|メドレー|アルバム", re.I)
+MIX = re.compile(r"\b(mix vol|full album|album stream|compilation|megamix|medley|playlist|best of|collection vol|\d+\s*tracks? in|demo reel|showreel)\b|メドレー|アルバム|\d+\s*曲", re.I)
+# 15분을 넘기면서 제목이 앨범/사운드트랙을 가리키면 개별 곡이 아니라 통합본이다.
+# (Kevin MacLeod의 "Concentration" 같은 장시간 단일 집중곡은 살려야 하므로 길이만으로는 거르지 않는다.)
+LONG_ALBUM = re.compile(r"\b(soundtrack|ost|album|collection|anthology|selection)\b|サウンドトラック|音楽集", re.I)
 
 PP_HEAD = {"RPGダンジョン":"B4_dungeon","RPG戦闘ザコ":"C1_battle","RPGザコ":"C1_battle","RPGバトル":"C1_battle","RPG戦闘ボス":"C2_boss","RPG戦闘ラスボス":"C4_finalboss",
  "RPG悪のテーマ":"D7_villain","RPG村＆町＆施設":"B2_town","RPG町＆施設":"B2_town","RPGピンチ":"C6_chase","RPG全滅＆廃墟":"B8_ruinworld","RPG場所":"B5_temple",
@@ -68,6 +71,7 @@ def build(rows):
         L=r.get("length")
         lo = 3 if r.get("genre")=="Stings" else 25
         if L is not None and (L<lo or L>1800): continue   # too short (jingle spam) / too long (mixes)
+        if L is not None and L > 900 and LONG_ALBUM.search(r["title"]): continue
         res=classify(r["title"], r.get("desc",""), r.get("feel",""))
         if r.get("genre")=="Stings":
             f=(r.get("feel") or "").lower(); d=(r.get("desc") or "").lower()

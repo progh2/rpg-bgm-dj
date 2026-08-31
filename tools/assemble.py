@@ -2,7 +2,7 @@
 import sys, os, json, re, csv, datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from classify import SUB, ORDER, classify, focus_score, clean
-from build import load_channels, load_incompetech, build, NOISE, COVER, MIX
+from build import load_channels, load_incompetech, build, NOISE, COVER, MIX, LONG_ALBUM
 import verify as V
 from collections import defaultdict, OrderedDict
 
@@ -44,6 +44,7 @@ def main():
         if NOISE.search(r["title"]) or COVER.search(r["title"]) or MIX.search(r["title"]): continue
         L = r.get("length")
         if L is not None and (L < 25 or L > 1800): continue
+        if L is not None and L > 900 and LONG_ALBUM.search(r["title"]): continue
         extra.append(dict(r))
     n = peritune_fallback(extra)
     classified += [r for r in extra if r.get("sub")]
