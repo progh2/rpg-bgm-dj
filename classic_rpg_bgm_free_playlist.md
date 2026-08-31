@@ -5,22 +5,22 @@
 > 데이터 파일: `data/bgm_playlist.json` (전체), `data/bgm_playlist.csv`, `bgm-scenes.js` (미니홈피 재생기에 바로 import 가능)
 
 
-**총 1300곡 / 42 아티스트 / 34 소분류.** 모든 영상은 YouTube oEmbed로 존재·임베드 가능 여부를 검증함.
+**총 1307곡 / 42 아티스트 / 34 소분류.** 모든 영상은 YouTube oEmbed로 존재·임베드 가능 여부를 검증함.
 
 
 ## 라이선스 요약
 
 | 라이선스 | 곡 수 | 비고 |
 |---|---|---|
-| CC BY 4.0 | 537 | 출처 표기만 하면 상업 이용 포함 자유 |
-| Free with attribution | 269 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
-| Free with attribution (non-commercial) | 92 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
+| CC BY 4.0 | 540 | 출처 표기만 하면 상업 이용 포함 자유 |
+| Free with attribution | 271 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
+| Free with attribution (non-commercial) | 93 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free (DOVA-SYNDROME license) | 64 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (senses-circuit.com) | 54 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | CC BY 3.0 | 48 | 출처 표기 |
 | Free with attribution (timbeek.com) | 40 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (panicpumpkin terms) | 39 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
-| CC BY 3.0/4.0 | 37 | 출처 표기 |
+| CC BY 3.0/4.0 | 38 | 출처 표기 |
 | Free with attribution (musmus.main.jp) | 33 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | Free with attribution (maou.audio terms) | 33 | 해당 사이트 이용약관에 따라 무료 (대개 출처 표기) |
 | CC0 | 33 | 표기 불필요(퍼블릭 도메인 헌정) |
@@ -33,7 +33,7 @@
 
 ## 아티스트별 곡 수
 
-Kevin MacLeod 92, Alexander Nakarada 74, Scott Buckley 74, Darren Curtis 66, PeriTune 61, Eric Matyas (Soundimage.org) 60, Derek & Brandon Fiechter 55, Senses Circuit 54, TeknoAXE 51, DOVA-SYNDROME (official) 49, Ben Burnes (Abstraction) 46, HeatleyBros 44, Tim Beek 40, PANICPUMPKIN (みそか) 39, Alexandr Zhelanov 37, Vindsvept 37, MusMus 33, 魔王魂 (森田交一) 33, Loyalty Freak Music / Komiku 33, Lee Rosevere 30, Nihilore 28, Visager 26, Kai Engel 25, Ross Bugden 24, Sergey Cheremisinov 20, Matthew Pablo 20, Meydän 18, Sappheiros 18, Punch Deck 14, H/MIX GALLERY (秋山裕和) 13, Aaron Krogh 11, ハヤシユウ 11, Kyatto 10, Trevor Lentz 10, Chris Zabriskie 9, Patrick de Arteaga 8, Steven O'Brien 7, cynicmusic (Alex Smith) 7, 騒音のない世界 (Noiseless World) 6, しゃろう (Sharou) 4, Bit By Bit Sound 2, SHW (Hamashio) 和風 1
+Kevin MacLeod 92, Alexander Nakarada 75, Scott Buckley 75, Darren Curtis 67, PeriTune 61, Eric Matyas (Soundimage.org) 60, Derek & Brandon Fiechter 55, Senses Circuit 54, TeknoAXE 51, DOVA-SYNDROME (official) 49, Ben Burnes (Abstraction) 46, HeatleyBros 45, Tim Beek 40, PANICPUMPKIN (みそか) 39, Alexandr Zhelanov 38, Vindsvept 38, MusMus 33, 魔王魂 (森田交一) 33, Loyalty Freak Music / Komiku 33, Lee Rosevere 30, Nihilore 28, Visager 26, Kai Engel 25, Ross Bugden 24, Sergey Cheremisinov 20, Matthew Pablo 20, Meydän 18, Sappheiros 18, Punch Deck 15, H/MIX GALLERY (秋山裕和) 13, Aaron Krogh 11, ハヤシユウ 11, Kyatto 10, Trevor Lentz 10, Chris Zabriskie 9, Patrick de Arteaga 8, Steven O'Brien 7, cynicmusic (Alex Smith) 7, 騒音のない世界 (Noiseless World) 6, しゃろう (Sharou) 4, Bit By Bit Sound 2, SHW (Hamashio) 和風 1
 
 
 ## 소분류별 목록
@@ -44,14 +44,13 @@ Kevin MacLeod 92, Alexander Nakarada 74, Scott Buckley 74, Darren Curtis 66, Per
 ## A 시스템
 
 
-### A1_prelude · 프렐류드/타이틀 — 40곡 (작업용 focus≥4: 17)
+### A1_prelude · 프렐류드/타이틀 — 39곡 (작업용 focus≥4: 16)
 
 | focus | 제목 | 아티스트 | 길이 | 라이선스 | 링크 |
 |---|---|---|---|---|---|
 | 4 | If Dogs Had A Theme Song | Alexander Nakarada | 24:30 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=5Ha7ebhJ7N0) |
 | 4 | Pocket Playground OST - Main Menu & Alts | Ben Burnes (Abstractio | 7:53 | Free with attr | [▶](https://www.youtube.com/watch?v=n5zJLIH6VdA) |
 | 4 | Tron: Legacy Main Theme - Re-orchestrated (Orchestral Remix) | Scott Buckley | 7:15 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=LnfKij7ezr0) |
-| 4 | Se e Tire Damage | Kevin MacLeod | 6:52 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=idYLrXeM8DQ) |
 | 4 | Alexandr Zhelanov - FP Main Menu (FREE TO USE) | Alexandr Zhelanov | 4:53 | CC BY 3.0/4.0 | [▶](https://www.youtube.com/watch?v=7P2mxYQrq90) |
 | 4 | Retro Bowl Theme Song - “8 Bit Joy!" | HeatleyBros | 4:47 | Free with attr | [▶](https://www.youtube.com/watch?v=TdXFHKjJopI) |
 | 4 | Through the Eyes of a Dragon - Draconia Main Theme | Vindsvept | 4:41 | Free with attr | [▶](https://www.youtube.com/watch?v=hQqrSpwAOnU) |
@@ -63,10 +62,11 @@ Kevin MacLeod 92, Alexander Nakarada 74, Scott Buckley 74, Darren Curtis 66, Per
 | 4 | Retro Bowl College Theme Song - “8 Bit Life” | HeatleyBros | 4:04 | Free with attr | [▶](https://www.youtube.com/watch?v=orQOPJMy9Ww) |
 | 4 | "Press Start!" Upbeat Inspiring Chiptune Game Music | HeatleyBros | 3:57 | Free with attr | [▶](https://www.youtube.com/watch?v=LFwB-Hk1350) |
 | 4 | "8 Bit Street!" Appel Theme Song | HeatleyBros | 3:25 | Free with attr | [▶](https://www.youtube.com/watch?v=kGemKgdFYWg) |
+| 4 | Man Down | Kevin MacLeod | 3:19 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=ZMLakJIiLwc) |
 
-_(+25곡 더 — JSON 참조)_
+_(+24곡 더 — JSON 참조)_
 
-### A2_victory · 승리 팡파레 — 35곡 (작업용 focus≥4: 0)
+### A2_victory · 승리 팡파레 — 40곡 (작업용 focus≥4: 0)
 
 | focus | 제목 | 아티스트 | 길이 | 라이선스 | 링크 |
 |---|---|---|---|---|---|
@@ -74,9 +74,10 @@ _(+25곡 더 — JSON 참조)_
 | 2 | Alpha Hydrae- Keratine, rust and clear soul | Loyalty Freak Music /  | 5:04 | CC0 | [▶](https://www.youtube.com/watch?v=-LW6nQtXe10) |
 | 2 | Farm | Kevin MacLeod | 4:52 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=Dx2P1Y3fo3g) |
 | 2 | Despair and Triumph | Kevin MacLeod | 4:43 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=LYxzxcRimLA) |
-| 2 | Ossuary 3 - Words | Kevin MacLeod | 3:57 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=xEcCpovmWWc) |
+| 2 | Fireflies and Stardust | Kevin MacLeod | 4:15 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=0c6KrogjGKI) |
+| 2 | On Hold for You | Kevin MacLeod | 3:38 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=pc_xWN-sUh4) |
 | 2 | Clear Waters - Orchestra/Background | TeknoAXE | 3:36 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=nuQehxoLYWU) |
-| 2 | Crypto | Kevin MacLeod | 3:24 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=XgBPZ68L6TE) |
+| 2 | 'Victor Lux' Inspirational Orchestral | Scott Buckley | 3:23 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=01PUw8l9fi4) |
 | 2 | Victory Lap - 2HTC, Season 24 | Ben Burnes (Abstractio | 3:20 | Free with attr | [▶](https://www.youtube.com/watch?v=9JzPqUQ9l5E) |
 | 2 | Winner Winner! | Kevin MacLeod | 3:18 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=pOwqrm5dDcg) |
 | 2 | 'Clear Skies' Uplifting Orchestral | Scott Buckley | 3:16 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=5XEotddQbPY) |
@@ -84,9 +85,8 @@ _(+25곡 더 — JSON 참조)_
 | 2 | Christmas Rap | Kevin MacLeod | 3:07 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=kOqyC8h2_-M) |
 | 2 | Delightful D | Kevin MacLeod | 3:04 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=7uBohM8hlds) |
 | 2 | Free Fanfare & Gentle Orchestral Music “Departure” | PeriTune | 2:41 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=ViL66pqdEqc) |
-| 1 | Neon Laser Horizon | Kevin MacLeod | 2:58 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=EYcAo2DGoKU) |
 
-_(+20곡 더 — JSON 참조)_
+_(+25곡 더 — JSON 참조)_
 
 ### A3_levelup · 레벨업/획득 — 40곡 (작업용 focus≥4: 0)
 
@@ -101,12 +101,12 @@ _(+20곡 더 — JSON 참조)_
 | 2 | Kai Engel - Nothing (Bonus Track) - Music | Kai Engel | 4:53 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=MHB9-rCLQgY) |
 | 2 | Kai Engel - Something (Bonus Track) - Music | Kai Engel | 4:32 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=6UqEG_TmkZU) |
 | 2 | Low Rez Bells that Jingle - Lo Fi Christmas | TeknoAXE | 4:17 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=LfN_0ubvVeE) |
-| 2 | Fireflies and Stardust | Kevin MacLeod | 4:15 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=0c6KrogjGKI) |
 | 2 | Morgana Rides | Kevin MacLeod | 4:06 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=-dEn77yy_1U) |
 | 2 | Vanishing | Kevin MacLeod | 3:55 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=giYmsarZNnA) |
 | 2 | Pirate Music - Buried Treasure | Derek & Brandon Fiecht | 3:32 | Free with attr | [▶](https://www.youtube.com/watch?v=odeOHM_RjYo) |
 | 2 | Komiku - Un coin loin du monde | Loyalty Freak Music /  | 3:32 | CC0 | [▶](https://www.youtube.com/watch?v=w8dDjJBNTHg) |
 | 2 | Anamalie | Kevin MacLeod | 3:28 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=m2TAuiHOHtI) |
+| 2 | Angel Share | Kevin MacLeod | 3:21 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=BXNVfXbsxWg) |
 
 _(+25곡 더 — JSON 참조)_
 
@@ -468,19 +468,22 @@ _(+23곡 더 — JSON 참조)_
 
 _(+2곡 더 — JSON 참조)_
 
-### C5_resolve · 결전 직전/결의 — 10곡 (작업용 focus≥4: 4)
+### C5_resolve · 결전 직전/결의 — 13곡 (작업용 focus≥4: 6)
 
 | focus | 제목 | 아티스트 | 길이 | 라이선스 | 링크 |
 |---|---|---|---|---|---|
 | 4 | Giant Wyrm | Kevin MacLeod | 4:19 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=n3w9QsF5ggs) |
 | 4 | Epic Classical Soundtrack → Resolution | Alexander Nakarada | 4:03 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=LafkHS600aE) |
+| 4 | Pyro Flow | Kevin MacLeod | 3:54 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=Bg1k4WPDRBw) |
 | 4 | The brave orchestra "Strategy" | PeriTune | 3:52 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=foXgs0X4pZg) |
+| 4 | Punch Deck - Stand Your Ground | Punch Deck | 3:21 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=LInl6RUvWMk) |
 | 4 | "Before The Storm" Royalty Free Cinematic Music | Alexander Nakarada | 3:12 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=iEyaBCAEaQo) |
 | 3 | Epic Soundtrack → Rise Up, Stand Up | Alexander Nakarada | 2:57 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=gsWX_zyQtqY) |
 | 3 | Dark Fantasy "Prepare Thyself" | Darren Curtis | 2:28 | Free with attr | [▶](https://www.youtube.com/watch?v=-cdY8vf6ZDI) |
 | 3 | A small resolution Music | MusMus | 2:12 | Free with attr | [▶](https://www.youtube.com/watch?v=emxwcjdTJVs) |
 | 3 | ループ -夜明け・決意・潜入BGM by hitoshi / | Senses Circuit | 2:01 | Free with attr | [▶](https://www.youtube.com/watch?v=lVDyi7UhzA4) |
 | 3 | 決意の重さ | DOVA-SYNDROME (officia | 1:45 | Free | [▶](https://www.youtube.com/watch?v=9eMwEfTmL2g) |
+| 2 | EDM Music - - Ne Stand Alone ft. Jason Kay | Vindsvept | 3:24 | Free with attr | [▶](https://www.youtube.com/watch?v=etZtF9XW_Gg) |
 | 2 | Bound by the Oath - Royalty Free Cinematic Metal | Alexander Nakarada | 3:17 | CC BY 4.0 | [▶](https://www.youtube.com/watch?v=PRjZgcyUATY) |
 
 ### C6_chase · 도주/추격/긴급 — 40곡 (작업용 focus≥4: 0)
