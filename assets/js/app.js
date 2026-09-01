@@ -258,6 +258,12 @@ function play(i) {
   $('badge-scene').textContent = SCENE_NAME[t.scene] || '—';
   $('badge-scene').classList.add('on');
 
+  // 화면 낭독기에 곡 변경을 알린다 (시각적으로는 숨겨진 라이브 리전)
+  markCurrentScene(t.scene);
+
+  const sr = $('sr-status');
+  if (sr) sr.textContent = `재생 중: ${t.title}, ${t.artist}. 장면 ${SCENE_NAME[t.scene] || ''}. ${idx + 1}번째 곡, 전체 ${state.queue.length}곡.`;
+
   if (yt && state.ready) {
     yt.loadVideoById(t.videoId);
     yt.setVolume(state.volume);
@@ -359,6 +365,141 @@ function stepTime() {
   if (!state.seeking && dur > 0) $('seek').value = String(Math.round(cur / dur * 1000));
 }
 
+
+
+/* ---------------------------------------------------------------- 장면 브라우저
+
+   질답은 27개 장면까지만 닿고, 전곡 셔플은 focus>=4 만 뽑는다.
+   그래서 전투·징글 계열 7개 장면 253곡이 UI로 도달 불가였다. 여기서 직접 고른다. */
+
+const picked = new Set();
+
+function buildSceneBrowser() {
+  const box = $('scene-browser');
+  if (!box) return;
+  const groups = new Map();
+  for (const sc of SCENES) {
+    if (!groups.has(sc.category)) groups.set(sc.category, []);
+    groups.get(sc.category).push(sc);
+  }
+  box.innerHTML = '';
+  for (const [cat, list] of groups) {
+    const g = document.createElement('div');
+    g.className = 'scene-group';
+    const h = document.createElement('h3');
+    h.textContent = cat;
+    g.appendChild(h);
+    const grid = document.createElement('div');
+    grid.className = 'scene-grid';
+    for (const sc of list) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'scene-btn';
+      b.dataset.scene = sc.id;
+      b.setAttribute('aria-pressed', 'false');
+      const calm = (BGM_BY_SCENE[sc.id] || []).filter((t) => t.focus >= 4).length;
+      b.title = `${sc.name} — ${sc.count}곡 (작업용 ${calm}곡)`;
+      b.innerHTML = `<span class="nm">${escapeHtml(sc.name)}</span><span class="ct">${sc.count}</span>`;
+      b.addEventListener('click', () => onSceneClick(sc, b));
+      grid.appendChild(b);
+    }
+    g.appendChild(grid);
+    box.appendChild(g);
+  }
+}
+
+function multiMode() { return $('scene-multi')?.checked; }
+
+function onSceneClick(sc, btn) {
+  if (multiMode()) {
+    if (picked.has(sc.id)) picked.delete(sc.id); else picked.add(sc.id);
+    btn.setAttribute('aria-pressed', String(picked.has(sc.id)));
+    renderPicked();
+    return;
+  }
+  playScenes([sc.id], sc.name);
+}
+
+function renderPicked() {
+  const n = picked.size;
+  $('scene-picked').textContent = `${n}개 선택`;
+  $('btn-scene-play').disabled = n === 0;
+}
+
+function clearPicked() {
+  picked.clear();
+  for (const b of document.querySelectorAll('.scene-btn')) b.setAttribute('aria-pressed', 'false');
+  renderPicked();
+}
+
+/** 장면 id 목록으로 재생목록을 만들어 바로 재생 */
+function playScenes(ids, label) {
+  const seen = new Set();
+  const pool = [];
+  for (const id of ids) {
+    for (const t of BGM_BY_SCENE[id] || []) {
+      if (seen.has(t.videoId)) continue;
+      seen.add(t.videoId);
+      pool.push({ ...t, scene: id });
+    }
+  }
+  if (!pool.length) { say('그 장면엔 곡이 없네.'); return; }
+  // 아티스트가 연달아 나오지 않게 섞는다
+  const byArtist = new Map();
+  for (const t of pool) {
+    if (!byArtist.has(t.artist)) byArtist.set(t.artist, []);
+    byArtist.get(t.artist).push(t);
+  }
+  const queues = [...byArtist.values()].sort(() => Math.random() - 0.5);
+  for (const q of queues) q.sort(() => Math.random() - 0.5);
+  const list = [];
+  while (queues.some((q) => q.length)) for (const q of queues) if (q.length) list.push(q.shift());
+
+  loadQueue(list);
+  const name = label || `${ids.length}개 장면`;
+  say(`${name} — ${list.length}곡 걸었어.`);
+  play(0);
+}
+
+function initSceneBrowser() {
+  const toggle = $('btn-scenes-toggle');
+  const box = $('scene-browser');
+  const actions = $('scene-actions');
+  if (!toggle || !box) return;
+
+  buildSceneBrowser();
+
+  toggle.addEventListener('click', () => {
+    const open = box.hidden;
+    box.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? '▲' : '▼';
+    if (!open) { actions.hidden = true; }
+    else if (multiMode()) actions.hidden = false;
+  });
+
+  $('scene-multi').addEventListener('change', (e) => {
+    actions.hidden = !e.target.checked || box.hidden;
+    if (!e.target.checked) clearPicked();
+    else say('여러 장면을 골라서 합칠 수 있어. 다 고르면 재생을 눌러줘.');
+  });
+
+  $('btn-scene-play').addEventListener('click', () => {
+    if (!picked.size) return;
+    const names = SCENES.filter((s) => picked.has(s.id)).map((s) => s.name);
+    playScenes([...picked], names.length > 2 ? `${names[0]} 외 ${names.length - 1}개` : names.join(' · '));
+  });
+  $('btn-scene-clear').addEventListener('click', clearPicked);
+
+  renderPicked();
+}
+
+/** 현재 재생 중인 장면을 브라우저에 표시 */
+function markCurrentScene(sceneId) {
+  for (const b of document.querySelectorAll('.scene-btn')) {
+    b.classList.toggle('is-current', b.dataset.scene === sceneId);
+  }
+}
 
 /* ---------------------------------------------------------------- 화면 켜둠 (Wake Lock)
 
@@ -565,6 +706,7 @@ function boot() {
   buildSkinPicker();
   initWake();
   initMobileNote();
+  initSceneBrowser();
   refreshTheme();
   wire();
   updateTransport();

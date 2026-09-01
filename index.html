@@ -8,6 +8,10 @@
 <meta property="og:title" content="RPG BGM DJ">
 <meta property="og:description" content="치비 DJ가 골라주는 작업용 RPG BGM 재생기. 윈앰프 감성 스킨 7종.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://progh2.github.io/rpg-bgm-dj/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#2b2b38">
 <!-- 보안 헤더: GitHub Pages는 HTTP 응답 헤더를 설정할 수 없어 meta로 가능한 것만 적용한다.
      frame-ancestors는 meta에서 무시되므로 클릭재킹은 app.js의 프레임 이탈 코드로 막는다.
      HSTS/nosniff/Permissions-Policy는 meta로 지정할 수 없다 (SECURITY.md 참고). -->
@@ -29,6 +33,11 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+<!-- 화면 낭독기용: 곡이 바뀌면 여기서 읽어 준다 (시각적으로는 숨김) -->
+<p id="sr-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+
 <div id="yt-host"><div id="yt-player"></div></div>
 
 <div class="stage">
@@ -46,7 +55,7 @@
   </header>
 
   <!-- ===== 좌측: 재생기 ===== -->
-  <main>
+  <main id="main">
 
     <!-- 메인 창 -->
     <section class="win" aria-label="재생기">
@@ -133,10 +142,34 @@
         <button class="win-btn" id="btn-reshuffle" title="순서 섞기">⤨</button>
       </div>
       <div class="win-body">
-        <div class="pl-list" id="pl-list" role="listbox" aria-label="재생목록"></div>
+        <div class="pl-list" id="pl-list" role="listbox" aria-label="재생목록" tabindex="0"></div>
         <div class="pl-foot">
           <span id="pl-count">0곡</span>
           <span id="pl-desc"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 장면 브라우저 -->
+    <section class="win" aria-label="장면 고르기">
+      <div class="win-bar">
+        <span>SCENES</span>
+        <span class="grip" aria-hidden="true"></span>
+        <button class="win-btn" id="btn-scenes-toggle" aria-expanded="false"
+                aria-controls="scene-browser" title="펼치기/접기">▼</button>
+      </div>
+      <div class="win-body">
+        <p class="scene-intro">
+          34개 장면에서 직접 고르세요. 질답이 닿지 않는 전투·징글 계열도 여기 있습니다.
+          <label class="scene-multi">
+            <input type="checkbox" id="scene-multi"> 여러 개 골라 합치기
+          </label>
+        </p>
+        <div id="scene-browser" class="scene-browser" hidden></div>
+        <div class="scene-actions" id="scene-actions" hidden>
+          <button class="tbtn" id="btn-scene-play" type="button">고른 장면 재생</button>
+          <button class="tbtn" id="btn-scene-clear" type="button">선택 해제</button>
+          <span class="scene-picked" id="scene-picked">0개 선택</span>
         </div>
       </div>
     </section>
@@ -158,7 +191,7 @@
       <div class="win-bar"><span>DJ BOOTH</span><span class="grip" aria-hidden="true"></span></div>
       <div class="win-body">
         <div class="dj-stage" id="dj-stage" data-state="idle"></div>
-        <div class="bubble" id="bubble">
+        <div class="bubble" id="bubble" role="status" aria-live="polite">
           <span class="who" id="dj-name">NOISE</span>
           <span id="bubble-text">불러오는 중…</span>
         </div>
