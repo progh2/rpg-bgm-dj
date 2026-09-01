@@ -2,16 +2,16 @@
 // 재생 중인 곡에 따라 페이지 배색을 바꾸는 데 쓰인다 (issue #5).
 
 export const MOODS = {
-  calm:     { label: '평온',    accent: '#5fd6c0', deep: '#08302c', glow: '#9ff5e4', record: '#2f7d70' },
-  pastoral: { label: '한가로움', accent: '#9ed46b', deep: '#1b2c12', glow: '#d6f5a8', record: '#4f7a30' },
-  wonder:   { label: '신비',    accent: '#b48cf0', deep: '#1c1236', glow: '#ddc8ff', record: '#6a45a8' },
-  tender:   { label: '애틋함',  accent: '#f095b8', deep: '#2e0f1d', glow: '#ffd0e2', record: '#a34a68' },
-  sorrow:   { label: '애도',    accent: '#7fa6d9', deep: '#0d1626', glow: '#c3daf7', record: '#3d5f8f' },
-  noble:    { label: '당당',    accent: '#e8bc5a', deep: '#2a1e07', glow: '#ffe6a8', record: '#9c7420' },
-  dread:    { label: '불길',    accent: '#8f7bb5', deep: '#140f1c', glow: '#c4b3e0', record: '#4a3a63' },
-  ember:    { label: '격렬',    accent: '#e8663f', deep: '#2b0d07', glow: '#ffb495', record: '#a13a1c' },
-  frost:    { label: '서늘함',  accent: '#67c6e8', deep: '#08222e', glow: '#b3e9fb', record: '#2c718c' },
-  merry:    { label: '흥겨움',  accent: '#f5aa05', deep: '#2d1606', glow: '#ffd4a3', record: '#a86020' },
+  calm:     { label: '평온',    accent: '#5fd6c0', deep: '#15564e', glow: '#9ff5e4', record: '#2f7d70' },
+  pastoral: { label: '한가로움', accent: '#9ed46b', deep: '#315021', glow: '#d6f5a8', record: '#4f7a30' },
+  wonder:   { label: '신비',    accent: '#b48cf0', deep: '#342663', glow: '#ddc8ff', record: '#6a45a8' },
+  tender:   { label: '애틋함',  accent: '#f095b8', deep: '#54233c', glow: '#ffd0e2', record: '#a34a68' },
+  sorrow:   { label: '애도',    accent: '#7fa6d9', deep: '#1e3050', glow: '#c3daf7', record: '#3d5f8f' },
+  noble:    { label: '당당',    accent: '#e8bc5a', deep: '#4d3a11', glow: '#ffe6a8', record: '#9c7420' },
+  dread:    { label: '불길',    accent: '#8f7bb5', deep: '#2b2140', glow: '#c4b3e0', record: '#4a3a63' },
+  ember:    { label: '격렬',    accent: '#e8663f', deep: '#54200f', glow: '#ffb495', record: '#a13a1c' },
+  frost:    { label: '서늘함',  accent: '#67c6e8', deep: '#124253', glow: '#b3e9fb', record: '#2c718c' },
+  merry:    { label: '흥겨움',  accent: '#f5aa05', deep: '#542c0c', glow: '#ffd4a3', record: '#a86020' },
 };
 
 /** 장면 → 무드 */

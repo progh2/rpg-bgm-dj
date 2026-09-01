@@ -46,16 +46,26 @@ export function djSvg() {
     <circle cx="176" cy="76" r="4.5" fill="var(--accent-glow)"/>
   </g>
 
+  <!-- ================= 목 (머리와 몸을 잇는다 — 없으면 머리가 떠 보인다) ================= -->
+  <g class="dj-neck">
+    <path d="M106 118v29c0 9 28 9 28 0v-29z" fill="#f0cdb9" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <!-- 턱이 드리우는 그늘 -->
+    <path d="M106 118v14c5 6 23 6 28 0v-14z" fill="${INK}" opacity=".26"/>
+  </g>
+
   <!-- ================= 몸통 ================= -->
   <g class="dj-body">
-    <!-- 후디 -->
-    <path d="M120 168c-32 0-54 13-60 33-3 10-4 20-4 30h128c0-10-1-20-4-30-6-20-28-33-60-33z"
+    <!-- 후디 — 어깨를 목 아래까지 끌어올려 빈 구간을 없앤다 -->
+    <path d="M120 150c-34 0-56 15-62 36-3 10-4 20-4 28h132c0-8-1-18-4-28-6-21-28-36-62-36z"
           fill="url(#djHood)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <!-- 목 그늘 + 후디 깃 -->
-    <path d="M120 168c-11 0-19 3-19 3l19 20 19-20s-8-3-19-3z" fill="${INK}" opacity=".42"/>
+    <!-- 후디 깃 — 목을 감싼다 -->
+    <path d="M104 152c4 8 10 12 16 12s12-4 16-12c6 2 10 5 12 8-6 9-16 15-28 15s-22-6-28-15c2-3 6-6 12-8z"
+          fill="var(--chrome-dark)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <!-- 깃 안쪽 그늘 -->
+    <path d="M108 154c4 7 8 10 12 10s8-3 12-10c-3 8-7 12-12 12s-9-4-12-12z" fill="${INK}" opacity=".5"/>
     <!-- 후디 끈 -->
-    <path d="M108 180c-2 12-2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-    <path d="M132 180c2 12 2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M110 176c-2 12-2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M130 176c2 12 2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
     <!-- 소매 / 손 (턴테이블 위에) -->
     <g class="dj-hand dj-hand-l">
       <path d="M62 202c-8 4-11 12-9 19l20-6-3-14z" fill="url(#djHood)" stroke="${INK}" stroke-width="3"/>

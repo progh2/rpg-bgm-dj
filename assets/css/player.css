@@ -47,9 +47,10 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(120% 90% at 15% 0%, var(--accent-deep) 0%, transparent 62%),
-    radial-gradient(90% 80% at 100% 100%, var(--accent-deep) 0%, transparent 58%);
-  opacity: .85;
+    radial-gradient(120% 90% at 15% 0%, var(--accent-deep) 0%, transparent 58%),
+    radial-gradient(90% 80% at 100% 100%, var(--accent-deep) 0%, transparent 54%),
+    linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03) 45%, transparent 75%);
+  opacity: .58;
   transition: background 1.4s var(--ease), opacity 1.4s var(--ease);
 }
 
@@ -60,8 +61,8 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 999;
-  background: repeating-linear-gradient(180deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
-  opacity: .5;
+  background: repeating-linear-gradient(180deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px);
+  opacity: .28;
   mix-blend-mode: multiply;
 }
 
@@ -79,8 +80,10 @@ body::after {
 
 /* ---------- 창(window) 공통 ---------- */
 .win {
-  background: var(--chrome);
-  box-shadow: var(--bevel-out), 0 8px 26px rgba(0,0,0,.45);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,0) 46%),
+    var(--chrome);
+  box-shadow: var(--bevel-out), 0 6px 20px rgba(0,0,0,.32);
   margin-bottom: 14px;
   transition: background-color .8s var(--ease);
 }
@@ -208,7 +211,7 @@ body::after {
 .tbtn {
   min-width: 34px;
   height: 28px;
-  background: var(--chrome-face);
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.08)), var(--chrome-face);
   box-shadow: var(--bevel-out);
   border: 0;
   color: var(--text);
@@ -255,8 +258,11 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 
 .deck {
-  background: var(--lcd-bg);
-  box-shadow: var(--bevel-in);
+  /* 판이 검으므로 데크 몸체는 밝게 — 안 그러면 레코드가 배경에 묻힌다 */
+  background:
+    radial-gradient(120% 120% at 30% 12%, rgba(255,255,255,.12), transparent 58%),
+    var(--chrome-face);
+  box-shadow: var(--bevel-out);
   padding: 12px;
   position: relative;
   aspect-ratio: 1 / 1;
@@ -266,17 +272,38 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 
 .platter {
-  width: 88%;
+  width: 86%;
   aspect-ratio: 1;
   border-radius: 50%;
   background:
-    repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.045) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 50% 50%, var(--record) 0 26%, #14141a 26.5% 100%);
-  box-shadow: 0 0 0 2px rgba(0,0,0,.5), inset 0 0 30px rgba(0,0,0,.7);
+    /* 그루브 — 밝게 해서 회전이 눈에 보이게 */
+    repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.10) 0 1px, transparent 1px 5px),
+    /* 비닐 위 광택 한 줄 */
+    conic-gradient(from 210deg at 50% 50%, transparent 0deg, rgba(255,255,255,.16) 22deg, transparent 52deg,
+                   transparent 180deg, rgba(255,255,255,.10) 202deg, transparent 232deg),
+    radial-gradient(circle at 50% 50%, var(--record) 0 27%, #2c2c36 27.5% 100%);
+  /* 바깥 테두리 밝은 링 + 안쪽 그림자 */
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.30),
+    0 0 0 5px rgba(0,0,0,.35),
+    0 6px 16px rgba(0,0,0,.45),
+    inset 0 0 26px rgba(0,0,0,.55);
   display: grid;
   place-items: center;
   position: relative;
   transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+
+/* 슬립매트 — 판 뒤에 깔린 원반이라 판 경계가 확실히 보인다 */
+.deck::before {
+  content: "";
+  position: absolute;
+  width: 92%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 34%, rgba(255,255,255,.16), rgba(0,0,0,.30) 70%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+  pointer-events: none;
 }
 
 /* 레코드 회전 */
@@ -298,10 +325,15 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   font: 700 11px/1.3 var(--font-lcd);
   text-align: center;
   padding: 6px;
-  box-shadow: inset 0 0 8px rgba(0,0,0,.35);
+  box-shadow: inset 0 0 8px rgba(0,0,0,.35), 0 0 0 2px rgba(0,0,0,.35);
   overflow: hidden;
 }
-.label span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 글자는 스핀들 구멍 아래로 내려 겹치지 않게 한다 */
+.label span {
+  display: block; max-width: 92%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transform: translateY(10px);
+}
 .label .spindle {
   position: absolute;
   width: 7px; height: 7px; border-radius: 50%;
@@ -321,22 +353,29 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   pointer-events: none;
 }
 .deck.spinning .tonearm { transform: rotate(6deg); }
-.tonearm .arm { stroke: var(--chrome-light); stroke-width: 4; stroke-linecap: round; }
-.tonearm .pivot { fill: var(--chrome-face); stroke: var(--chrome-dark); stroke-width: 2; }
-.tonearm .head { fill: var(--chrome-light); }
+.tonearm { filter: drop-shadow(0 2px 3px rgba(0,0,0,.5)); }
+.tonearm .arm { stroke: #e8e8ef; stroke-width: 4; stroke-linecap: round; }
+.tonearm .pivot { fill: #c9c9d6; stroke: rgba(0,0,0,.5); stroke-width: 2; }
+.tonearm .head { fill: #f2f2f8; }
 
 /* 덱 상태 */
 .deck-tag {
   position: absolute;
   top: 6px; left: 8px;
+  z-index: 2;
+  padding: 2px 6px;
+  background: var(--lcd-bg);
   font: 700 9px/1 var(--font-lcd);
   letter-spacing: .14em;
   color: var(--lcd-dim);
+  box-shadow: var(--bevel-in);
 }
 .deck.active .deck-tag { color: var(--lcd-ink); text-shadow: 0 0 8px var(--lcd-ink); }
 
 /* 교체 연출: 물러나는 덱 */
-.deck.retiring .platter { opacity: .25; transform: scale(.9); }
+.deck.retiring .platter { opacity: .3; transform: scale(.92); }
+/* 아직 한 번도 안 쓴 덱은 판을 비워 둔다 */
+.deck:not(.active):not(.retiring) .platter { opacity: .38; }
 
 /* ---------- 플레이리스트 ---------- */
 .pl-list {
@@ -422,6 +461,7 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 
 /* 몸 흔들기 */
 .dj-body { transform-origin: 120px 200px; }
+.dj-neck { transform-origin: 120px 150px; }
 .dj-head, .dj-phones { transform-origin: 120px 140px; }
 .dj-tail-l { transform-origin: 64px 76px; }
 .dj-tail-r { transform-origin: 176px 76px; }
@@ -430,6 +470,8 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 
 /* 상태: idle */
 [data-state="idle"] .dj-head { animation: djBob 5s ease-in-out infinite; }
+[data-state="idle"] .dj-neck { animation: djBobNeck 5s ease-in-out infinite; }
+@keyframes djBobNeck { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 @keyframes djBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
 /* 상태: talk — 입이 움직이고 눈을 살짝 감는다 */
@@ -451,6 +493,8 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 [data-state="groove"] .dj-body  { animation: djGroove 1.05s ease-in-out infinite; }
 [data-state="groove"] .dj-head  { animation: djGrooveHead 1.05s ease-in-out infinite; }
 [data-state="groove"] .dj-phones{ animation: djGrooveHead 1.05s ease-in-out infinite; }
+[data-state="groove"] .dj-neck  { animation: djNeckGroove 1.05s ease-in-out infinite; }
+@keyframes djNeckGroove { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-2px) rotate(1deg); } }
 [data-state="groove"] .dj-tail-l { animation: djTailL 1.05s ease-in-out infinite; }
 [data-state="groove"] .dj-tail-r { animation: djTailR 1.05s ease-in-out infinite; }
 @keyframes djGroove { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-2px) rotate(1.5deg); } }
@@ -534,7 +578,7 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .qa-opt {
   display: flex; align-items: center; gap: 9px;
   width: 100%; text-align: left;
-  background: var(--chrome-face);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.06)), var(--chrome-face);
   box-shadow: var(--bevel-out);
   border: 0; padding: 8px 10px;
   color: var(--text); cursor: pointer;
