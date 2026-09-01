@@ -36,14 +36,28 @@ jobs:
       - name: 의존성 설치
         run: pip install --quiet requests
 
+      # 입력값을 run: 안에 ${{ }} 로 직접 넣으면 셸 인젝션이 된다.
+      # env 로 넘겨 셸 변수로 받고, 숫자인지 검증한 뒤 쓴다.
       - name: 생존 검사 및 제거
         id: check
         continue-on-error: true
+        env:
+          LIMIT: ${{ github.event.inputs.limit }}
         run: |
-          python3 tools/check_liveness.py --prune \
-            ${{ github.event.inputs.limit != '' && github.event.inputs.limit != '0' && format('--limit {0}', github.event.inputs.limit) || '' }} \
-            | tee liveness.log
-          echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          set -o pipefail
+          args=()
+          if [[ -n "${LIMIT:-}" && "$LIMIT" != "0" ]]; then
+            if [[ "$LIMIT" =~ ^[0-9]+$ ]]; then
+              args+=(--limit "$LIMIT")
+            else
+              echo "::warning::limit 입력이 숫자가 아니라 무시합니다: $LIMIT"
+            fi
+          fi
+          set +e
+          python3 tools/check_liveness.py --prune "${args[@]}" | tee liveness.log
+          code=${PIPESTATUS[0]}
+          set -e
+          echo "exit=$code" >> "$GITHUB_OUTPUT"
 
       - name: 재생기 데이터 재생성
         if: steps.check.outputs.exit == '1'
