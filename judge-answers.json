@@ -1,12 +1,20 @@
 {
-  "code.headers-config": {
-    "status": "pass",
-    "by": "claude-fable-5 (교사 보조 AI)",
-    "evidence": "index.html:16-31 및 privacy.html:8-18 — GitHub Pages가 HTTP 응답 헤더를 설정할 수 없어 <meta http-equiv=\"Content-Security-Policy\">와 <meta name=\"referrer\">로 적용. Chromium 헤드리스로 실측해 CSP가 실제 적용·차단됨을 확인(위반 0건, JS 에러 0건). style-src 'self' 유지를 위해 인라인 style 속성을 전부 제거하고 assets/js/app.js:59-64 에서 element.style.setProperty(CSSOM)로 대체. 헤더 지원 호스팅 이전 대비로 _headers(Netlify/Cloudflare)와 vercel.json 에 6종 헤더 전부 정의. 클릭재킹은 meta frame-ancestors가 명세상 무시되므로 assets/js/app.js:12-17 프레임 이탈 코드로 완화. HSTS는 github.io가 브라우저 HSTS 프리로드 목록에 등재되고 Pages가 HTTP를 301 리다이렉트하므로 이미 강제됨(스캔에서도 통과 확인). 근거 전문은 SECURITY.md."
-  },
-  "code.dangerous-pattern": {
-    "status": "pass",
-    "by": "claude-fable-5 (교사 보조 AI)",
-    "evidence": "assets/js/*.js 전수 확인 — eval(), new Function(), document.write, child_process 사용 0건. innerHTML은 assets/js/app.js 에서만 사용하며, 외부 유입 값(YouTube 영상 제목·아티스트명)이 들어가는 전 경로에 escapeHtml() 적용: app.js:307(마퀴), app.js:176-178(재생목록 행), app.js:223-230(곡 정보 패널). 나머지 innerHTML은 정적 문자열이거나 내부 상수(스킨 라벨, 자체 정의 SVG 아이콘, 질문 문구)만 담는다. 폼·파일 업로드·URL 파라미터 처리가 없어 외부 주입 경로 자체가 존재하지 않는다. localStorage에는 스킨 설정(rpgbgm.skin)만 저장하며 개인 식별 정보를 다루지 않는다."
-  }
+  "edzip.1-1": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제2조 — 수집하는 개인정보 0건. 코드 실측 근거: 회원가입·로그인·입력 폼·파일 업로드·URL 파라미터 처리가 전무하고(index.html 전수 확인), 운영자가 통제하는 서버·DB가 없는 GitHub Pages 정적 페이지다. 저장되는 값은 localStorage의 rpgbgm.skin(화면 스킨 설정) 1건뿐이며 이용자 기기를 벗어나지 않는다(assets/js/skins.js:143-154). 방침에 이 1건까지 표로 명시했다. 최소처리 원칙을 구조적으로 충족한다." },
+  "edzip.1-2": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제3조 — 처리하는 개인정보가 없어 개인정보 처리 목적이 존재하지 않음을 명시하고, 유일한 저장값인 스킨 설정의 목적('재방문 시 이전 화면 유지')과 목적 외 이용 금지를 적었다." },
+  "edzip.1-3": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제2조(수집 항목 표)와 제4조(보유기간·파기 표) — 대상별 보유 주체·보유 기간·파기 방법을 표로 명시. 개인정보는 '없음/해당 없음', 스킨 설정값은 '이용자가 삭제할 때까지 / 브라우저 사이트 데이터 삭제 시 즉시 파기'." },
+  "edzip.2-1": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제9조에 관리적·기술적·구조적 조치를 항목별로 명시. 실제 적용 확인: (1) HTTPS 강제 — Pages가 HTTP를 301 리다이렉트하고 github.io는 브라우저 HSTS 프리로드 등재(스캔에서 통과 확인). (2) CSP — index.html meta로 적용, Chromium 헤드리스 실측에서 적용·차단 확인(위반 0건). (3) XSS 방지 — 외부 유입 값이 들어가는 innerHTML 전 경로에 escapeHtml() 적용(app.js:176-178, 223-230, 307). (4) 클릭재킹 — app.js:12-17 프레임 이탈. (5) 제3자 접속 최소화 — 폰트 자체 호스팅, youtube-nocookie 임베드. (6) 구조적 — 개인정보 저장소 자체를 두지 않아 유출 위험 제거. 상세는 SECURITY.md." },
+  "edzip.3-1": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제7조 — 개인정보 보호법 제35~37조에 따른 열람·정정·삭제·처리정지 권리와 행사 방법, 접수 창구(제10조 연락처), 법정 처리 기한(지체 없이, 10일 이내)을 명시. 운영자 보유 개인정보가 없다는 사실과, 기기 저장값은 이용자가 직접 삭제 가능하다는 점, Google 처리분은 Google에 직접 행사해야 한다는 점을 구분해 안내." },
+  "edzip.4-1": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제8조 — 회원가입·로그인·입력 폼이 없어 연령과 무관하게 개인정보가 수집되지 않으므로 개인정보 보호법 제22조의2 법정대리인 동의 대상이 발생하지 않음을 명시. 이 앱은 학생 개인정보·학습 산출물을 다루지 않는 단순 도구(배경음악 재생기)로 에듀집 케이스 A에 해당하며(dorms-check.config.json edzipCase='A'), 교실 사용 시에도 학생 식별정보가 생성·저장·전송되지 않는다. YouTube 이용에 Google 연령정책이 적용된다는 점을 별도 고지했다." },
+  "edzip.5-1": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제10조 — 개인정보 보호책임자(운영 교사), 문의 접수 창구(GitHub Issues), 처리 기한(10일 이내)을 표로 명시하고, 개인정보분쟁조정위원회(1833-6972)·개인정보침해신고센터(118)·경찰 사이버수사국(182) 상담·신고 안내를 포함했다. 다만 에듀집 정식 제출 시에는 학교 공식 연락처로 교체가 필요하다." },
+  "edzip.5-2": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제5조 — 제3자 제공 없음을 명시(운영자 보유 개인정보가 없어 제공 대상 자체가 부존재). 다만 구조상 이용자가 재생을 시작하면 브라우저가 Google LLC에 직접 접속해 Google이 독자적 개인정보처리자로서 IP·접속시각·기기정보·재생영상을 처리할 수 있음을 처리 항목까지 구체적으로 고지하고, 이것이 운영자의 '제공'이 아니라 이용자-Google 간 직접 처리임을 구분해 설명했다. 자동재생을 하지 않아 이용자 조작 전에는 통신이 발생하지 않는다(app.js playerVars autoplay:0)." },
+  "edzip.5-3": { "status": "pass", "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "privacy.html 제6조 — 위탁 없음을 명시하되, 서비스 제공에 관여하는 외부 사업자를 표로 투명 공개: GitHub Inc.(정적 호스팅, 국외 이전 미국, 운영자가 넘기는 개인정보 없음, 접속 로그는 GitHub 자체 보관), Google LLC(YouTube 임베드 재생, 국외 이전 미국). 생성형 AI API 등 그 밖의 외부 서비스를 사용하지 않으며, 폰트도 외부 CDN 대신 자체 호스팅해 제3자 접속을 추가로 발생시키지 않음을 명시했다(assets/fonts/, SECURITY.md)." }
 }
