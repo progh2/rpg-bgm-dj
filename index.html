@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RPG BGM DJ — 작업용 장면별 BGM 재생기</title>
-<meta name="description" content="옛날 콘솔 RPG의 장면 분류 34종을 기반으로, 저작권 문제 없는 무료 라이선스 BGM 1,300곡을 골라 틀어주는 작업용 재생기. 치비 DJ가 몇 가지 질문으로 취향에 맞는 재생목록을 즉석에서 만들어 줍니다.">
-<meta property="og:title" content="RPG BGM DJ">
-<meta property="og:description" content="치비 DJ가 골라주는 작업용 RPG BGM 재생기. 윈앰프 감성 스킨 7종.">
+<title>바드의 홀 — 작업용 RPG BGM 재생기</title>
+<meta name="description" content="옛날 콘솔 RPG의 장면 분류 34종을 기반으로, 저작권 문제 없는 무료 라이선스 BGM을 골라 틀어주는 작업용 재생기. 여관에 자리 잡은 음유시인이 몇 마디 묻고 그 자리에서 곡목을 짜 줍니다.">
+<meta property="og:title" content="바드의 홀">
+<meta property="og:description" content="여관에 앉은 음유시인이 골라주는 작업용 RPG BGM. 머물 곳 7군데, 장면 34종.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://progh2.github.io/rpg-bgm-dj/">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#2b2b38">
+<meta name="theme-color" content="#33200f">
+
 <!-- 보안 헤더: GitHub Pages는 HTTP 응답 헤더를 설정할 수 없어 meta로 가능한 것만 적용한다.
      frame-ancestors는 meta에서 무시되므로 클릭재킹은 app.js의 프레임 이탈 코드로 막는다.
      HSTS/nosniff/Permissions-Policy는 meta로 지정할 수 없다 (SECURITY.md 참고). -->
@@ -28,14 +29,15 @@
   form-action 'self';
   upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<link rel="stylesheet" href="assets/css/player.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%2314141a'/><circle cx='16' cy='16' r='9' fill='none' stroke='%235fd6c0' stroke-width='1.5'/><circle cx='16' cy='16' r='3' fill='%235fd6c0'/></svg>">
+
+<link rel="stylesheet" href="assets/css/tavern.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%2333200f'/><path d='M16 25c4 0 7-2.6 7-6 0-4.8-7-11-7-11S9 14.2 9 19c0 3.4 3 6 7 6z' fill='%23d8a544'/></svg>">
 </head>
 <body>
 
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
-<!-- 화면 낭독기용: 곡이 바뀌면 여기서 읽어 준다 (시각적으로는 숨김) -->
+<!-- 화면 낭독기용: 곡이 바뀌면 여기서 읽어 준다 -->
 <p id="sr-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 
 <div id="yt-host"><div id="yt-player"></div></div>
@@ -43,10 +45,12 @@
 <div class="stage">
 
   <header class="site-head">
-    <h1>RPG BGM DJ</h1>
+    <h1>바드의 홀</h1>
     <span class="tag">고전 RPG 장면 34종 · 무료 라이선스 <strong id="stat-count">—</strong>곡</span>
     <span class="mood-chip" id="mood-chip">평온</span>
+    <button class="phase-chip" id="phase-chip" title="지금 홀의 시각. 눌러서 바꿔 볼 수 있습니다.">—</button>
     <nav class="links">
+      <button class="doorbell" id="doorbell" title="문간 종을 울린다" aria-label="문간 종을 울린다"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V7a4 4 0 0 1 8 0v4l1.2 1.6H2.8z"/><path d="M8 3V1.6"/><path d="M6.6 13.4a1.5 1.5 0 0 0 2.8 0"/></svg></button>
       <a href="https://github.com/progh2/rpg-bgm-dj" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/classic_rpg_bgm_by_scene.md" target="_blank" rel="noopener">분류 조사 ↗</a>
       <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/classic_rpg_bgm_free_playlist.md" target="_blank" rel="noopener">음원 목록 ↗</a>
@@ -54,176 +58,189 @@
     </nav>
   </header>
 
-  <!-- ===== 좌측: 재생기 ===== -->
   <main id="main">
 
-    <!-- 메인 창 -->
-    <section class="win" aria-label="재생기">
-      <div class="win-bar">
-        <span>RPG BGM DJ</span>
-        <span class="grip" aria-hidden="true"></span>
-        <button class="win-btn" id="btn-shuffle-all" title="전곡에서 무작위로 다시 채우기">↻</button>
+    <!-- 화로와 악보대 -->
+    <section class="board" aria-label="화로">
+      <div class="board-head">
+        <span>화 로 가</span>
+        <span class="rope" aria-hidden="true"></span>
+        <button class="board-btn" id="btn-shuffle-all" title="아무 곡이나 마흔 곡 뽑기">↻</button>
       </div>
-      <div class="win-body">
+      <div class="board-body">
 
-        <div class="lcd">
-          <div class="lcd-top">
-            <span class="lcd-time" id="lcd-time">--:--</span>
-            <div class="lcd-badges">
-              <span class="lcd-badge" id="badge-play">PLAY</span>
-              <span class="lcd-badge" id="badge-shuffle">SHUF</span>
-              <span class="lcd-badge" id="badge-repeat">REP</span>
-              <span class="lcd-badge" id="badge-scene">—</span>
+        <div class="sign">
+          <div class="sign-top">
+            <span class="sign-time" id="sign-time">--:--</span>
+            <div class="sign-tags">
+              <span class="sign-tag" id="tag-play">연주 중</span>
+              <span class="sign-tag" id="tag-shuffle">섞어</span>
+              <span class="sign-tag" id="tag-repeat">되풀이</span>
+              <span class="sign-tag" id="tag-scene">—</span>
             </div>
           </div>
-          <div class="marquee" id="marquee"><span>재생기를 준비하는 중…</span></div>
-          <div class="viz" id="viz" aria-hidden="true"></div>
+          <div class="scroll" id="scroll"><span>홀을 준비하는 중…</span></div>
+          <div class="flames" id="flames" aria-hidden="true"></div>
         </div>
 
-        <!-- 턴테이블 -->
-        <div class="decks">
-          <div class="deck" id="deck-a">
-            <span class="deck-tag">DECK A</span>
-            <div class="platter"><div class="label"><span>—</span><i class="spindle"></i></div></div>
-            <svg class="tonearm" viewBox="0 0 100 100" aria-hidden="true">
-              <line class="arm" x1="88" y1="12" x2="30" y2="74"/>
-              <circle class="pivot" cx="88" cy="12" r="8"/>
-              <rect class="head" x="20" y="68" width="16" height="9" rx="2" transform="rotate(-47 28 72)"/>
-            </svg>
+        <div class="hearth-row">
+          <div class="hearth" id="hearth" role="button" tabindex="0"
+               aria-label="화로. 눌러서 불씨를 튀겨 봅니다.">
+            <span class="hearth-tag" id="hearth-tag">잉걸</span>
+            <div class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <div class="fire" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="logs" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="roast" id="roast" aria-hidden="true"></div>
+            <span class="hearth-dish" id="hearth-dish">빈 화로</span>
           </div>
-          <div class="deck" id="deck-b">
-            <span class="deck-tag">DECK B</span>
-            <div class="platter"><div class="label"><span>—</span><i class="spindle"></i></div></div>
-            <svg class="tonearm" viewBox="0 0 100 100" aria-hidden="true">
-              <line class="arm" x1="88" y1="12" x2="30" y2="74"/>
-              <circle class="pivot" cx="88" cy="12" r="8"/>
-              <rect class="head" x="20" y="68" width="16" height="9" rx="2" transform="rotate(-47 28 72)"/>
-            </svg>
+
+          <div class="lectern">
+            <div class="parchment" id="parchment">
+              <span class="scene-name" id="pc-scene">—</span>
+              <p class="song" id="pc-song">아직 아무것도 부르지 않았습니다</p>
+              <span class="by" id="pc-by"></span>
+              <div class="meta" id="pc-meta"></div>
+            </div>
           </div>
         </div>
 
-        <div class="transport">
-          <button class="tbtn" id="btn-prev"  title="이전 곡"   aria-label="이전 곡">|◀◀</button>
-          <button class="tbtn wide" id="btn-play" title="재생/일시정지" aria-label="재생">▶</button>
-          <button class="tbtn" id="btn-stop"  title="정지"      aria-label="정지">■</button>
-          <button class="tbtn" id="btn-next"  title="다음 곡"   aria-label="다음 곡">▶▶|</button>
-          <button class="tbtn" id="btn-shuffle" title="셔플" aria-label="셔플" aria-pressed="false">⤨</button>
-          <button class="tbtn" id="btn-repeat"  title="반복" aria-label="반복" aria-pressed="true">↺</button>
+        <div class="controls">
+          <button class="tbtn" id="btn-prev"  title="앞 곡"   aria-label="앞 곡">◀◀</button>
+          <button class="tbtn wide" id="btn-play" title="부르기/멈추기" aria-label="부르기">▶</button>
+          <button class="tbtn" id="btn-stop"  title="그만"    aria-label="그만">■</button>
+          <button class="tbtn" id="btn-next"  title="다음 곡" aria-label="다음 곡">▶▶</button>
+          <button class="tbtn" id="btn-shuffle" title="순서 섞기" aria-label="순서 섞기" aria-pressed="false">⤨</button>
+          <button class="tbtn" id="btn-repeat"  title="되풀이"   aria-label="되풀이" aria-pressed="true">↺</button>
         </div>
 
-        <div class="sliders">
-          <label class="slider-wrap">VOL
-            <input type="range" id="vol" min="0" max="100" value="45" aria-label="볼륨">
+        <div class="dials">
+          <label class="dial">소리
+            <input type="range" id="vol" min="0" max="100" value="45" aria-label="소리 크기">
             <span id="vol-num" class="vol-num">45</span>
           </label>
-          <label class="slider-wrap">SEEK
+          <label class="dial">자리
             <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
           </label>
-          <button class="tbtn awake" id="btn-wakelock" type="button" aria-pressed="false"
-                  title="재생 중 화면이 꺼지지 않게 합니다. 휴대폰에서 화면이 꺼지면 소리가 멈추기 때문입니다.">
-            화면 켜둠 <span id="wake-state">OFF</span>
+          <button class="tbtn" id="btn-wakelock" type="button" aria-pressed="false"
+                  title="부르는 동안 화면이 꺼지지 않게 합니다. 휴대폰에서 화면이 꺼지면 소리가 멎기 때문입니다.">
+            등불 <span id="wake-state">꺼짐</span>
           </button>
         </div>
+
         <p class="mobile-note" id="mobile-note" hidden>
-          휴대폰에서는 <strong>다른 앱으로 넘어가면 소리가 멈춥니다.</strong>
-          YouTube가 백그라운드 재생을 Premium 기능으로 막아둔 것이라 우회할 수 없어요.
-          화면이 꺼져서 멈추는 것만은 위의 <strong>화면 켜둠</strong>으로 막을 수 있습니다.
-          <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/SECURITY.md#휴대폰-백그라운드-재생" target="_blank" rel="noopener">자세히 ↗</a>
+          휴대폰에서는 <strong>다른 앱으로 넘어가면 노래가 멎습니다.</strong>
+          YouTube가 백그라운드 재생을 Premium 기능으로 막아 둔 탓이라 우회할 수 없습니다.
+          화면이 꺼져서 멎는 것만은 위의 <strong>등불</strong>로 막을 수 있습니다.
+          <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/SECURITY.md" target="_blank" rel="noopener">자세히 ↗</a>
         </p>
 
       </div>
     </section>
 
-    <!-- 플레이리스트 창 -->
-    <section class="win" aria-label="재생목록">
-      <div class="win-bar">
-        <span>PLAYLIST</span>
-        <span class="grip" aria-hidden="true"></span>
-        <button class="win-btn" id="btn-reshuffle" title="순서 섞기">⤨</button>
+    <!-- 곡목 두루마리 -->
+    <section class="board" aria-label="곡목">
+      <div class="board-head">
+        <span>곡 목</span>
+        <span class="rope" aria-hidden="true"></span>
+        <button class="board-btn" id="btn-reshuffle" title="순서 섞기">⤨</button>
       </div>
-      <div class="win-body">
-        <div class="pl-list" id="pl-list" role="listbox" aria-label="재생목록" tabindex="0"></div>
-        <div class="pl-foot">
-          <span id="pl-count">0곡</span>
-          <span id="pl-desc"></span>
+      <div class="board-body">
+        <div class="songlist" id="songlist" role="listbox" aria-label="곡목" tabindex="0"></div>
+        <div class="list-foot">
+          <span id="list-count">0곡</span>
+          <span id="list-desc"></span>
         </div>
       </div>
     </section>
 
-    <!-- 장면 브라우저 -->
-    <section class="win" aria-label="장면 고르기">
-      <div class="win-bar">
-        <span>SCENES</span>
-        <span class="grip" aria-hidden="true"></span>
-        <button class="win-btn" id="btn-scenes-toggle" aria-expanded="false"
-                aria-controls="scene-browser" title="펼치기/접기">▼</button>
+    <!-- 장면 서랍 -->
+    <section class="board" aria-label="장면 고르기">
+      <div class="board-head">
+        <span>장 면 서 랍</span>
+        <span class="rope" aria-hidden="true"></span>
+        <button class="board-btn" id="btn-scenes-toggle" aria-expanded="false"
+                aria-controls="scene-browser" title="열기/닫기">▼</button>
       </div>
-      <div class="win-body">
+      <div class="board-body">
         <p class="scene-intro">
-          34개 장면에서 직접 고르세요. 질답이 닿지 않는 전투·징글 계열도 여기 있습니다.
+          서른네 장면에서 직접 고르십시오. 문답이 닿지 않는 전투·징표 계열도 여기 있습니다.
           <label class="scene-multi">
-            <input type="checkbox" id="scene-multi"> 여러 개 골라 합치기
+            <input type="checkbox" id="scene-multi"> 여럿 골라 합치기
           </label>
         </p>
         <div id="scene-browser" class="scene-browser" hidden></div>
         <div class="scene-actions" id="scene-actions" hidden>
-          <button class="tbtn" id="btn-scene-play" type="button">고른 장면 재생</button>
-          <button class="tbtn" id="btn-scene-clear" type="button">선택 해제</button>
-          <span class="scene-picked" id="scene-picked">0개 선택</span>
+          <button class="tbtn" id="btn-scene-play" type="button">고른 장면 부르기</button>
+          <button class="tbtn" id="btn-scene-clear" type="button">고른 것 물리기</button>
+          <span class="scene-picked" id="scene-picked">0개 골랐음</span>
         </div>
       </div>
     </section>
 
-    <!-- 곡 정보 -->
-    <section class="win" aria-label="곡 정보">
-      <div class="win-bar"><span>TRACK INFO</span><span class="grip" aria-hidden="true"></span></div>
-      <div class="win-body info" id="info">
-        <p class="empty">재생을 시작하면 곡 정보와 라이선스가 표시됩니다.</p>
+    <!-- 곡 내력 -->
+    <section class="board" aria-label="곡 내력">
+      <div class="board-head"><span>곡 내 력</span><span class="rope" aria-hidden="true"></span></div>
+      <div class="board-body ledger" id="ledger">
+        <p class="empty">한 곡 부르기 시작하면 내력과 이용 허락이 여기 적힙니다.</p>
       </div>
     </section>
 
   </main>
 
-  <!-- ===== 우측: DJ 부스 ===== -->
-  <aside class="booth">
+  <!-- ===== 무대 ===== -->
+  <aside class="stage-side">
 
-    <section class="win" aria-label="DJ">
-      <div class="win-bar"><span>DJ BOOTH</span><span class="grip" aria-hidden="true"></span></div>
-      <div class="win-body">
-        <div class="dj-stage" id="dj-stage" data-state="idle"></div>
-        <div class="bubble" id="bubble" role="status" aria-live="polite">
-          <span class="who" id="dj-name">NOISE</span>
-          <span id="bubble-text">불러오는 중…</span>
+    <section class="board" aria-label="음유시인">
+      <div class="board-head"><span>무 대</span><span class="rope" aria-hidden="true"></span></div>
+      <div class="board-body">
+        <div class="bard-stage" id="bard-stage" data-state="idle"
+             role="button" tabindex="0" aria-label="음유시인에게 말을 건다"></div>
+        <div class="note" id="note">
+          <span class="who" id="bard-name">음유시인</span>
+          <span id="note-text">홀을 여는 중…</span>
         </div>
-        <div class="qa" id="qa"></div>
-        <div class="qa-progress" id="qa-progress" aria-hidden="true"></div>
+        <div class="ask" id="ask"></div>
+        <div class="ask-beads" id="ask-beads" aria-hidden="true"></div>
       </div>
     </section>
 
-    <section class="win" aria-label="스킨">
-      <div class="win-bar"><span>SKINS</span><span class="grip" aria-hidden="true"></span></div>
-      <div class="win-body">
-        <div class="skin-grid" id="skin-grid"></div>
-        <label class="skin-lock">
-          <input type="checkbox" id="skin-lock">
-          <span>스킨 고정 (끄면 곡 분위기에 맞춰 자동 변경)</span>
+    <section class="board" aria-label="머물 곳">
+      <div class="board-head"><span>머 물 곳</span><span class="rope" aria-hidden="true"></span></div>
+      <div class="board-body">
+        <div class="hall-grid" id="hall-grid"></div>
+        <label class="hall-lock">
+          <input type="checkbox" id="hall-lock">
+          <span>이 자리에 머물기 (풀면 곡 분위기 따라 옮겨 다님)</span>
         </label>
+      </div>
+    </section>
+
+    <section class="board" aria-label="손님 명부">
+      <div class="board-head">
+        <span>손 님 명 부</span>
+        <span class="rope" aria-hidden="true"></span>
+        <button class="board-btn" id="btn-ledger-toggle" aria-expanded="false"
+                aria-controls="secret-list" title="열기/닫기">▼</button>
+      </div>
+      <div class="board-body">
+        <p class="secret-count" id="secret-count">— / —</p>
+        <div class="ledger-secrets" id="secret-list" hidden></div>
       </div>
     </section>
 
   </aside>
 
   <footer class="credits">
-    <h2>CREDITS &amp; LICENSE</h2>
+    <h2>이 용 허 락</h2>
     <p>
-      이 재생기가 트는 모든 곡은 무료 라이선스 음원입니다. CC BY 계열은 <strong>출처 표기가 라이선스 조건</strong>이므로,
-      재생 중 곡의 아티스트명과 라이선스가 항상 화면에 표시됩니다.
-      <strong>Vindsvept</strong>와 <strong>Derek &amp; Brandon Fiechter</strong>는 비상업 조건이므로 수익화된 환경에서는 사용하지 마세요.
+      이 홀에서 부르는 모든 곡은 무료 라이선스 음원입니다. CC BY 계열은 <strong>출처 표기가 이용 조건</strong>이므로,
+      부르는 동안 곡의 아티스트명과 라이선스를 항상 적어 둡니다.
+      <strong>Vindsvept</strong>와 <strong>Derek &amp; Brandon Fiechter</strong>는 비상업 조건이니 수익이 나는 자리에서는 쓰지 마십시오.
     </p>
     <p id="credit-list"></p>
     <p>
-      데이터 수집·분류 방법은 <a href="https://github.com/progh2/rpg-bgm-dj" target="_blank" rel="noopener">저장소 ↗</a>에 정리되어 있습니다.
-      YouTube의 “크리에이티브 커먼즈” 검색 필터 결과는 업로더 오표기(저작권 음원)가 확인되어 의도적으로 제외했습니다.
+      모으고 가려낸 방법은 <a href="https://github.com/progh2/rpg-bgm-dj" target="_blank" rel="noopener">저장소 ↗</a>에 적어 두었습니다.
+      YouTube의 “크리에이티브 커먼즈” 검색 결과는 올린 이가 잘못 표시한 저작권 음원이 섞여 있어 일부러 뺐습니다.
     </p>
   </footer>
 

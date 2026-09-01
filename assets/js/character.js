@@ -1,171 +1,135 @@
-// character.js — 치비 DJ 캐릭터 (issue #3)
-// 순수 SVG. 색은 CSS 커스텀 프로퍼티를 참조하므로 스킨/무드에 따라 함께 변한다.
-// 상태: idle | talk | dig | groove
+// character.js — 무대에 선 바드.
+//
+// ┌──────────────────────────────────────────────────────────────────────────┐
+// │ 나중에 그림으로 갈아 끼울 자리.                                          │
+// │                                                                          │
+// │ 지금은 SVG 로 그려 두었다. 외부 그림(제미나이 등)으로 바꾸려면            │
+// │ bardArt() 가 돌려주는 내용만 <img> 나 <picture> 로 바꾸면 된다.           │
+// │ 나머지 코드는 아래 규칙만 지키면 그대로 돌아간다.                        │
+// │                                                                          │
+// │   · 바깥 요소에 data-state 가 붙는다: idle | talk | dig | play           │
+// │   · 색은 CSS 변수(--accent 계열)를 따르게 해 두면 장소·분위기와 함께 변한다│
+// │   · 그림으로 바꾸면 상태별 파일을 두고 CSS 로 바꿔 끼우는 편이 간단하다   │
+// └──────────────────────────────────────────────────────────────────────────┘
 
-export const DJ_NAME = '노이즈';
+export const BARD_NAME = '음유시인 라온';
+export const BARD_SHORT = '라온';
 
-const INK = '#221a2e';
+const INK = '#241a12';
 
-export function djSvg() {
+export function bardArt() {
   return `
-<svg class="dj-art" viewBox="0 0 240 250" role="img" aria-label="치비 DJ 캐릭터 ${DJ_NAME}">
+<svg class="bard-art" viewBox="0 0 240 260" role="img" aria-label="무대에 선 ${BARD_NAME}">
   <defs>
-    <radialGradient id="djGlow" cx="50%" cy="40%" r="60%">
-      <stop offset="0%"   stop-color="var(--accent-glow)" stop-opacity=".5"/>
-      <stop offset="65%"  stop-color="var(--accent)"      stop-opacity=".14"/>
+    <radialGradient id="bdGlow" cx="50%" cy="42%" r="60%">
+      <stop offset="0%"   stop-color="var(--accent-glow)" stop-opacity=".45"/>
+      <stop offset="62%"  stop-color="var(--accent)"      stop-opacity=".13"/>
       <stop offset="100%" stop-color="var(--accent)"      stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="djHair" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="bdHair" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--accent-glow)"/>
       <stop offset="58%"  stop-color="var(--accent)"/>
-      <stop offset="100%" stop-color="var(--record)"/>
+      <stop offset="100%" stop-color="var(--ember)"/>
     </linearGradient>
-    <linearGradient id="djHood" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="var(--chrome-light)"/>
-      <stop offset="100%" stop-color="var(--chrome)"/>
+    <linearGradient id="bdCloak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--wood-light)"/>
+      <stop offset="100%" stop-color="var(--wood-dark)"/>
     </linearGradient>
-    <linearGradient id="djDeck" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="var(--chrome-face)"/>
-      <stop offset="100%" stop-color="var(--chrome-dark)"/>
+    <linearGradient id="bdLute" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="var(--wood-light)"/>
+      <stop offset="100%" stop-color="var(--wood)"/>
     </linearGradient>
   </defs>
 
-  <ellipse class="dj-glow" cx="120" cy="104" rx="104" ry="100" fill="url(#djGlow)"/>
+  <ellipse class="bd-glow" cx="120" cy="108" rx="102" ry="98" fill="url(#bdGlow)"/>
 
-  <!-- ================= 트윈테일 (얼굴 뒤, 좌우로 확실히 벌어지게) ================= -->
-  <g class="dj-tail dj-tail-l">
-    <path d="M62 74c-20 4-34 24-38 50-4 26 2 50 12 66 4 7 14 6 15-2 2-16-2-32-2-48 0-18 6-34 17-46 6-7 4-21-4-20z"
-          fill="url(#djHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <circle cx="64" cy="76" r="12" fill="var(--chrome-face)" stroke="${INK}" stroke-width="3.2"/>
-    <circle cx="64" cy="76" r="4.5" fill="var(--accent-glow)"/>
-  </g>
-  <g class="dj-tail dj-tail-r">
-    <path d="M178 74c20 4 34 24 38 50 4 26-2 50-12 66-4 7-14 6-15-2-2-16 2-32 2-48 0-18-6-34-17-46-6-7-4-21 4-20z"
-          fill="url(#djHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <circle cx="176" cy="76" r="12" fill="var(--chrome-face)" stroke="${INK}" stroke-width="3.2"/>
-    <circle cx="176" cy="76" r="4.5" fill="var(--accent-glow)"/>
+  <!-- 깃털 꽂은 모자 -->
+  <g class="bd-hat">
+    <path d="M60 74c8-24 30-38 60-38s52 14 60 38c-12-6-30-10-60-10s-48 4-60 10z"
+          fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <ellipse cx="120" cy="76" rx="66" ry="12" fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4"/>
+    <path class="bd-feather" d="M172 52c14-12 28-14 34-8 5 5-2 16-14 24-9 6-18 8-22 6z"
+          fill="var(--accent)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
   </g>
 
-  <!-- ================= 목 (머리와 몸을 잇는다 — 없으면 머리가 떠 보인다) ================= -->
-  <g class="dj-neck">
-    <path d="M106 118v29c0 9 28 9 28 0v-29z" fill="#f0cdb9" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <!-- 턱이 드리우는 그늘 -->
-    <path d="M106 118v14c5 6 23 6 28 0v-14z" fill="${INK}" opacity=".26"/>
+  <!-- 머리카락 -->
+  <path d="M70 84c0 30 4 44 10 54h80c6-10 10-24 10-54-12 8-30 12-50 12s-38-4-50-12z"
+        fill="url(#bdHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+
+  <!-- 목 -->
+  <g class="bd-neck">
+    <path d="M107 128v24c0 8 26 8 26 0v-24z" fill="#e8c4a4" stroke="${INK}" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M107 128v12c5 5 21 5 26 0v-12z" fill="${INK}" opacity=".24"/>
   </g>
 
-  <!-- ================= 몸통 ================= -->
-  <g class="dj-body">
-    <!-- 후디 — 어깨를 목 아래까지 끌어올려 빈 구간을 없앤다 -->
-    <path d="M120 150c-34 0-56 15-62 36-3 10-4 20-4 28h132c0-8-1-18-4-28-6-21-28-36-62-36z"
-          fill="url(#djHood)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <!-- 후디 깃 — 목을 감싼다 -->
-    <path d="M104 152c4 8 10 12 16 12s12-4 16-12c6 2 10 5 12 8-6 9-16 15-28 15s-22-6-28-15c2-3 6-6 12-8z"
-          fill="var(--chrome-dark)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
-    <!-- 깃 안쪽 그늘 -->
-    <path d="M108 154c4 7 8 10 12 10s8-3 12-10c-3 8-7 12-12 12s-9-4-12-12z" fill="${INK}" opacity=".5"/>
-    <!-- 후디 끈 -->
-    <path d="M110 176c-2 12-2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-    <path d="M130 176c2 12 2 20 0 27" stroke="var(--accent-glow)" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-    <!-- 소매 / 손 (턴테이블 위에) -->
-    <g class="dj-hand dj-hand-l">
-      <path d="M62 202c-8 4-11 12-9 19l20-6-3-14z" fill="url(#djHood)" stroke="${INK}" stroke-width="3"/>
-      <circle cx="58" cy="222" r="9" fill="#f7dccd" stroke="${INK}" stroke-width="3"/>
-    </g>
-    <g class="dj-hand dj-hand-r">
-      <path d="M178 202c8 4 11 12 9 19l-20-6 3-14z" fill="url(#djHood)" stroke="${INK}" stroke-width="3"/>
-      <circle cx="182" cy="222" r="9" fill="#f7dccd" stroke="${INK}" stroke-width="3"/>
-    </g>
+  <!-- 몸 / 여행자 외투 -->
+  <g class="bd-body">
+    <path d="M120 152c-32 0-54 15-60 36-3 10-4 20-4 28h128c0-8-1-18-4-28-6-21-28-36-60-36z"
+          fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <!-- 어깨 망토 -->
+    <path d="M92 156c-10 5-16 14-18 24 10-6 20-9 30-10zM148 156c10 5 16 14 18 24-10-6-20-9-30-10z"
+          fill="var(--accent)" stroke="${INK}" stroke-width="3" stroke-linejoin="round" opacity=".9"/>
+    <!-- 여밈 -->
+    <circle cx="120" cy="168" r="6" fill="var(--metal)" stroke="${INK}" stroke-width="2.6"/>
+    <path d="M120 176v34" stroke="${INK}" stroke-width="2.6" opacity=".45"/>
   </g>
 
-  <!-- ================= 머리 ================= -->
-  <g class="dj-head">
-    <!-- 뒷머리 실루엣 -->
-    <path d="M120 20c-42 0-66 28-66 66 0 20 5 34 11 44h110c6-10 11-24 11-44 0-38-24-66-66-66z"
-          fill="url(#djHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <!-- 얼굴 -->
-    <ellipse cx="120" cy="98" rx="50" ry="47" fill="#fae3d4" stroke="${INK}" stroke-width="3.4"/>
-    <!-- 앞머리: 갈래진 뱅 -->
-    <path d="M70 90c0-34 22-58 50-58s50 24 50 58c-4-14-12-24-20-27-5 8-11 12-16 12-4 0-8-3-11-9-5 9-13 15-21 15-12 0-24 4-32 9z"
-          fill="url(#djHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <!-- 옆머리 -->
-    <path d="M70 88c-5 12-6 28-4 42 4-10 8-18 12-24z" fill="url(#djHair)" stroke="${INK}" stroke-width="3"/>
-    <path d="M170 88c5 12 6 28 4 42-4-10-8-18-12-24z" fill="url(#djHair)" stroke="${INK}" stroke-width="3"/>
-
-    <!-- 볼 -->
-    <ellipse class="dj-blush" cx="90"  cy="112" rx="11" ry="6.5" fill="#f19aa6" opacity=".6"/>
-    <ellipse class="dj-blush" cx="150" cy="112" rx="11" ry="6.5" fill="#f19aa6" opacity=".6"/>
-
-    <!-- 눈 (치비: 크고 반짝) -->
-    <g class="dj-eyes">
-      <ellipse cx="99"  cy="102" rx="11" ry="13.5" fill="${INK}"/>
-      <ellipse cx="141" cy="102" rx="11" ry="13.5" fill="${INK}"/>
-      <ellipse cx="99"  cy="105" rx="8"  ry="9.5"  fill="var(--accent)"/>
-      <ellipse cx="141" cy="105" rx="8"  ry="9.5"  fill="var(--accent)"/>
-      <circle cx="102.5" cy="97"  r="4.2" fill="#fff"/>
-      <circle cx="144.5" cy="97"  r="4.2" fill="#fff"/>
-      <circle cx="95"    cy="108" r="2.2" fill="#fff" opacity=".85"/>
-      <circle cx="137"   cy="108" r="2.2" fill="#fff" opacity=".85"/>
+  <!-- 얼굴 -->
+  <g class="bd-head">
+    <ellipse cx="120" cy="104" rx="46" ry="43" fill="#f7dcc4" stroke="${INK}" stroke-width="3.4"/>
+    <!-- 앞머리 -->
+    <path d="M76 96c0-28 20-46 44-46s44 18 44 46c-6-12-14-19-22-20-5 7-11 10-16 10-5 0-10-4-13-11-8 8-24 14-37 21z"
+          fill="url(#bdHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <ellipse class="bd-blush" cx="93"  cy="116" rx="10" ry="6" fill="#e08a86" opacity=".5"/>
+    <ellipse class="bd-blush" cx="147" cy="116" rx="10" ry="6" fill="#e08a86" opacity=".5"/>
+    <g class="bd-eyes">
+      <ellipse cx="101" cy="106" rx="9"  ry="11" fill="${INK}"/>
+      <ellipse cx="139" cy="106" rx="9"  ry="11" fill="${INK}"/>
+      <ellipse cx="101" cy="108" rx="6.4" ry="8" fill="var(--accent)"/>
+      <ellipse cx="139" cy="108" rx="6.4" ry="8" fill="var(--accent)"/>
+      <circle cx="104" cy="102" r="3.4" fill="#fff"/>
+      <circle cx="142" cy="102" r="3.4" fill="#fff"/>
     </g>
-    <!-- 감은 눈 (dig 상태) -->
-    <g class="dj-eyes-closed">
-      <path d="M88 103q11 -11 22 0"  stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <path d="M130 103q11 -11 22 0" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <g class="bd-eyes-closed">
+      <path d="M92 106q9 -9 18 0"  stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+      <path d="M130 106q9 -9 18 0" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>
     </g>
-    <!-- 눈썹 -->
-    <path d="M89 84q10 -6 20 -1"  stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/>
-    <path d="M131 83q10 -5 20 1" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/>
-    <!-- 입 -->
-    <path class="dj-mouth" d="M113 124q7 7 14 0" stroke="#9c5a63" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M92 88q9 -5 18 -1"  stroke="${INK}" stroke-width="2.8" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path d="M130 87q9 -4 18 1"  stroke="${INK}" stroke-width="2.8" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path class="bd-mouth" d="M113 126q7 7 14 0" stroke="#9c5a52" stroke-width="3.2" fill="none" stroke-linecap="round"/>
   </g>
 
-  <!-- ================= 헤드폰 ================= -->
-  <g class="dj-phones">
-    <path d="M66 92a54 52 0 0 1 108 0" stroke="${INK}" stroke-width="11" fill="none" stroke-linecap="round"/>
-    <path d="M66 90a54 52 0 0 1 108 0" stroke="var(--chrome-light)" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <g class="dj-cup dj-cup-l">
-      <rect x="50" y="82" width="28" height="42" rx="13" fill="var(--chrome-face)" stroke="${INK}" stroke-width="3.4"/>
-      <rect class="pad" x="57" y="90" width="14" height="26" rx="7" fill="var(--accent)"/>
+  <!-- 류트 -->
+  <g class="bd-lute">
+    <!-- 울림통 -->
+    <ellipse cx="150" cy="206" rx="40" ry="32" fill="url(#bdLute)" stroke="${INK}" stroke-width="3.4"/>
+    <ellipse cx="150" cy="206" rx="11" ry="9" fill="var(--wood-dark)" stroke="${INK}" stroke-width="2.6"/>
+    <!-- 목대 -->
+    <path d="M116 190 66 152l10-13 50 38z" fill="url(#bdLute)" stroke="${INK}" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M66 152l-12-9 8-11 13 8z" fill="var(--wood-dark)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <!-- 줄 -->
+    <g class="bd-strings">
+      <path d="M70 154l104 62" stroke="var(--metal)" stroke-width="1.4" opacity=".85"/>
+      <path d="M74 149l104 62" stroke="var(--metal)" stroke-width="1.4" opacity=".85"/>
+      <path d="M78 144l104 62" stroke="var(--metal)" stroke-width="1.4" opacity=".85"/>
     </g>
-    <g class="dj-cup dj-cup-r">
-      <rect x="162" y="82" width="28" height="42" rx="13" fill="var(--chrome-face)" stroke="${INK}" stroke-width="3.4"/>
-      <rect class="pad" x="169" y="90" width="14" height="26" rx="7" fill="var(--accent)"/>
+    <!-- 줄 뜯는 손 -->
+    <g class="bd-hand">
+      <circle cx="150" cy="222" r="10" fill="#f7dcc4" stroke="${INK}" stroke-width="3"/>
     </g>
   </g>
 
-  <!-- ================= DJ 부스 (앞) ================= -->
-  <g class="dj-desk">
-    <rect x="30" y="222" width="180" height="28" rx="4" fill="url(#djDeck)" stroke="${INK}" stroke-width="3.4"/>
-    <!-- 미니 턴테이블 -->
-    <circle class="dj-mini-disc" cx="66" cy="236" r="10" fill="${INK}" stroke="var(--chrome-light)" stroke-width="2"/>
-    <circle cx="66" cy="236" r="3.4" fill="var(--accent)"/>
-    <circle class="dj-mini-disc" cx="174" cy="236" r="10" fill="${INK}" stroke="var(--chrome-light)" stroke-width="2"/>
-    <circle cx="174" cy="236" r="3.4" fill="var(--accent)"/>
-    <!-- 페이더 -->
-    <rect x="104" y="231" width="32" height="5" rx="2.5" fill="${INK}"/>
-    <rect class="dj-fader" x="116" y="228" width="8" height="11" rx="2" fill="var(--accent-glow)" stroke="${INK}" stroke-width="2"/>
-    <!-- 레벨 미터 -->
-    <g class="dj-meter">
-      <rect x="96" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="102" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="108" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="114" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="120" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="126" y="242" width="4" height="4" fill="var(--accent)"/>
-      <rect x="132" y="242" width="4" height="4" fill="var(--accent)"/>
-    </g>
-  </g>
-
-  <!-- ================= 음표 (groove) ================= -->
-  <g class="dj-notes" aria-hidden="true">
-    <g class="dj-note dj-note-1"><path d="M0 0v-15l9-2v15" stroke="var(--accent-glow)" stroke-width="2.6" fill="none"/><ellipse cx="-3" cy="0" rx="4.4" ry="3.3" fill="var(--accent-glow)"/></g>
-    <g class="dj-note dj-note-2"><path d="M0 0v-13l8-2v13" stroke="var(--accent)"      stroke-width="2.6" fill="none"/><ellipse cx="-2.7" cy="0" rx="4" ry="3" fill="var(--accent)"/></g>
-    <g class="dj-note dj-note-3"><path d="M0 0v-17l10-2v17" stroke="var(--accent-glow)" stroke-width="2.6" fill="none"/><ellipse cx="-3.2" cy="0" rx="4.6" ry="3.5" fill="var(--accent-glow)"/></g>
+  <!-- 노랫가락 (연주 중에만) -->
+  <g class="bd-notes" aria-hidden="true">
+    <g class="bd-note bd-note-1"><path d="M0 0v-15l9-2v15" stroke="var(--accent-glow)" stroke-width="2.6" fill="none"/><ellipse cx="-3" cy="0" rx="4.4" ry="3.3" fill="var(--accent-glow)"/></g>
+    <g class="bd-note bd-note-2"><path d="M0 0v-13l8-2v13" stroke="var(--accent)"      stroke-width="2.6" fill="none"/><ellipse cx="-2.7" cy="0" rx="4" ry="3" fill="var(--accent)"/></g>
+    <g class="bd-note bd-note-3"><path d="M0 0v-17l10-2v17" stroke="var(--accent-glow)" stroke-width="2.6" fill="none"/><ellipse cx="-3.2" cy="0" rx="4.6" ry="3.5" fill="var(--accent-glow)"/></g>
   </g>
 </svg>`;
 }
 
-/** 캐릭터 상태를 바꾼다. state: idle | talk | dig | groove */
-export function setDjState(root, state) {
+/** 바드의 상태를 바꾼다. state: idle | talk | dig | play */
+export function setBardState(root, state) {
   if (!root) return;
   root.dataset.state = state;
 }

@@ -15,18 +15,18 @@ body.doc::after { opacity: .16; }
 }
 
 .doc-wrap h1 {
-  font: 700 24px/1.4 var(--font-lcd);
+  font: 700 24px/1.4 var(--font-display);
   letter-spacing: .06em;
   color: var(--accent);
   margin: 0 0 6px;
 }
 .doc-wrap h2 {
-  font: 700 15px/1.5 var(--font-lcd);
+  font: 700 15px/1.5 var(--font-display);
   letter-spacing: .04em;
   color: var(--accent);
   margin: 34px 0 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--chrome);
+  border-bottom: 1px solid var(--wood);
 }
 .doc-wrap h3 {
   font-size: 14px;
@@ -39,10 +39,10 @@ body.doc::after { opacity: .16; }
 .doc-wrap li { margin-bottom: 5px; }
 .doc-wrap a { color: var(--accent); }
 .doc-wrap code {
-  background: var(--lcd-bg);
-  color: var(--lcd-ink);
+  background: var(--sign-bg);
+  color: var(--sign-ink);
   padding: 1px 6px;
-  font-family: var(--font-lcd);
+  font-family: var(--font-display);
   font-size: 12.5px;
 }
 .doc-wrap strong { color: var(--accent-glow); }
@@ -50,8 +50,8 @@ body.doc::after { opacity: .16; }
 .doc-meta { color: var(--text-dim); font-size: 12.5px; margin: 0 0 24px; }
 
 .doc-callout {
-  background: var(--chrome);
-  box-shadow: var(--bevel-out);
+  background: var(--wood);
+  box-shadow: var(--edge-out);
   border-left: 4px solid var(--accent);
   padding: 14px 18px;
   margin: 22px 0 28px;
@@ -63,18 +63,18 @@ body.doc::after { opacity: .16; }
   border-collapse: collapse;
   margin: 12px 0;
   font-size: 13px;
-  background: var(--chrome);
-  box-shadow: var(--bevel-out);
+  background: var(--wood);
+  box-shadow: var(--edge-out);
 }
 .doc-table th, .doc-table td {
   padding: 9px 11px;
   text-align: left;
-  border-bottom: 1px solid var(--chrome-dark);
+  border-bottom: 1px solid var(--wood-dark);
   vertical-align: top;
 }
 .doc-table th {
-  background: var(--chrome-face);
-  font: 700 11px/1.5 var(--font-lcd);
+  background: var(--wood);
+  font: 700 11px/1.5 var(--font-display);
   letter-spacing: .06em;
 }
 .doc-table tr:last-child td { border-bottom: 0; }
@@ -82,15 +82,15 @@ body.doc::after { opacity: .16; }
 .doc-back { margin: 26px 0; }
 .doc-back a {
   display: inline-block;
-  background: var(--chrome-face);
-  box-shadow: var(--bevel-out);
+  background: var(--wood);
+  box-shadow: var(--edge-out);
   padding: 8px 14px;
   color: var(--text);
   text-decoration: none;
   font-size: 13px;
 }
 .doc-back a:hover { color: var(--accent); }
-.doc-back a:active { box-shadow: var(--bevel-in); }
+.doc-back a:active { box-shadow: var(--edge-in); }
 
 @media (max-width: 560px) {
   .doc-wrap { padding: 20px 14px 60px; }
