@@ -7,6 +7,14 @@ import { QUESTIONS, buildFromAnswers, DEFAULT_ANSWERS, pickChatter } from './dj.
 import { djSvg, setDjState, DJ_NAME } from './character.js';
 import { icon } from './icons.js';
 
+/* 클릭재킹 방어.
+   CSP frame-ancestors 는 <meta> 로 전달하면 브라우저가 무시하고, GitHub Pages 는
+   X-Frame-Options 응답 헤더를 설정할 수 없다. 그래서 스크립트로 프레임에서 빠져나온다. */
+if (window.top !== window.self) {
+  try { window.top.location = window.self.location; }
+  catch { document.documentElement.innerHTML = '<p style="font:14px sans-serif;padding:2rem">이 페이지는 다른 사이트 안에 표시할 수 없습니다.</p>'; }
+}
+
 const $ = (id) => document.getElementById(id);
 const SCENE_NAME = Object.fromEntries(SCENES.map((s) => [s.id, s.name]));
 const SCENE_CAT = Object.fromEntries(SCENES.map((s) => [s.id, s.category]));
@@ -56,11 +64,12 @@ function buildSkinPicker() {
     b.dataset.skin = id;
     b.title = skin.note;
     b.setAttribute('aria-pressed', String(id === state.skin.id));
-    b.innerHTML = `<span class="swatch">
-        <i style="background:${skin.vars['--chrome-face']}"></i>
-        <i style="background:${skin.vars['--lcd-ink']}"></i>
-        <i style="background:${skin.vars['--chrome-dark']}"></i>
-      </span>${skin.label}`;
+    // 인라인 style 대신 CSS 변수를 세팅해 CSP style-src 'self' 를 유지한다
+    b.innerHTML = `<span class="swatch"><i></i><i></i><i></i></span>${skin.label}`;
+    const sw = b.querySelectorAll('.swatch i');
+    sw[0].style.setProperty('--sw', skin.vars['--chrome-face']);
+    sw[1].style.setProperty('--sw', skin.vars['--lcd-ink']);
+    sw[2].style.setProperty('--sw', skin.vars['--chrome-dark']);
     b.addEventListener('click', () => {
       state.skin.id = id;
       state.skin.locked = true;
@@ -224,7 +233,7 @@ function renderInfo(t) {
     <dl>
       <dt>곡</dt><dd>${escapeHtml(t.title)}</dd>
       <dt>아티스트</dt><dd>${escapeHtml(t.artist)}</dd>
-      <dt>장면</dt><dd><span class="scene-chip">${escapeHtml(scene)}</span> <span style="color:var(--text-dim)">${escapeHtml(cat)}</span></dd>
+      <dt>장면</dt><dd><span class="scene-chip">${escapeHtml(scene)}</span> <span class="scene-cat">${escapeHtml(cat)}</span></dd>
       <dt>길이</dt><dd>${fmt(t.length)} · 집중도 ${t.focus}/5</dd>
       <dt>라이선스</dt><dd>${escapeHtml(t.license)}</dd>
       <dt>원곡</dt><dd><a href="https://www.youtube.com/watch?v=${t.videoId}" target="_blank" rel="noopener">YouTube에서 열기 ↗</a></dd>
@@ -353,6 +362,8 @@ function stepTime() {
 function initYt() {
   yt = new YT.Player('yt-player', {
     height: '1', width: '1',
+    // youtube-nocookie: 재생 전까지 추적 쿠키를 심지 않는 도메인
+    host: 'https://www.youtube-nocookie.com',
     playerVars: { autoplay: 0, controls: 0, disablekb: 1, playsinline: 1, origin: location.origin },
     events: {
       onReady: () => {

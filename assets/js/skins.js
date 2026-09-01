@@ -18,7 +18,7 @@ export const SKINS = {
       '--text':          '#f0f0f6',
       '--text-dim':      '#b0b0c2',
       '--page-bg':       '#3a3a49',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   crystal: {
@@ -36,7 +36,7 @@ export const SKINS = {
       '--text':          '#eaf7ff',
       '--text-dim':      '#a3c8dd',
       '--page-bg':       '#22475d',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   ember: {
@@ -54,7 +54,7 @@ export const SKINS = {
       '--text':          '#fceadf',
       '--text-dim':      '#cba694',
       '--page-bg':       '#452317',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   verdant: {
@@ -72,7 +72,7 @@ export const SKINS = {
       '--text':          '#eefae6',
       '--text-dim':      '#a9c4a0',
       '--page-bg':       '#2a4327',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   arcane: {
@@ -90,7 +90,7 @@ export const SKINS = {
       '--text':          '#f4ebff',
       '--text-dim':      '#bcaad6',
       '--page-bg':       '#372754',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   sepia: {
@@ -108,7 +108,7 @@ export const SKINS = {
       '--text':          '#fbf0dc',
       '--text-dim':      '#cbb896',
       '--page-bg':       '#45351d',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
   mono: {
@@ -126,7 +126,7 @@ export const SKINS = {
       '--text':          '#f2f2f2',
       '--text-dim':      '#b5b5b5',
       '--page-bg':       '#3a3a3a',
-      '--font-lcd':      '"DungGeunMo", "Courier New", monospace',
+      '--font-lcd':      '"Galmuri11", "Courier New", monospace',
     },
   },
 };

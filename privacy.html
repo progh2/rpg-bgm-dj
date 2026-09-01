@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개인정보처리방침 — RPG BGM DJ</title>
+<meta name="description" content="RPG BGM DJ 개인정보처리방침. 이 사이트는 개인정보를 직접 수집하지 않으며, YouTube 임베드로 발생하는 제3자 처리를 안내합니다.">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'none';
+  style-src 'self';
+  font-src 'self';
+  img-src 'self' data:;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="assets/css/player.css">
+<link rel="stylesheet" href="assets/css/doc.css">
+</head>
+<body class="doc">
+<main class="doc-wrap">
+
+  <p class="doc-back"><a href="./">← 재생기로 돌아가기</a></p>
+
+  <h1>개인정보처리방침</h1>
+  <p class="doc-meta">서비스명 <strong>RPG BGM DJ</strong> · 시행일 2026년 9월 1일</p>
+
+  <div class="doc-callout">
+    <p><strong>요약.</strong> 이 사이트는 회원가입도, 로그인도, 서버도 없습니다.
+    운영자는 이용자의 개인정보를 <strong>수집하지도 저장하지도 않습니다.</strong>
+    다만 음악 재생에 YouTube를 사용하므로, 재생 시 <strong>Google이 제3자로서 정보를 처리</strong>합니다.
+    이 점이 이 방침의 핵심입니다.</p>
+  </div>
+
+  <h2>1. 운영자가 수집하는 개인정보</h2>
+  <p><strong>없습니다.</strong> 이 사이트는 GitHub Pages에 올려둔 정적 웹페이지로, 운영자가 통제하는 서버·데이터베이스가 없습니다.
+  다음 중 어느 것도 하지 않습니다.</p>
+  <ul>
+    <li>회원가입·로그인·이름·이메일·연락처 수집</li>
+    <li>문의 양식, 댓글, 업로드 기능</li>
+    <li>자체 분석 도구(Google Analytics 등) 설치</li>
+    <li>광고 및 광고 식별자 사용</li>
+    <li>쿠키를 통한 이용자 식별</li>
+  </ul>
+
+  <h2>2. 이용자 기기에 저장되는 정보</h2>
+  <p>브라우저의 <code>localStorage</code>에 <strong>스킨 설정 한 가지</strong>만 저장합니다.</p>
+  <table class="doc-table">
+    <thead><tr><th>키</th><th>내용</th><th>목적</th><th>보관</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>rpgbgm.skin</code></td>
+        <td>선택한 스킨 이름과 고정 여부 (예: <code>{"id":"classic","locked":true}</code>)</td>
+        <td>다시 방문했을 때 같은 화면을 보여주기 위함</td>
+        <td>이용자가 브라우저 데이터를 지울 때까지</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>이 값은 <strong>이용자 기기 안에만 있고 외부로 전송되지 않으며</strong>, 개인을 식별할 수 있는 정보가 아닙니다.
+  브라우저 설정에서 사이트 데이터를 삭제하면 즉시 사라집니다.</p>
+
+  <h2>3. 제3자 서비스 — YouTube (중요)</h2>
+  <p>이 사이트의 음악은 모두 <strong>YouTube에 공개된 무료 라이선스 음원</strong>을 임베드해 재생합니다.
+  즉 재생 버튼을 누르면 이용자의 브라우저가 Google 서버에 직접 접속합니다.
+  이때 <strong>Google이 독자적으로</strong> 다음과 같은 정보를 처리할 수 있습니다.</p>
+  <ul>
+    <li>IP 주소, 접속 시각, 기기·브라우저 정보</li>
+    <li>재생한 영상 정보</li>
+    <li>Google 계정에 로그인되어 있는 경우, 그 계정과 연결된 시청 기록</li>
+  </ul>
+  <p>운영자는 이 정보를 받지도, 볼 수도, 통제할 수도 없습니다.</p>
+
+  <h3>추적을 줄이기 위해 한 조치</h3>
+  <ul>
+    <li>일반 <code>youtube.com</code>이 아니라 <strong><code>youtube-nocookie.com</code></strong> 도메인으로 임베드합니다. 재생을 시작하기 전까지 추적 쿠키를 심지 않습니다.</li>
+    <li>영상은 자동 재생하지 않습니다. <strong>이용자가 직접 조작해야</strong> Google과의 통신이 시작됩니다.</li>
+    <li>YouTube 외의 외부 서비스는 사용하지 않습니다. 글꼴도 외부 CDN 대신 이 사이트에서 직접 제공합니다.</li>
+  </ul>
+  <p>Google의 처리 내용은 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 개인정보처리방침 ↗</a>을 따릅니다.</p>
+
+  <h2>4. 호스팅 — GitHub Pages</h2>
+  <p>이 사이트는 GitHub, Inc.의 GitHub Pages로 제공됩니다.
+  웹 서버 특성상 GitHub이 접속 로그(IP 주소 등)를 보안 목적으로 일시 보관할 수 있습니다.
+  운영자는 이 로그에 접근할 수 없습니다.
+  자세한 내용은 <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub 개인정보 보호 성명 ↗</a>을 참고하세요.</p>
+
+  <h2>5. 만 14세 미만 아동</h2>
+  <p>이 사이트는 별도의 회원 절차가 없어 아동의 개인정보를 수집하지 않습니다.
+  다만 YouTube 이용은 Google의 연령 정책을 따릅니다.</p>
+
+  <h2>6. 이용자의 권리</h2>
+  <p>운영자가 보유한 개인정보가 없으므로 열람·정정·삭제를 요청할 대상이 없습니다.
+  기기에 저장된 스킨 설정은 브라우저에서 직접 삭제할 수 있습니다.
+  YouTube가 처리한 정보에 대한 권리는 Google에 직접 행사해야 합니다.</p>
+
+  <h2>7. 안전성 확보 조치</h2>
+  <ul>
+    <li>모든 통신은 HTTPS로 암호화됩니다. <code>github.io</code> 도메인은 브라우저 HSTS 프리로드 목록에 등재되어 있습니다.</li>
+    <li>Content-Security-Policy로 외부 스크립트 삽입(XSS)을 제한합니다.</li>
+    <li>화면에 표시되는 모든 곡 정보는 HTML 이스케이프 처리합니다.</li>
+    <li>다른 사이트가 이 페이지를 프레임 안에 넣지 못하도록 차단합니다.</li>
+  </ul>
+
+  <h2>8. 저작권 및 음원 라이선스</h2>
+  <p>재생되는 음원은 모두 무료 라이선스(CC BY 계열, CC0, 각 제작자의 무료 이용 약관) 음원입니다.
+  CC BY 계열은 출처 표기가 라이선스 조건이므로 재생 중 아티스트명과 라이선스를 항상 표시합니다.
+  자세한 내용은 <a href="https://github.com/progh2/rpg-bgm-dj" target="_blank" rel="noopener noreferrer">저장소 ↗</a>에 정리되어 있습니다.</p>
+
+  <h2>9. 방침 변경</h2>
+  <p>내용이 바뀌면 이 페이지의 시행일을 갱신하고 저장소 커밋 기록에 남깁니다.</p>
+
+  <h2>10. 문의</h2>
+  <p>개인정보 관련 문의는 저장소 이슈로 남겨 주세요 —
+  <a href="https://github.com/progh2/rpg-bgm-dj/issues" target="_blank" rel="noopener noreferrer">github.com/progh2/rpg-bgm-dj/issues ↗</a></p>
+
+  <p class="doc-back"><a href="./">← 재생기로 돌아가기</a></p>
+
+</main>
+</body>
+</html>

@@ -1,3 +1,17 @@
+/* Galmuri11 — SIL OFL 1.1, Lee Minseo (quiple). 자체 호스팅: 서드파티 CDN·추적 제거 */
+@font-face {
+  font-family: "Galmuri11";
+  src: url("../fonts/Galmuri11.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Galmuri11";
+  src: url("../fonts/Galmuri11-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
 /* player.css — 윈앰프 2.x 감성 셸 (issue #1) + 스킨 변수 (issue #2) + 턴테이블 (issue #6) */
 
 :root {
@@ -13,7 +27,7 @@
   --text: #d8d8e2;
   --text-dim: #8b8b9c;
   --page-bg: #14141a;
-  --font-lcd: "DungGeunMo", "Courier New", monospace;
+  --font-lcd: "Galmuri11", "Courier New", monospace;
 
   /* 무드가 덮어쓴다 (assets/js/moods.js) */
   --accent: #5fd6c0;
@@ -701,3 +715,8 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   .deck.spinning .platter { animation: none; }
   .marquee > span { padding-left: 0; }
 }
+
+/* ---------- 인라인 style 제거 (CSP style-src 'self' 유지용) ---------- */
+.vol-num { min-width: 2.4em; display: inline-block; }
+.scene-cat { color: var(--text-dim); }
+.swatch i { flex: 1; background: var(--sw); }

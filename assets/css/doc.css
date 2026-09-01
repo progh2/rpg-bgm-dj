@@ -1,0 +1,98 @@
+/* doc.css — 문서 페이지(개인정보처리방침 등). player.css의 스킨 변수를 그대로 쓴다. */
+body.doc {
+  background: var(--page-bg);
+  color: var(--text);
+  line-height: 1.85;
+}
+body.doc::after { opacity: .16; }
+
+.doc-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.doc-wrap h1 {
+  font: 700 24px/1.4 var(--font-lcd);
+  letter-spacing: .06em;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+.doc-wrap h2 {
+  font: 700 15px/1.5 var(--font-lcd);
+  letter-spacing: .04em;
+  color: var(--accent);
+  margin: 34px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--chrome);
+}
+.doc-wrap h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 20px 0 8px;
+}
+.doc-wrap p, .doc-wrap li { font-size: 14px; }
+.doc-wrap ul { padding-left: 1.3em; }
+.doc-wrap li { margin-bottom: 5px; }
+.doc-wrap a { color: var(--accent); }
+.doc-wrap code {
+  background: var(--lcd-bg);
+  color: var(--lcd-ink);
+  padding: 1px 6px;
+  font-family: var(--font-lcd);
+  font-size: 12.5px;
+}
+.doc-wrap strong { color: var(--accent-glow); }
+
+.doc-meta { color: var(--text-dim); font-size: 12.5px; margin: 0 0 24px; }
+
+.doc-callout {
+  background: var(--chrome);
+  box-shadow: var(--bevel-out);
+  border-left: 4px solid var(--accent);
+  padding: 14px 18px;
+  margin: 22px 0 28px;
+}
+.doc-callout p { margin: 0; }
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+  background: var(--chrome);
+  box-shadow: var(--bevel-out);
+}
+.doc-table th, .doc-table td {
+  padding: 9px 11px;
+  text-align: left;
+  border-bottom: 1px solid var(--chrome-dark);
+  vertical-align: top;
+}
+.doc-table th {
+  background: var(--chrome-face);
+  font: 700 11px/1.5 var(--font-lcd);
+  letter-spacing: .06em;
+}
+.doc-table tr:last-child td { border-bottom: 0; }
+
+.doc-back { margin: 26px 0; }
+.doc-back a {
+  display: inline-block;
+  background: var(--chrome-face);
+  box-shadow: var(--bevel-out);
+  padding: 8px 14px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+}
+.doc-back a:hover { color: var(--accent); }
+.doc-back a:active { box-shadow: var(--bevel-in); }
+
+@media (max-width: 560px) {
+  .doc-wrap { padding: 20px 14px 60px; }
+  .doc-table { display: block; overflow-x: auto; }
+}
