@@ -107,7 +107,7 @@ def main():
                         w.writerow([c["name"], s["id"], s["name"], t["title"], t["artist"],
                                     t["videoId"], t["url"], t["license"], t["source"],
                                     t["length"], t["focus"], t["origin"]])
-        print(f"\n{len(deadset)}곡 제거. bgm-scenes.js 재생성이 필요합니다.")
+        print(f"\n{len(dead)}곡 제거(고유 영상 {len(deadset)}개). bgm-scenes.js 재생성이 필요합니다.")
 
     # 죽은 곡이 있으면 종료 코드 1 (워크플로가 감지)
     sys.exit(1 if dead else 0)
