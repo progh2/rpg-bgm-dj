@@ -608,18 +608,27 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 .bard-art { width: 100%; max-width: 232px; height: auto; overflow: visible; }
 
-.bd-glow { animation: bardGlow 5.5s ease-in-out infinite; transform-origin: 120px 108px; }
+.bd-glow { animation: bardGlow 5.5s ease-in-out infinite; transform-origin: 50% 50%; }
 @keyframes bardGlow { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .88; transform: scale(1.05); } }
 
 .bd-eyes-closed { opacity: 0; }
-.bd-eyes { animation: bardBlink 6.5s infinite; transform-origin: 120px 106px; }
+.bd-eyes { animation: bardBlink 6.5s infinite; transform-origin: 50% 50%; }
 @keyframes bardBlink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
 
-.bd-body, .bd-lute { transform-origin: 120px 210px; }
-.bd-head, .bd-hat  { transform-origin: 120px 140px; }
-.bd-neck           { transform-origin: 120px 152px; }
-.bd-feather        { transform-origin: 172px 58px; }
-.bd-hand           { transform-origin: 150px 222px; }
+/* 변형 기준을 각 요소 제 몸통(fill-box)에 백분율로 못박는다.
+   transform-box 초기값은 브라우저·버전마다 달라, 맡겨 두면 회전축이 엇갈린다. */
+.bd-body, .bd-lute, .bd-head, .bd-hat, .bd-neck,
+.bd-feather, .bd-hand, .bd-eyes, .bd-mouth, .bd-glow {
+  transform-box: fill-box;
+}
+.bd-body    { transform-origin: 50% 100%; }
+.bd-lute    { transform-origin: 50% 100%; }
+.bd-head    { transform-origin: 50% 100%; }
+.bd-hat     { transform-origin: 50% 100%; }
+.bd-neck    { transform-origin: 50% 100%; }
+.bd-feather { transform-origin: 0% 100%; }
+.bd-hand    { transform-origin: 50% 50%; }
+.bd-mouth   { transform-origin: 50% 50%; }
 
 [data-state="idle"] .bd-head,
 [data-state="idle"] .bd-hat  { animation: bardBob 5.5s ease-in-out infinite; }
@@ -627,10 +636,11 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 @keyframes bardBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes bardBobNeck { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 
+/* d: path() 로 입 모양을 바꾸면 크롬 계열에서만 움직인다. 변형으로 낸다. */
 [data-state="talk"] .bd-mouth { animation: bardTalk .42s ease-in-out infinite; }
 @keyframes bardTalk {
-  0%,100% { d: path("M113 126q7 7 14 0"); }
-  50%     { d: path("M111 125q9 12 18 0"); }
+  0%,100% { transform: scaleY(1)   translateY(0); }
+  50%     { transform: scaleY(2.1) translateY(-1px); }
 }
 [data-state="talk"] .bd-head,
 [data-state="talk"] .bd-hat  { animation: bardNod 1.15s ease-in-out infinite; }

@@ -43,15 +43,6 @@ export function bardArt() {
 
   <ellipse class="bd-glow" cx="120" cy="108" rx="102" ry="98" fill="url(#bdGlow)"/>
 
-  <!-- 깃털 꽂은 모자 -->
-  <g class="bd-hat">
-    <path d="M60 74c8-24 30-38 60-38s52 14 60 38c-12-6-30-10-60-10s-48 4-60 10z"
-          fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
-    <ellipse cx="120" cy="76" rx="66" ry="12" fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4"/>
-    <path class="bd-feather" d="M172 52c14-12 28-14 34-8 5 5-2 16-14 24-9 6-18 8-22 6z"
-          fill="var(--accent)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
-  </g>
-
   <!-- 머리카락 -->
   <path d="M70 84c0 30 4 44 10 54h80c6-10 10-24 10-54-12 8-30 12-50 12s-38-4-50-12z"
         fill="url(#bdHair)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
@@ -97,6 +88,15 @@ export function bardArt() {
     <path d="M92 88q9 -5 18 -1"  stroke="${INK}" stroke-width="2.8" fill="none" stroke-linecap="round" opacity=".7"/>
     <path d="M130 87q9 -4 18 1"  stroke="${INK}" stroke-width="2.8" fill="none" stroke-linecap="round" opacity=".7"/>
     <path class="bd-mouth" d="M113 126q7 7 14 0" stroke="#9c5a52" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- 깃털 꽂은 모자 — 얼굴 위에 그리되 이마를 덮지 않게 얹는다 -->
+  <g class="bd-hat">
+    <path d="M66 56c7-21 26-33 54-33s47 12 54 33c-11-5-27-9-54-9s-43 4-54 9z"
+          fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <ellipse cx="120" cy="58" rx="64" ry="11" fill="url(#bdCloak)" stroke="${INK}" stroke-width="3.4"/>
+    <path class="bd-feather" d="M168 36c14-12 28-14 34-8 5 5-2 16-14 24-9 6-18 8-22 6z"
+          fill="var(--accent)" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
   </g>
 
   <!-- 류트 -->
