@@ -1,0 +1,10 @@
+# 보안 응답 헤더. Netlify · Cloudflare Pages 형식.
+# GitHub Pages는 응답 헤더를 설정할 수 없어 이 파일을 무시합니다(SECURITY.md 참고).
+# 헤더 지원 호스팅으로 옮기면 이 파일만으로 6개 항목이 모두 충족됩니다.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.youtube.com https://s.ytimg.com; style-src 'self'; font-src 'self'; img-src 'self' data: https://i.ytimg.com https://i9.ytimg.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), interest-cohort=()

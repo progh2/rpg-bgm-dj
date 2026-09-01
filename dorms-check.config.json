@@ -1,0 +1,21 @@
+{
+  "app": {
+    "name": "RPG BGM DJ",
+    "url": "https://progh2.github.io/rpg-bgm-dj/",
+    "stack": "정적 HTML"
+  },
+  "tracks": [
+    "security",
+    "edzip"
+  ],
+  "edzipCase": "A",
+  "teacher": {
+    "dormsHandle": ""
+  },
+  "ownershipConfirmed": true,
+  "edzipCaseAnswers": {
+    "q1": "아니오 — 학생의 개인정보나 학습 콘텐츠를 일절 다루지 않는다. 회원가입·로그인·입력 폼·업로드가 없는 BGM 재생기다.",
+    "q2": "해당 없음 — 내보낼 학생 정보 자체가 없다. 외부 통신은 YouTube 임베드 재생뿐이며 이용자가 조작할 때만 발생한다.",
+    "q3": "해당 없음"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "code.headers-config": {
+    "status": "pass",
+    "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "index.html:16-31 및 privacy.html:8-18 — GitHub Pages가 HTTP 응답 헤더를 설정할 수 없어 <meta http-equiv=\"Content-Security-Policy\">와 <meta name=\"referrer\">로 적용. Chromium 헤드리스로 실측해 CSP가 실제 적용·차단됨을 확인(위반 0건, JS 에러 0건). style-src 'self' 유지를 위해 인라인 style 속성을 전부 제거하고 assets/js/app.js:59-64 에서 element.style.setProperty(CSSOM)로 대체. 헤더 지원 호스팅 이전 대비로 _headers(Netlify/Cloudflare)와 vercel.json 에 6종 헤더 전부 정의. 클릭재킹은 meta frame-ancestors가 명세상 무시되므로 assets/js/app.js:12-17 프레임 이탈 코드로 완화. HSTS는 github.io가 브라우저 HSTS 프리로드 목록에 등재되고 Pages가 HTTP를 301 리다이렉트하므로 이미 강제됨(스캔에서도 통과 확인). 근거 전문은 SECURITY.md."
+  },
+  "code.dangerous-pattern": {
+    "status": "pass",
+    "by": "claude-fable-5 (교사 보조 AI)",
+    "evidence": "assets/js/*.js 전수 확인 — eval(), new Function(), document.write, child_process 사용 0건. innerHTML은 assets/js/app.js 에서만 사용하며, 외부 유입 값(YouTube 영상 제목·아티스트명)이 들어가는 전 경로에 escapeHtml() 적용: app.js:307(마퀴), app.js:176-178(재생목록 행), app.js:223-230(곡 정보 패널). 나머지 innerHTML은 정적 문자열이거나 내부 상수(스킨 라벨, 자체 정의 SVG 아이콘, 질문 문구)만 담는다. 폼·파일 업로드·URL 파라미터 처리가 없어 외부 주입 경로 자체가 존재하지 않는다. localStorage에는 스킨 설정(rpgbgm.skin)만 저장하며 개인 식별 정보를 다루지 않는다."
+  }
+}
