@@ -117,3 +117,38 @@ npx -y github:shinnanchanguk/dorms-check scan --url https://progh2.github.io/rpg
 ```
 
 리포트는 `.dorms-check/REPORT.md`에 생성됩니다.
+
+
+---
+
+## 스캔 결과 이력
+
+| 시점 | 보안 점수 | 에듀집 | 비고 |
+|---|---|---|---|
+| 최초 스캔 | 52/100 (F) | 미충족 | 헤더 6종 + 개인정보처리방침 누락 |
+| 방침·CSP 적용 후 | 58/100 (F) | 미충족 | 개인정보처리방침 항목 해소 |
+| 방침 조문화 + judge 기록 후 | 54/100 (F) | **충족** | `vercel.json` 루트 노출로 신규 감점 |
+| 배포 설정 이동 후 | **58/100 (F)** | **충족** | 노출 해소. 현재 상태 |
+
+### 보안 점수가 58점에서 더 오르지 않는 이유
+
+남은 6개 지적은 모두 **HTTP 응답 헤더**를 요구합니다.
+스캐너의 `checkHeaders()`는 `mainRes.headers`만 읽고 **HTML의 `<meta>` 태그는 파싱하지 않습니다.**
+따라서 meta로 적용한 CSP·Referrer-Policy는 **브라우저에서는 실제로 동작하지만**
+(Chromium 헤드리스에서 적용·차단 확인) 스캐너 점수에는 반영될 수 없습니다.
+
+GitHub Pages에 머무는 한 이 6개는 구조적으로 해소 불가이며,
+점수를 올리려면 응답 헤더를 설정할 수 있는 호스팅으로 이전해야 합니다.
+`deploy/` 폴더에 Netlify·Cloudflare Pages·Vercel용 설정을 미리 넣어 두었습니다.
+
+## 에듀집(학운위) 트랙
+
+`report.json`의 `tracks.edzip.eligible`은 **true**입니다.
+
+다만 도구는 이 앱이 **에듀집 선정 기준 적용 대상이 아닐 가능성이 크다**고 판정했습니다
+(학생 정보 미처리 + 교과 콘텐츠 미포함 → 초·중등교육법 제29조의2 적용 요건 두 가지에 모두 비해당).
+제출 자료는 `--continue-out-of-scope`로 생성했으며, 적용 판정은 `out-of-scope`로 기록되어 있습니다.
+
+`edzip council`(내부 기안문·학운위 안건문)은 **실제 에듀집 확인 완료 후에만** 실행됩니다.
+`verifyEdzipApproval()`이 `api.edzip.kr`에 조회해 등록 여부와 앱 이름을 대조하므로
+임의 주소로는 생성되지 않습니다.
