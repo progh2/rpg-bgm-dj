@@ -31,6 +31,7 @@ const state = {
   answers: null,
   ready: false,
   seeking: false,
+  wakeWanted: false,   // 사용자가 '화면 켜둠'을 켰는가
 };
 
 let yt = null;
@@ -296,6 +297,7 @@ function stop() {
   state.playing = false;
   setSpinning(false);
   setDjState($('dj-stage'), 'idle');
+  releaseWake();
   updateTransport();
 }
 
@@ -357,6 +359,96 @@ function stepTime() {
   if (!state.seeking && dur > 0) $('seek').value = String(Math.round(cur / dur * 1000));
 }
 
+
+/* ---------------------------------------------------------------- 화면 켜둠 (Wake Lock)
+
+   휴대폰에서 화면이 꺼지면 소리가 멈춘다. 진짜 백그라운드 재생은 YouTube가
+   Premium 기능으로 막아 두어 임베드로는 불가능하다. 다만 "책상에 폰을 두었더니
+   화면이 꺼져서 멈췄다"는 가장 흔한 경우는 화면을 켜둔 채로 두면 해결된다.
+
+   Wake Lock 은 탭이 숨겨지면 브라우저가 자동으로 해제하므로,
+   다시 보이게 됐을 때 재요청해야 한다.                                        */
+
+let wakeLock = null;
+let wakeDenied = false;   // 브라우저가 거부했는가 (배터리 절약 모드 등)
+const wakeSupported = 'wakeLock' in navigator;
+
+async function acquireWake() {
+  if (!wakeSupported || !state.wakeWanted || wakeLock) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeDenied = false;
+    wakeLock.addEventListener('release', () => { wakeLock = null; renderWake(); });
+  } catch {
+    // 배터리 절약 모드, 화면 없는 환경 등에서 거부된다.
+    wakeLock = null;
+    wakeDenied = true;
+  }
+  renderWake();
+}
+
+async function releaseWake() {
+  try { await wakeLock?.release(); } catch { /* 이미 해제됨 */ }
+  wakeLock = null;
+  renderWake();
+}
+
+function renderWake() {
+  const btn = $('btn-wakelock');
+  if (!btn) return;
+  const on = state.wakeWanted;
+  btn.setAttribute('aria-pressed', String(on));
+  let label = 'OFF';
+  if (!wakeSupported) label = 'N/A';
+  else if (!on) label = 'OFF';
+  else if (wakeLock) label = 'ON';
+  else if (wakeDenied) label = '거부됨';
+  else label = '대기';        // 켜뒀지만 아직 재생 전
+  $('wake-state').textContent = label;
+  btn.title = wakeDenied
+    ? '브라우저가 화면 켜두기를 거부했습니다. 배터리 절약 모드가 켜져 있으면 꺼 보세요.'
+    : '재생 중 화면이 꺼지지 않게 합니다. 휴대폰에서 화면이 꺼지면 소리가 멈추기 때문입니다.';
+}
+
+function initWake() {
+  const btn = $('btn-wakelock');
+  if (!wakeSupported) {
+    btn.dataset.unsupported = 'true';
+    btn.disabled = true;
+    btn.title = '이 브라우저는 화면 켜두기를 지원하지 않습니다.';
+    renderWake();
+    return;
+  }
+  btn.addEventListener('click', async () => {
+    state.wakeWanted = !state.wakeWanted;
+    if (state.wakeWanted) {
+      wakeDenied = false;
+      await acquireWake();
+      say(wakeDenied
+        ? '브라우저가 거부했어. 배터리 절약 모드가 켜져 있으면 꺼보고 다시 눌러줘.'
+        : '재생하는 동안 화면을 켜둘게. 배터리는 좀 더 쓸 거야.');
+    } else {
+      await releaseWake();
+      say('화면 켜두기 껐어.');
+    }
+  });
+
+  // 탭이 다시 보이면 재요청 (브라우저가 숨김 상태에서 자동 해제한다)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && state.playing) acquireWake();
+  });
+
+  renderWake();
+}
+
+/** 좁은 화면에서만 백그라운드 재생 안내를 띄운다. */
+function initMobileNote() {
+  const note = $('mobile-note');
+  if (!note) return;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 900;
+  note.hidden = !isTouch;
+}
+
 /* ---------------------------------------------------------------- YouTube */
 
 function initYt() {
@@ -377,10 +469,12 @@ function initYt() {
           state.playing = true;
           setSpinning(true);
           setDjState($('dj-stage'), 'groove');
+          acquireWake();
         } else if (e.data === YT.PlayerState.PAUSED) {
           state.playing = false;
           setSpinning(false);
           setDjState($('dj-stage'), 'idle');
+          releaseWake();
         } else if (e.data === YT.PlayerState.ENDED) {
           state.playing = false;
           next(true);
@@ -469,6 +563,8 @@ function boot() {
   $('credit-list').textContent = CREDITS.join(' · ');
   buildViz();
   buildSkinPicker();
+  initWake();
+  initMobileNote();
   refreshTheme();
   wire();
   updateTransport();

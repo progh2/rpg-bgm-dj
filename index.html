@@ -110,7 +110,17 @@
           <label class="slider-wrap">SEEK
             <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
           </label>
+          <button class="tbtn awake" id="btn-wakelock" type="button" aria-pressed="false"
+                  title="재생 중 화면이 꺼지지 않게 합니다. 휴대폰에서 화면이 꺼지면 소리가 멈추기 때문입니다.">
+            화면 켜둠 <span id="wake-state">OFF</span>
+          </button>
         </div>
+        <p class="mobile-note" id="mobile-note" hidden>
+          휴대폰에서는 <strong>다른 앱으로 넘어가면 소리가 멈춥니다.</strong>
+          YouTube가 백그라운드 재생을 Premium 기능으로 막아둔 것이라 우회할 수 없어요.
+          화면이 꺼져서 멈추는 것만은 위의 <strong>화면 켜둠</strong>으로 막을 수 있습니다.
+          <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/SECURITY.md#휴대폰-백그라운드-재생" target="_blank" rel="noopener">자세히 ↗</a>
+        </p>
 
       </div>
     </section>
