@@ -1,0 +1,102 @@
+name: 곡 생존 검사
+
+# YouTube 영상은 삭제·비공개·임베드 차단으로 바뀐다.
+# 매달 한 번 전 곡을 확인하고, 죽은 곡이 있으면 제거하는 PR을 연다.
+# 곧바로 커밋하지 않는 이유: 일시적 장애로 멀쩡한 곡이 지워질 수 있어 사람이 확인해야 한다.
+
+on:
+  schedule:
+    - cron: '0 18 1 * *'   # 매월 1일 03:00 KST
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '검사할 곡 수 (0 = 전부)'
+        required: false
+        default: '0'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 의존성 설치
+        run: pip install --quiet requests
+
+      - name: 생존 검사 및 제거
+        id: check
+        continue-on-error: true
+        run: |
+          python3 tools/check_liveness.py --prune \
+            ${{ github.event.inputs.limit != '' && github.event.inputs.limit != '0' && format('--limit {0}', github.event.inputs.limit) || '' }} \
+            | tee liveness.log
+          echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: 재생기 데이터 재생성
+        if: steps.check.outputs.exit == '1'
+        run: python3 tools/make_player_snippet.py
+
+      - name: PR 본문 작성
+        if: steps.check.outputs.exit == '1'
+        id: body
+        run: |
+          python3 - <<'PY' > pr-body.md
+          import json
+          d = json.load(open('data/liveness.json', encoding='utf-8'))
+          dead = d['dead']
+          print(f"매월 정기 검사에서 재생할 수 없는 곡 **{len(dead)}곡**을 찾아 제거했습니다.\n")
+          print(f"- 검사 시각: `{d['checkedAt']}`")
+          print(f"- 검사 대상: {d['checked']}곡")
+          if d.get('unknown'):
+              print(f"- 판정 보류(네트워크 오류): {len(d['unknown'])}곡 — 제거하지 않았습니다\n")
+          print("\n## 제거된 곡\n")
+          print("| 장면 | 아티스트 | 곡 | 사유 |")
+          print("|---|---|---|---|")
+          for t in dead:
+              title = t['title'].replace('|', '/')[:60]
+              print(f"| {t['sceneName']} | {t['artist'][:24]} | {title} | {t['reason']} |")
+          print("\n---\n")
+          print("일시적 장애로 멀쩡한 곡이 빠졌을 수 있으니 목록을 확인한 뒤 머지해 주세요.")
+          print("되돌리려면 이 PR을 닫으면 됩니다.")
+          PY
+          echo "count=$(python3 -c "import json;print(len(json.load(open('data/liveness.json'))['dead']))")" >> "$GITHUB_OUTPUT"
+
+      - name: 제거 PR 생성
+        if: steps.check.outputs.exit == '1'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/prune-dead-tracks
+          title: '재생 불가 곡 ${{ steps.body.outputs.count }}곡 제거'
+          body-path: pr-body.md
+          commit-message: |
+            Remove tracks that can no longer be played
+
+            Monthly liveness check found videos that were deleted, made
+            private, or had embedding disabled. Removed from the dataset
+            and the player payload regenerated.
+          labels: maintenance, data
+          delete-branch: true
+          add-paths: |
+            data/bgm_playlist.json
+            data/bgm_playlist.csv
+            data/liveness.json
+            bgm-scenes.js
+
+      - name: 결과 요약
+        if: always()
+        run: |
+          echo "### 곡 생존 검사" >> "$GITHUB_STEP_SUMMARY"
+          tail -20 liveness.log >> "$GITHUB_STEP_SUMMARY" || true

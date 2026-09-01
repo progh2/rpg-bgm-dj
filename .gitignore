@@ -10,3 +10,4 @@ __pycache__/
 # dorms-check 스캔 산출물 (재생성 가능)
 .dorms-check/
 .dorms-check/private/
+.font-src/

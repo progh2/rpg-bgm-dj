@@ -32,7 +32,15 @@ const state = {
   ready: false,
   seeking: false,
   wakeWanted: false,   // 사용자가 '화면 켜둠'을 켰는가
+  failStreak: 0,       // 연속 재생 실패 횟수 (무한 루프 방지)
+  skipped: 0,          // 이번 세션에 건너뛴 곡 수
 };
+
+/** 이번 세션에 재생 불가로 판명된 videoId. 다시 뽑히지 않게 한다. */
+const deadIds = new Set();
+
+/** 연속 실패가 이 횟수를 넘으면 멈추고 사람에게 알린다. */
+const MAX_FAIL_STREAK = 8;
 
 let yt = null;
 let tick = null;
@@ -163,7 +171,9 @@ function finishQa() {
 /* ---------------------------------------------------------------- 재생목록 */
 
 function loadQueue(tracks, desc = '') {
-  state.queue = tracks;
+  // 이번 세션에 재생 불가로 판명된 곡은 다시 넣지 않는다
+  state.queue = tracks.filter((t) => !deadIds.has(t.videoId));
+  state.failStreak = 0;
   state.index = -1;
   $('pl-desc').textContent = desc ? '' : '';
   renderPlaylist();
@@ -366,6 +376,107 @@ function stepTime() {
 }
 
 
+
+
+/* ---------------------------------------------------------------- 재생 실패 처리 (issue #14)
+
+   YouTube 오류 코드
+     2   요청이 잘못됨 (영상 ID 이상)      → 영구
+     5   HTML5 플레이어 오류                → 일시적일 수 있어 한 번 재시도
+     100 영상 없음 (삭제/비공개)            → 영구
+     101 / 150 소유자가 임베드 차단          → 영구
+
+   오류를 내지 않고 무한 버퍼링하는 경우도 있어, 재생 위치가 멈춰 있으면
+   따로 감지해 넘긴다.                                                        */
+
+const PERMANENT_ERRORS = new Set([2, 100, 101, 150]);
+const ERROR_REASON = {
+  2: '영상 주소가 잘못됐어',
+  5: '재생기가 이 영상을 못 열었어',
+  100: '영상이 삭제됐거나 비공개가 됐어',
+  101: '올린 사람이 외부 재생을 막아놨어',
+  150: '올린 사람이 외부 재생을 막아놨어',
+};
+
+let retriedOnce = null;   // 일시적 오류로 한 번 재시도한 videoId
+
+function handlePlaybackError(code) {
+  const bad = state.queue[state.index];
+  if (!bad) return;
+
+  // HTML5 오류는 일시적인 경우가 있어 같은 곡을 한 번만 다시 시도한다.
+  if (code === 5 && retriedOnce !== bad.videoId) {
+    retriedOnce = bad.videoId;
+    console.warn('재생 오류, 한 번 재시도:', bad.videoId, bad.title);
+    setTimeout(() => { if (yt && state.ready) yt.loadVideoById(bad.videoId); }, 600);
+    return;
+  }
+
+  console.warn(`재생 불가(코드 ${code}), 건너뜀:`, bad.videoId, bad.title);
+  if (PERMANENT_ERRORS.has(code)) deadIds.add(bad.videoId);
+  dropCurrent(ERROR_REASON[code] || '이 곡은 재생이 안 되네');
+}
+
+/** 현재 곡을 목록에서 빼고 다음 곡으로 넘어간다. */
+function dropCurrent(reason) {
+  const bad = state.queue[state.index];
+  if (!bad) return;
+
+  state.queue.splice(state.index, 1);
+  state.failStreak += 1;
+  state.skipped += 1;
+  $('pl-count').textContent = `${state.queue.length}곡`;
+  renderPlaylist();
+
+  if (!state.queue.length) {
+    stop();
+    say('재생할 수 있는 곡이 다 떨어졌어. 다시 골라볼까?', 'talk');
+    return;
+  }
+
+  // 연속으로 계속 실패하면 네트워크 문제일 가능성이 크다. 무한 시도를 멈춘다.
+  if (state.failStreak >= MAX_FAIL_STREAK) {
+    stop();
+    say(`${MAX_FAIL_STREAK}곡 연속으로 재생에 실패했어. 인터넷 연결을 확인해줘.`, 'talk');
+    state.failStreak = 0;
+    return;
+  }
+
+  // 한두 곡 건너뛰는 건 조용히, 잦아지면 알려준다.
+  if (state.skipped === 1 || state.skipped % 5 === 0) {
+    say(`${reason}. 건너뛸게. (지금까지 ${state.skipped}곡)`);
+  }
+
+  play(state.index);   // splice 로 다음 곡이 이 자리에 왔다
+}
+
+/* ── 멈춤 감지 ────────────────────────────────────────────────
+   재생 중이라고 표시돼 있는데 재생 위치가 움직이지 않으면 넘긴다.
+   버퍼링일 수도 있으므로 넉넉히 기다린다. */
+
+let lastTime = -1;
+let stalledTicks = 0;
+const STALL_LIMIT = 12;   // stepTime 이 120ms 마다 도니 약 15초
+
+function checkStall() {
+  if (!state.playing || !yt || !state.ready || state.index < 0) {
+    stalledTicks = 0; lastTime = -1; return;
+  }
+  const t = yt.getCurrentTime?.() ?? 0;
+  if (Math.abs(t - lastTime) < 0.05) {
+    stalledTicks += 1;
+    if (stalledTicks >= STALL_LIMIT * 10) {
+      stalledTicks = 0;
+      const bad = state.queue[state.index];
+      console.warn('재생이 멈춰 있어 건너뜀:', bad?.videoId, bad?.title);
+      dropCurrent('재생이 멈춰버렸어');
+    }
+  } else {
+    stalledTicks = 0;
+    state.failStreak = 0;   // 정상 재생되면 연속 실패 기록을 지운다
+  }
+  lastTime = t;
+}
 
 /* ---------------------------------------------------------------- 장면 브라우저
 
@@ -622,15 +733,7 @@ function initYt() {
         }
         updateTransport();
       },
-      onError: () => {
-        // 삭제/임베드 차단 영상은 조용히 건너뛴다.
-        const bad = state.queue[state.index];
-        if (bad) console.warn('재생 불가, 건너뜀:', bad.videoId, bad.title);
-        state.queue.splice(state.index, 1);
-        $('pl-count').textContent = `${state.queue.length}곡`;
-        if (state.queue.length) play(state.index);
-        else say('재생할 수 있는 곡이 없어졌어. 다시 골라볼까?', 'talk');
-      },
+      onError: (e) => handlePlaybackError(e.data),
     },
   });
 }
@@ -716,7 +819,7 @@ function boot() {
   loadQueue(seed.tracks);
   setMarquee('DJ에게 취향을 말해주면 다시 골라줄게 —');
 
-  tick = setInterval(() => { stepViz(); stepTime(); }, 120);
+  tick = setInterval(() => { stepViz(); stepTime(); checkStall(); }, 120);
 
   // YouTube API가 이미 로드된 경우
   if (window.YT && window.YT.Player) initYt();
