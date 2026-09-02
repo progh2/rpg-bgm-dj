@@ -96,7 +96,7 @@ index.html              홀 배치
 assets/css/tavern.css   나무·돌 재질, 화로, 캐릭터 동작
 assets/js/app.js        재생 제어 · YouTube · 상태
 assets/js/bard.js       문답 정의와 곡목 짜기
-assets/js/character.js  바드 그림 (나중에 외부 그림으로 갈아 끼울 자리)
+assets/js/character.js  바드 그림 (그린 SVG / 그림 넉 장 / 영상 중에 고름)
 assets/js/halls.js      머물 곳 7군데
 assets/js/hearth.js     시각에 따른 조명
 assets/js/roast.js      화로에 걸리는 음식
@@ -106,8 +106,11 @@ assets/js/moods.js      장면 → 분위기 → 색
 assets/js/icons.js      문답 아이콘 (인라인 SVG)
 ```
 
-캐릭터를 그림으로 바꾸려면 `character.js`의 `bardArt()`가 돌려주는 내용만 갈아 끼우면 됩니다.
-바깥 요소에 `data-state`(idle / talk / dig / play)가 붙는다는 것만 지키면 나머지는 그대로 돕니다.
+지금 무대에 서는 라온은 `assets/art/bard-{idle,talk,dig,play}.webp` 넉 장입니다.
+흔들림·끄덕임·갸웃·너울은 그림이 아니라 CSS 가 얹는 것이라, 그림은 가만히 있는 한 장이면 됩니다.
+`character.js` 의 `ART.source` 를 `'svg'` 로 돌리면 예전에 그려 둔 벡터 바드로 돌아갑니다
+(그쪽은 머무는 곳과 곡 분위기를 따라 색이 같이 변합니다). 규격과 만드는 법은
+[`assets/art/README.md`](assets/art/README.md) 에 있습니다.
 
 빌드 도구 없이 순수 ES 모듈로 동작합니다. 로컬에서 볼 때는 `python3 -m http.server` 로 띄우면 됩니다
 (`file://` 로는 모듈 임포트가 막힙니다).

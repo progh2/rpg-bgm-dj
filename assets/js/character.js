@@ -18,7 +18,7 @@ export const BARD_SHORT = '라온';
 
 export const ART = {
   /** 'svg' | 'image' | 'video' */
-  source: 'svg',
+  source: 'image',
 
   /** source: 'image' 일 때 — 상태별 그림. 파일이 없는 상태는 idle 로 대신한다. */
   images: {
