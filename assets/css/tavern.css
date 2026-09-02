@@ -41,10 +41,20 @@
   --edge-in:  inset -1px -1px 0 var(--wood-light), inset 1px 1px 0 var(--wood-dark);
   --gilt: 0 0 0 1px color-mix(in srgb, var(--metal) 50%, transparent);
 
-  --font-display: "Iropke Batang", "Noto Serif KR", "Nanum Myeongjo", "Apple SD Gothic Neo",
-                  "Batang", "Times New Roman", serif;
-  --font-body: "Iropke Batang", "Noto Serif KR", "Nanum Myeongjo",
-               "Apple SD Gothic Neo", "Malgun Gothic", serif;
+  /* 글꼴 되돌림은 글자 단위로 일어난다 — 한글은 앞쪽 명조에서 받고,
+     앞쪽 한글 글꼴에 없는 가나·한자는 뒤쪽 일본어 명조로 넘어간다.
+     곡의 절반 가까이가 일본 작곡가 것이라 일본어 명조가 반드시 있어야 한다.
+     (魔王魂 · 森田交一 · しゃろう …) 없으면 제목이 네모로 뜬다.
+     자체 호스팅은 하지 않는다. 서브셋해도 한자 때문에 한 벌에 500KB 라
+     페이지 전체(140KB)보다 무거워진다. */
+  --font-ko: "Iropke Batang", "Noto Serif KR", "Noto Serif CJK KR",
+             "Nanum Myeongjo", "Apple SD Gothic Neo", "Batang";
+  --font-ja: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Yu Mincho", "YuMincho",
+             "Noto Serif JP", "Noto Serif CJK JP", "Source Han Serif JP",
+             "IPAexMincho", "MS PMincho", "MS Mincho";
+
+  --font-display: var(--font-ko), var(--font-ja), "Times New Roman", serif;
+  --font-body: var(--font-ko), var(--font-ja), "Malgun Gothic", serif;
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   /* 시각이 정한다 (assets/js/hearth.js). 0 = 한낮, 1 = 한밤. */
