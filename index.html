@@ -127,6 +127,9 @@
             <div class="spit" aria-hidden="true"><i class="bar"></i><i class="leg l"></i><i class="leg r"></i></div>
             <div class="roast" id="roast"></div>
             </div><!-- /firebox -->
+            <!-- 화로 그 자리에서 뜨는 한마디. 휴대폰에서는 라온의 말칸이 화면
+                 밖에 있어서, 먹었는지 덜 익었는지를 여기서 바로 알려 준다. -->
+            <span class="hearth-say" id="hearth-say" role="status" aria-live="polite"></span>
             <span class="hearth-dish" id="hearth-dish">빈 화로</span>
           </div>
 
@@ -163,12 +166,18 @@
                   title="부르는 동안 화면이 꺼지지 않게 합니다. 휴대폰에서 화면이 꺼지면 소리가 멎기 때문입니다.">
             등불 <span id="wake-state">꺼짐</span>
           </button>
+          <button class="tbtn" id="btn-ytaccount" type="button" aria-pressed="false"
+                  title="유튜브 로그인을 임베드에 연결합니다. 프리미엄 계정이면 광고가 빠집니다. 켜면 시청 기록이 내 유튜브 계정에 남습니다.">
+            유튜브 계정 <span id="ytacct-state">끊김</span>
+          </button>
         </div>
 
         <p class="mobile-note" id="mobile-note" hidden>
-          휴대폰에서는 <strong>다른 앱으로 넘어가면 노래가 멎습니다.</strong>
-          YouTube가 백그라운드 재생을 Premium 기능으로 막아 둔 탓이라 우회할 수 없습니다.
-          화면이 꺼져서 멎는 것만은 위의 <strong>등불</strong>로 막을 수 있습니다.
+          휴대폰에서는 <strong>다른 앱으로 넘어가면 노래가 멎을 수 있습니다.</strong>
+          YouTube가 백그라운드 재생을 Premium 기능으로 묶어 둔 탓입니다.
+          Premium 계정이라면 위의 <strong>유튜브 계정</strong>을 연결해 보세요 —
+          광고가 빠지고, 브라우저에 따라 백그라운드 재생이 되기도 합니다.
+          화면이 꺼져서 멎는 것은 <strong>등불</strong>로 막을 수 있습니다.
           <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/SECURITY.md" target="_blank" rel="noopener">자세히 ↗</a>
         </p>
 

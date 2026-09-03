@@ -566,6 +566,26 @@ function renderWake() {
   $('wake-state').textContent = label;
 }
 
+/* 유튜브 계정 연결 스위치 — 켜고 끄면 임베드 호스트가 달라져 iframe 을 새로 짠다 */
+function renderYtAccount() {
+  const on = ytAccountOn();
+  $('btn-ytaccount').setAttribute('aria-pressed', String(on));
+  $('ytacct-state').textContent = on ? '연결' : '끊김';
+}
+
+function initYtAccount() {
+  renderYtAccount();
+  $('btn-ytaccount').addEventListener('click', () => {
+    const on = !ytAccountOn();
+    setYtAccount(on);
+    renderYtAccount();
+    say(on
+      ? '유튜브 계정을 연결했습니다. 프리미엄이시라면 광고 없이 들으실 수 있습니다. 시청 기록은 계정에 남습니다.'
+      : '유튜브 계정을 끊었습니다. 다시 추적 쿠키 없는 임베드로 돌아갑니다.');
+    rebuildYt();
+  });
+}
+
 function initWake() {
   const btn = $('btn-wakelock');
   if (!wakeSupported) { btn.disabled = true; btn.title = '이 브라우저는 화면 켜두기를 지원하지 않습니다.'; renderWake(); return; }
@@ -631,6 +651,17 @@ function initSecrets() {
 
   // 화로 — 걸린 게 있으면 먹고, 없으면 쿡 찌른다
   const hearth = $('hearth');
+
+  // 화로 그 자리에서 한마디. 휴대폰에서는 라온의 말칸이 화면 밖이라
+  // 눌렀을 때의 반응을 화로 위에서 바로 보여 준다. 라온도 같이 말한다.
+  let hearthSayTimer = null;
+  const hearthSay = (text) => {
+    const el = $('hearth-say');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(hearthSayTimer);
+    hearthSayTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  };
   const onHearth = () => {
     const { id: dishId, dish, stage } = roast.peek();
 
@@ -639,6 +670,7 @@ function initSecrets() {
       hearth.classList.add('poked');
       setTimeout(() => hearth.classList.remove('poked'), 1200);
       secrets.find('hearth');
+      hearthSay(dish.done);
       say(dish.done);
       return;
     }
@@ -651,9 +683,12 @@ function initSecrets() {
         sfx.notYet();
         slot.classList.add('notyet');
         setTimeout(() => slot.classList.remove('notyet'), 620);
-        say(`${res.stage.id === 'raw' ? dish.raw : dish.cooking} 아직 이릅니다.`);
+        const line = `${res.stage.id === 'raw' ? dish.raw : dish.cooking} 아직 이릅니다.`;
+        hearthSay(line);
+        say(line);
       } else {
         sfx.crackle();
+        hearthSay(dish.done);
         say(dish.done);
       }
       return;
@@ -665,7 +700,9 @@ function initSecrets() {
     secrets.find('hearth');
     noteEaten(res.dish);
 
-    say(`${res.stage.id === 'burnt' ? dish.burnt : dish.done} ${dish.eaten}`);
+    const line = `${res.stage.id === 'burnt' ? dish.burnt : dish.done} ${dish.eaten}`;
+    hearthSay(line);
+    say(line);
   };
   hearth.addEventListener('click', onHearth);
   hearth.addEventListener('keydown', (e) => {
@@ -801,15 +838,60 @@ function initPhase() {
 
 /* ---------------------------------------------------------------- YouTube */
 
+/* 유튜브 계정 연결 — 기본은 끔.
+   평소에는 추적 쿠키를 줄인 youtube-nocookie.com 으로 임베드하지만, 그 대신
+   유튜브가 로그인(프리미엄 여부)을 못 보므로 프리미엄 사용자에게도 광고가 나간다.
+   이 스위치를 켜면 www.youtube.com 으로 임베드해 로그인 쿠키가 같이 가고,
+   프리미엄 계정이면 광고가 빠진다. 방문자 전체의 시청 기록을 구글에 넘기지
+   않으려고 전역이 아니라 각자 켜는 것으로 두었다 (privacy.html 에도 적어 둠).
+   셋째 자리 쿠키를 막는 브라우저(Safari 등)에서는 켜도 로그인이 안 넘어갈 수 있다. */
+const YT_ACCOUNT_KEY = 'rpgbgm.ytAccount';
+function ytAccountOn() {
+  try { return localStorage.getItem(YT_ACCOUNT_KEY) === '1'; } catch { return false; }
+}
+function setYtAccount(v) {
+  try { localStorage.setItem(YT_ACCOUNT_KEY, v ? '1' : '0'); } catch { /* noop */ }
+}
+
+/** 재조립 뒤 이어 부를 자리 (호스트를 바꾸면 iframe 을 새로 짜야 한다) */
+let resumeAfterRebuild = null;
+let greeted = false;   // 첫 초기화에서만 인사하고 문답을 시작한다
+
+function rebuildYt() {
+  resumeAfterRebuild = state.index >= 0 ? {
+    index: state.index,
+    at: (state.ready && yt?.getCurrentTime) ? Math.max(0, yt.getCurrentTime() - 0.5) : 0,
+    playing: state.playing,
+  } : null;
+  try { yt?.destroy?.(); } catch { /* noop */ }
+  state.ready = false;
+  state.playing = false;
+  $('yt-host').innerHTML = '<div id="yt-player"></div>';
+  initYt();
+}
+
 function initYt() {
   yt = new YT.Player('yt-player', {
     height: '1', width: '1',
-    host: 'https://www.youtube-nocookie.com',
+    host: ytAccountOn() ? 'https://www.youtube.com' : 'https://www.youtube-nocookie.com',
     playerVars: { autoplay: 0, controls: 0, disablekb: 1, playsinline: 1, origin: location.origin },
     events: {
       onReady: () => {
         state.ready = true;
         yt.setVolume(state.volume);
+        if (resumeAfterRebuild) {          // 호스트를 갈아탄 참이면 부르던 자리로
+          const r = resumeAfterRebuild;
+          resumeAfterRebuild = null;
+          const t = state.queue[r.index];
+          if (t) {
+            state.index = r.index;
+            if (r.playing) { yt.loadVideoById({ videoId: t.videoId, startSeconds: r.at }); }
+            else { yt.cueVideoById({ videoId: t.videoId, startSeconds: r.at }); }
+          }
+          return;
+        }
+        if (greeted) return;
+        greeted = true;
         say(currentPhase().greet, 'talk');
         startAsk();
       },
@@ -908,6 +990,7 @@ function boot() {
   refreshHall();
   wire();
   updateControls();
+  initYtAccount();
   initWake();
   initMobileNote();
   initSceneBrowser();

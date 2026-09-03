@@ -139,7 +139,8 @@
     <li><strong>기술적 조치 — 스크립트 주입 차단.</strong> Content-Security-Policy를 적용해 허가되지 않은 외부 스크립트 실행을 차단합니다.</li>
     <li><strong>기술적 조치 — XSS 방지.</strong> 화면에 표시되는 모든 곡 정보(외부에서 유입되는 값)에 HTML 이스케이프 처리를 적용합니다.</li>
     <li><strong>기술적 조치 — 클릭재킹 차단.</strong> 다른 사이트가 이 페이지를 프레임 안에 삽입하지 못하도록 차단합니다.</li>
-    <li><strong>기술적 조치 — 제3자 접속 최소화.</strong> 글꼴을 자체 호스팅하고, YouTube는 추적 쿠키를 줄인 <code>youtube-nocookie.com</code> 도메인으로 임베드합니다.</li>
+    <li><strong>기술적 조치 — 제3자 접속 최소화.</strong> 글꼴을 자체 호스팅하고, YouTube는 기본적으로 추적 쿠키를 줄인 <code>youtube-nocookie.com</code> 도메인으로 임베드합니다.</li>
+    <li><strong>선택적 기능 — 유튜브 계정 연결.</strong> 이용자가 재생기 안의 「유튜브 계정」 단추를 <em>직접 켠 경우에 한해</em> 임베드 도메인이 <code>www.youtube.com</code>으로 바뀌며, 이때 이용자의 YouTube 로그인 쿠키가 임베드에 전달되어 시청 기록이 본인 계정에 남고 YouTube Premium 혜택(광고 제거 등)이 적용될 수 있습니다. 이 설정은 이용자 브라우저(localStorage)에만 저장되고, 언제든 같은 단추로 끌 수 있으며, 끄면 즉시 <code>youtube-nocookie.com</code> 임베드로 돌아갑니다. 운영자는 이 과정에서 어떤 정보도 받지 않습니다.</li>
     <li><strong>관리적 조치 — 접근 권한 관리.</strong> 소스 저장소는 운영자 계정만 쓰기 권한을 가지며, 모든 변경 이력이 공개 커밋 기록으로 남습니다.</li>
     <li><strong>구조적 조치 — 최소 수집.</strong> 개인정보를 저장할 서버·데이터베이스를 두지 않아 유출 위험 자체를 제거했습니다.</li>
   </ul>

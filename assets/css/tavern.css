@@ -1236,6 +1236,30 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   100%      { transform: translateY(0)   rotate(0deg); }
 }
 
+/* 화로 그 자리에서 뜨는 한마디 — 팻말 위에 잠깐 떠올랐다 사라진다 */
+.hearth-say {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  translate: -50% 6px;
+  max-width: 86%;
+  padding: 5px 11px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--sign-ink);
+  background: color-mix(in srgb, var(--sign-bg) 88%, #000 12%);
+  border: 1px solid color-mix(in srgb, var(--metal) 45%, transparent);
+  border-radius: 3px;
+  box-shadow: 0 3px 9px rgba(0,0,0,.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 7;
+  transition: opacity .25s var(--ease), translate .25s var(--ease);
+}
+.hearth-say.show { opacity: 1; translate: -50% 0; }
+
 /* 화로 밑 안내 */
 .hearth-dish {
   position: absolute;
