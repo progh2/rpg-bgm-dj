@@ -18,7 +18,13 @@
 // Within the face box the chin edge turns out to be the steady part (it lands
 // within half a pixel across all four), so the anchor is (face centre x, chin y).
 
-import sharp from 'sharp';
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+
+// sharp 는 작업 폴더(.art-work)에 깔려 있다. ESM 은 스크립트 위치를 기준으로
+// 찾으므로, 여기서는 작업 폴더 기준으로 다시 잡아 준다.
+const sharp = createRequire(path.join(process.cwd(), 'noop.js'))('sharp');
 
 const NAMES = ['idle', 'talk', 'dig', 'play'];
 

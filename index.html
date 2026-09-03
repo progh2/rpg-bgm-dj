@@ -88,8 +88,15 @@
                aria-label="화로. 눌러서 불씨를 튀겨 봅니다.">
             <span class="hearth-tag" id="hearth-tag">잉걸</span>
             <div class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <div class="fire" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="logs" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img class="logs" src="assets/art/hearth-logs.webp" alt="" aria-hidden="true" decoding="async">
+            <div class="fire" aria-hidden="true">
+              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
+              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
+              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
+            </div>
+            <!-- 꼬치걸이대. 음식이 공중에 뜨지 않게 받친다. 머무는 곳에 따라
+                 쇠 빛이 같이 변해야 해서 그림이 아니라 CSS 로 그린다. -->
+            <div class="spit" aria-hidden="true"><i class="bar"></i><i class="leg l"></i><i class="leg r"></i></div>
             <div class="roast" id="roast" aria-hidden="true"></div>
             <span class="hearth-dish" id="hearth-dish">빈 화로</span>
           </div>
@@ -100,6 +107,8 @@
               <p class="song" id="pc-song">아직 아무것도 부르지 않았습니다</p>
               <span class="by" id="pc-by"></span>
               <div class="meta" id="pc-meta"></div>
+              <a class="pc-src" id="pc-src" href="#" target="_blank"
+                 rel="noopener noreferrer external" hidden>원곡 들으러 가기 ↗</a>
             </div>
           </div>
         </div>

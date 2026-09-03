@@ -9,7 +9,7 @@ import { icon } from './icons.js';
 import { startLight, setPhase, currentPhase, PHASES } from './hearth.js';
 import { sfx, sfxMuted } from './sounds.js';
 import * as secrets from './secrets.js';
-import { startRoast, DISHES } from './roast.js';
+import { startRoast, DISHES, EATABLE_STAGES } from './roast.js';
 
 /* 클릭재킹 방어.
    CSP frame-ancestors 는 <meta> 로 전달하면 브라우저가 무시하고, GitHub Pages 는
@@ -208,6 +208,17 @@ function turnParchment(t) {
     $('pc-song').textContent = t.title;
     $('pc-by').textContent = t.artist;
     $('pc-meta').textContent = `${fmt(t.length)} · 집중도 ${t.focus}/5 · ${t.license}`;
+    // 원곡 자리. 마음에 든 곡을 만든 사람에게 곧장 갈 수 있게 둔다 —
+    // CC BY 계열은 출처 표기가 이용 조건이기도 하다.
+    const src = $('pc-src');
+    if (t.videoId) {
+      src.href = `https://www.youtube.com/watch?v=${encodeURIComponent(t.videoId)}`;
+      src.title = `${t.title} — ${t.artist} (새 창)`;
+      src.hidden = false;
+    } else {
+      src.removeAttribute('href');
+      src.hidden = true;
+    }
     p.classList.remove('turning');
   }, 300);
 }
@@ -622,7 +633,7 @@ function initSecrets() {
   const onHearth = () => {
     const { id: dishId, dish, stage } = roast.peek();
 
-    if (!dish.art) {            // 빈 화로 — 장작만 쑤신다
+    if (!dish.img) {            // 빈 화로 — 장작만 쑤신다
       sfx.crackle();
       hearth.classList.add('poked');
       setTimeout(() => hearth.classList.remove('poked'), 1200);
@@ -633,18 +644,29 @@ function initSecrets() {
 
     const slot = $('roast');
     const res = roast.bite();
-    if (!res.ate) { sfx.crackle(); say(dish.done); return; }
+
+    if (!res.ate) {
+      if (res.why === 'notyet') {   // 덜 익었다 — 손만 뻗었다 만다
+        sfx.notYet();
+        slot.classList.add('notyet');
+        setTimeout(() => slot.classList.remove('notyet'), 620);
+        say(`${res.stage.id === 'raw' ? dish.raw : dish.cooking} 아직 이릅니다.`);
+      } else {
+        sfx.crackle();
+        say(dish.done);
+      }
+      return;
+    }
 
     slot.classList.add('eaten');
     setTimeout(() => slot.classList.remove('eaten'), 500);
     if (dishId === 'cauldron') sfx.bubble();
-    sfx.munch();
+    // 태워 먹은 것은 물기가 없어 바스러진다
+    if (res.stage.id === 'burnt') sfx.crumble(); else sfx.munch();
     secrets.find('hearth');
     noteEaten(res.dish);
 
-    // 익은 정도에 따라 하는 말이 다르다
-    const line = { raw: dish.raw, cooking: dish.cooking, done: dish.done, burnt: dish.burnt }[stage.id];
-    say(`${line} ${dish.eaten}`);
+    say(`${res.stage.id === 'burnt' ? dish.burnt : dish.done} ${dish.eaten}`);
   };
   hearth.addEventListener('click', onHearth);
   hearth.addEventListener('keydown', (e) => {
@@ -713,9 +735,13 @@ function initRoast() {
     slot,
     onChange: (dish, stage) => {
       tag.textContent = stage ? `${dish.label} · ${stage.label}` : dish.label;
-      hearth.dataset.bite = dish.art && dish.eatable ? '1' : '0';
+      // 먹을 수 있을 때만 손가락 커서와 불빛이 든다. 덜 익었으면 눌러도 안 먹힌다.
+      const ready = !!(dish.img && dish.eatable && stage && EATABLE_STAGES.has(stage.id));
+      hearth.dataset.bite = ready ? '1' : '0';
       hearth.setAttribute('aria-label', stage
-        ? `화로. ${dish.label}이(가) ${stage.label} 상태입니다. 눌러서 먹습니다.`
+        ? (ready
+            ? `화로. ${dish.label}이(가) ${stage.label} 상태입니다. 눌러서 먹습니다.`
+            : `화로. ${dish.label}이(가) ${stage.label} 상태입니다. 아직 먹을 수 없습니다.`)
         : '화로. 눌러서 장작을 쑤셔 봅니다.');
     },
     onSizzle: () => { if (!document.hidden) sfx.sizzle(); },

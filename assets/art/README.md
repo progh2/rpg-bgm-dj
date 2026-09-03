@@ -1,3 +1,20 @@
+# 이 폴더의 그림들
+
+| 파일 | 쓰이는 곳 | 만든 것 |
+|---|---|---|
+| `bard-{idle,talk,dig,play}.webp` | 무대의 라온 | 힉스필드 `seedream_v5_lite` → `tools/make_bard_art.mjs` |
+| `hearth-{skewer,pig,cauldron,marshmallow,corn,fish}.webp` | 화로에 걸리는 것들 | `gpt-image-2` → `tools/make_hearth_art.mjs` |
+| `hearth-{flame,logs}.webp` | 불꽃과 장작 | 〃 |
+| `wall-stone.webp` | 벽과 화로 둘레의 돌결 | 〃 |
+
+화로 쪽 프롬프트는 `.art-work/gen-all.mjs` 에 그대로 들어 있습니다 (저장소 밖, 재생성용).
+
+**CSS 로 남겨 둔 것** — 꼬치걸이대, 불씨, 냄비 거품, 불꽃의 흔들림. 머무는 곳에 따라
+쇠 빛과 불빛이 같이 변해야 하는 것들이라, 그림으로 박아 두면 일곱 곳 중 여섯 곳에서 겉돕니다.
+벽 돌결도 그림이지만 `soft-light` 로 얹어 결만 빌려 오고 색은 CSS 가 냅니다.
+
+---
+
 # 바드 그림 갈아 끼우기
 
 지금 무대에 서는 것은 **이 폴더의 그림 넉 장**입니다 (`source: 'image'`).

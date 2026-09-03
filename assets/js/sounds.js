@@ -135,6 +135,33 @@ export function munch() {
   partial(c, 210, 0.04, 0.4, n * 0.13, 'sine');
 }
 
+/** 마른 것을 씹는 소리 — 태워 먹은 것을 먹었을 때.
+ *  munch 와 반대로 간다. 낮은 울림을 빼고 잡음을 높게 깎아 짧게 끊으면
+ *  물기 없이 바스러지는 소리로 들린다. 끝의 한숨도 없다. */
+export function crumble() {
+  const c = audio(); if (!c) return;
+  const n = 4 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < n; i++) {
+    noise(c, {
+      gain: 0.07 + Math.random() * 0.05,
+      decay: 0.03 + Math.random() * 0.03,          // 짧게 — 바삭 끊긴다
+      delay: i * 0.075 + Math.random() * 0.03,
+      hp: 2600 + Math.random() * 2200,             // 높게 — 물기가 없다
+    });
+  }
+  // 재가 떨어지는 꼬리
+  noise(c, { gain: 0.03, decay: 0.3, delay: n * 0.075, hp: 5000 });
+}
+
+/** 아직 안 익었을 때 — 손을 뻗다 만 소리.
+ *  두 음을 짧은 단3도로 내려 긋는다. 말로 하면 "아직" 쯤 되는 억양이다. */
+export function notYet() {
+  const c = audio(); if (!c) return;
+  partial(c, 494, 0.05, 0.18, 0,     'triangle');   // 시
+  partial(c, 415, 0.05, 0.30, 0.11,  'triangle');   // 솔#  — 내려 긋는다
+  noise(c, { gain: 0.02, decay: 0.05, hp: 1800 });  // 손끝이 스치는 정도
+}
+
 /** 지글거리는 소리 — 음식이 익을 때 한 번씩 */
 export function sizzle() {
   const c = audio(); if (!c) return;
@@ -160,6 +187,6 @@ export function setSfxMuted(v) {
 
 /** 음소거 상태를 존중하는 래퍼 */
 export const sfx = new Proxy(
-  { doorBell, counterBell, crackle, clink, pluck, flourish, munch, sizzle, bubble },
+  { doorBell, counterBell, crackle, clink, pluck, flourish, munch, crumble, notYet, sizzle, bubble },
   { get: (t, k) => (...a) => { if (!sfxMuted() && t[k]) t[k](...a); } },
 );

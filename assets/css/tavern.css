@@ -1,7 +1,8 @@
 /* tavern.css — 길드 홀 겸 마을 여관.
  *
  * 재질은 나무와 돌 둘뿐이다. 나뭇결은 각도를 달리한 repeating-linear-gradient 를 겹쳐 내고,
- * 돌은 성긴 무늬에 이음매를 얹어 낸다. 사진을 쓰지 않으니 어느 장소로 갈아입어도 색만 바뀐다.
+ * 돌은 그림 한 장(assets/art/wall-stone.webp)을 soft-light 로 얹어 결만 빌려 온다.
+ * 색은 여전히 --stone-dark 가 내므로, 그림을 깔아도 일곱 장소를 그대로 갈아입는다.
  *
  * 조명 원칙 하나: **글자와 가구는 어둡게 하지 않는다.** (assets/js/hearth.js 참고)
  * 새벽에 켜 두고 일하는 쓰임이라 분위기 낸다고 읽기 어려워지면 앞뒤가 바뀐다.
@@ -81,7 +82,11 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
+  background-color: var(--stone-dark);
+  background-image:
+    /* 돌 재질 (assets/art/wall-stone.webp). soft-light 로 얹어 밝고 어두운 결만
+       빌려 온다 — 색은 밑의 --stone-dark 가 내므로 일곱 장소를 그대로 갈아입는다. */
+    url("../art/wall-stone.webp"),
     /* 밤이 되면 벽만 어두워진다 */
     linear-gradient(rgba(12, 6, 2, calc(.34 * var(--night))), rgba(12, 6, 2, calc(.34 * var(--night)))),
     /* 화로와 창에서 오는 빛 */
@@ -92,9 +97,11 @@ body::before {
     repeating-linear-gradient(-48deg, rgba(0,0,0,.05) 0 2px, transparent 2px 21px),
     /* 돌 이음매 */
     repeating-linear-gradient(0deg, rgba(0,0,0,.07) 0 1px, transparent 1px 74px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0 1px, transparent 1px 118px),
-    var(--stone-dark);
-  transition: background 1.6s var(--ease);
+    repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0 1px, transparent 1px 118px);
+  background-size: 620px 620px, auto, auto, auto, auto, auto, auto, auto;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat;
+  background-blend-mode: soft-light, normal, normal, normal, normal, normal, normal, normal;
+  transition: background-color 1.6s var(--ease);
 }
 
 /* 화롯불 — 밤에 가장자리를 데운다 */
@@ -292,11 +299,14 @@ body::after {
   place-items: end center;
   overflow: hidden;
   cursor: pointer;
-  /* 벽난로를 두른 돌 */
+  /* 벽난로를 두른 돌 — 벽과 같은 재질을 소축척으로 얹어 결을 맞춘다 */
   background:
+    url("../art/wall-stone.webp"),
     repeating-linear-gradient(0deg,  rgba(0,0,0,.10) 0 1px, transparent 1px 27px),
     repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 1px, transparent 1px 44px),
     linear-gradient(180deg, color-mix(in srgb, var(--stone) 88%, #fff 12%), var(--stone));
+  background-size: 300px 300px, auto, auto, auto;
+  background-blend-mode: soft-light, normal, normal, normal;
   box-shadow: var(--edge-out), var(--gilt);
 }
 /* 아궁이 — 안쪽으로 파인 아치 */
@@ -324,51 +334,55 @@ body::after {
 .hearth:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* 장작 */
-.logs { position: absolute; bottom: 8%; width: 52%; height: 15%; z-index: 2; }
-.logs i {
+/* 장작과 불꽃은 그림이다 (assets/art/hearth-{logs,flame}.webp).
+   흔들림은 그림에 굽지 않고 CSS 가 얹는다 — 정지 그림 한 장으로 타오르게 하려고
+   같은 불꽃을 세 장 겹쳐 크기와 박자를 어긋나게 준다. */
+.logs {
   position: absolute;
-  height: 34%;
-  border-radius: 4px;
-  background: linear-gradient(180deg, var(--wood-light), var(--wood-dark));
-  box-shadow: 0 1px 0 rgba(0,0,0,.4);
+  bottom: 7%;
+  left: 50%;
+  translate: -50% 0;
+  width: 54%;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
+  pointer-events: none;
 }
-.logs i:nth-child(1) { left: 2%;  bottom: 0;   width: 74%; transform: rotate(-4deg); }
-.logs i:nth-child(2) { right: 0;  bottom: 22%; width: 66%; transform: rotate(6deg); }
-.logs i:nth-child(3) { left: 14%; bottom: 44%; width: 56%; transform: rotate(-2deg); }
 
 /* 불꽃 */
 .fire {
   position: absolute;
-  bottom: 14%;
+  bottom: 13%;
+  left: 50%;
+  translate: -50% 0;
   width: 46%;
   height: 54%;
-  filter: blur(0.4px);
-  opacity: .42;
+  opacity: .34;
   z-index: 1;
+  pointer-events: none;
   transition: opacity .8s var(--ease);
 }
-.fire span {
+.fire img {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 34%;
+  width: auto;
   height: 100%;
   translate: -50% 0;
-  border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
-  background: linear-gradient(180deg, var(--flame), var(--flame-low) 62%, transparent);
   transform-origin: 50% 100%;
+  /* 불꽃 그림은 주황 고정이라, 머무는 곳의 불빛색을 위에 한 겹 입힌다 */
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--flame) 60%, transparent));
 }
-.fire span:nth-child(1) { width: 46%; opacity: .55; }
-.fire span:nth-child(2) { width: 30%; height: 76%; opacity: .8; }
-.fire span:nth-child(3) { width: 17%; height: 52%; opacity: 1; }
+.fire img:nth-child(1) { height: 100%; opacity: .55; }
+.fire img:nth-child(2) { height: 76%;  opacity: .8; }
+.fire img:nth-child(3) { height: 52%;  opacity: 1; }
 
 /* 불을 안 지폈어도 잉걸은 남아 있다 — 빈 상자로 보이지 않게 */
-.hearth .fire span:nth-child(1) { animation: emberBreath 4.5s ease-in-out infinite; }
-@keyframes emberBreath { 0%,100% { opacity: .4; } 50% { opacity: .62; } }
+.hearth .fire img:nth-child(1) { animation: emberBreath 4.5s ease-in-out infinite; }
+@keyframes emberBreath { 0%,100% { opacity: .34; } 50% { opacity: .55; } }
 .hearth.burning .fire { opacity: 1; }
-.hearth.burning .fire span:nth-child(1) { animation: flicker 1.7s ease-in-out infinite; }
-.hearth.burning .fire span:nth-child(2) { animation: flicker 1.3s ease-in-out infinite .2s; }
-.hearth.burning .fire span:nth-child(3) { animation: flicker 0.9s ease-in-out infinite .4s; }
+.hearth.burning .fire img:nth-child(1) { animation: flicker 1.7s ease-in-out infinite; }
+.hearth.burning .fire img:nth-child(2) { animation: flicker 1.3s ease-in-out infinite .2s; }
+.hearth.burning .fire img:nth-child(3) { animation: flicker 0.9s ease-in-out infinite .4s; }
 @keyframes flicker {
   0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg); }
   30%      { transform: scaleY(1.14) scaleX(.92) skewX(3deg); }
@@ -467,6 +481,23 @@ body::after {
 }
 .parchment .by { font-size: 13px; color: var(--sign-dim); }
 .parchment .meta { font-size: 11.5px; color: var(--sign-dim); margin-top: 9px; }
+
+/* 원곡으로 나가는 자리 — 양피지 아래 귀퉁이에 눌러 찍은 낙관처럼 */
+.pc-src {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
+  padding-bottom: 1px;
+  transition: color .18s, border-color .18s;
+}
+.pc-src:hover { color: var(--accent-glow); border-bottom-color: var(--accent-glow); }
+.pc-src:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pc-src[hidden] { display: none; }
 
 /* ── 조작대 ─────────────────────────────────────────────────── */
 .controls {
@@ -959,25 +990,58 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 
 /* ── 화로에 걸어 둔 것 ──────────────────────────────────────────
    그림은 한 장만 두고, 익은 정도는 filter 로 낸다. */
+/* 꼬치걸이대 — 두 다리 위에 가로대 하나. 음식은 이 가로대에 얹힌다.
+   가로대 높이가 곧 .roast 상자의 바닥이라, 둘을 같은 값(--spit-y)으로 묶어 둔다. */
+.hearth { --spit-y: 34%; }
+
+.spit {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 6%;
+  height: calc(var(--spit-y) - 6%);
+  width: 62%;
+  z-index: 3;
+  pointer-events: none;
+}
+.spit i {
+  position: absolute;
+  background: linear-gradient(180deg, var(--metal), var(--metal-dark));
+  box-shadow: 0 1px 2px rgba(0,0,0,.65);
+  border-radius: 2px;
+}
+.spit .bar { top: 0; left: 0; right: 0; height: 4px; }
+.spit .leg { top: 0; bottom: 0; width: 4px; }
+.spit .leg.l { left: 4%; }
+.spit .leg.r { right: 4%; }
+
+/* 걸린 것 */
 .roast {
   position: absolute;
   left: 50%;
-  bottom: 34%;
+  bottom: var(--spit-y);
   translate: -50% 0;
-  width: 52%;
+  width: 62%;
+  height: 30%;
   z-index: 4;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: flex-end;       /* 가로대 위에 올라앉는다 */
+  justify-content: center;
   pointer-events: none;
 }
+/* 감자와 옥수수는 걸이대가 아니라 잉걸 위에 놓인다 (제 그림에 잿더미가 딸려 있다) */
+.roast[data-seat="ashes"] { bottom: 9%; z-index: 5; }
+
 .roast .dish {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,.55));
-  animation: dishHang 4.2s ease-in-out infinite;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
   transform-origin: 50% 0%;
+  animation: dishHang 4.2s ease-in-out infinite;
 }
+/* 잿더미에 놓인 것은 흔들리지 않는다 */
+.roast[data-seat="ashes"] .dish { animation: none; }
 @keyframes dishHang {
   0%, 100% { transform: rotate(-1.4deg); }
   50%      { transform: rotate(1.4deg); }
@@ -1001,7 +1065,20 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 
 /* 냄비 거품 */
-.bub { opacity: 0; }
+/* 냄비가 끓을 때 올라오는 거품. 예전에는 냄비 SVG 안의 원이었는데,
+   냄비가 그림이 되면서 화로 위에 따로 띄우는 점이 되었다. */
+.bub {
+  position: absolute;
+  bottom: 62%;                 /* 냄비 아가리 언저리 */
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  opacity: 0;
+  pointer-events: none;
+}
+.bub1 { left: 44%; }
+.bub2 { left: 52%; width: 4px; height: 4px; }
+.bub3 { left: 58%; width: 5px; height: 5px; }
 .roast[data-stage="cooking"] .bub,
 .roast[data-stage="done"] .bub { animation: bubUp 2.2s ease-out infinite; }
 .bub2 { animation-delay: .7s !important; }
@@ -1015,6 +1092,16 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 /* 먹을 수 있을 때만 손이 간다 */
 .hearth[data-bite="1"] { cursor: pointer; }
 .hearth[data-bite="1"] .roast { pointer-events: none; }
+
+/* 아직 덜 익어 못 먹는다 — 집으려다 만 것처럼 한 번 물러났다 온다.
+   먹는 동작(dishEaten)이 사라지는 것과 달리 제자리로 돌아온다. */
+.roast.notyet .dish { animation: dishNotYet .6s var(--ease); }
+@keyframes dishNotYet {
+  0%        { transform: translateY(0)   rotate(0deg); }
+  30%       { transform: translateY(-5px) rotate(-3deg); }
+  55%       { transform: translateY(2px)  rotate(2deg); }
+  100%      { transform: translateY(0)   rotate(0deg); }
+}
 
 /* 먹는 순간 */
 .roast.eaten .dish { animation: dishEaten .42s ease-in forwards; }
