@@ -658,8 +658,6 @@ function initSecrets() {
       return;
     }
 
-    slot.classList.add('eaten');
-    setTimeout(() => slot.classList.remove('eaten'), 500);
     if (dishId === 'cauldron') sfx.bubble();
     // 태워 먹은 것은 물기가 없어 바스러진다
     if (res.stage.id === 'burnt') sfx.crumble(); else sfx.munch();
