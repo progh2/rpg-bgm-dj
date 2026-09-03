@@ -35,6 +35,7 @@ await p.evaluate(async () => {
   const { applyHall } = await import('/assets/js/halls.js');
   const { MOODS } = await import('/assets/js/moods.js');
   setPhase('evening');
+  document.getElementById('phase-chip').textContent = '저녁';   // 칩은 renderPhase 몫이라 직접
   applyHall('oak_inn', MOODS.calm);                  // 따뜻한 참나무 여관으로 고정
   document.getElementById('hall-lock').checked = true;
   document.getElementById('mood-chip').textContent = '평온';
