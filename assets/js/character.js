@@ -183,6 +183,28 @@ function bardVideo() {
   </div>`;
 }
 
+/**
+ * 그림이 안 오면 그려 둔 SVG 바드가 대신 선다.
+ * 넷 중 idle 이 안 오면 통째로 SVG 로 갈고, 다른 상태 그림만 안 오면
+ * 그 상태를 idle 로 때운다. 무대가 빈 채로 남는 것이 제일 나쁘다 —
+ * 실제로 휴대폰에서 그림이 한 번 안 와서 바드가 사라진 적이 있다.
+ */
+export function guardBardArt(root) {
+  if (!root || ART.source !== 'image') return;
+  let fell = false;
+  for (const img of root.querySelectorAll('.bard-img')) {
+    img.addEventListener('error', () => {
+      if (fell) return;
+      if (img.dataset.for === 'idle') {       // 바닥 그림이 없으면 다 소용없다
+        fell = true;
+        root.innerHTML = bardSvg();
+      } else {
+        img.src = ART.images.idle;            // 이마저 안 오면 위의 idle 쪽이 갈아 준다
+      }
+    }, { once: true });
+  }
+}
+
 /** 무대에 넣을 내용을 돌려준다. */
 export function bardArt() {
   if (ART.source === 'image') return bardImages();

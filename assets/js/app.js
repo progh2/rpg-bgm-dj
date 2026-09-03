@@ -4,7 +4,7 @@ import { BGM_BY_SCENE, SCENES, ALL_TRACKS, CREDITS } from '../../bgm-scenes.js';
 import { moodOf, moodKeyOf, MOODS } from './moods.js';
 import { HALLS, MOOD_HALL, applyHall, loadHallPref, saveHallPref } from './halls.js';
 import { QUESTIONS, buildFromAnswers, DEFAULT_ANSWERS, pickChatter, spreadByArtist, pickForPhase } from './bard.js';
-import { bardArt, setBardState, BARD_NAME, BARD_SHORT } from './character.js';
+import { bardArt, guardBardArt, setBardState, BARD_NAME, BARD_SHORT } from './character.js';
 import { icon } from './icons.js';
 import { startLight, setPhase, currentPhase, PHASES } from './hearth.js';
 import { sfx, sfxMuted } from './sounds.js';
@@ -883,6 +883,7 @@ function wire() {
 
 function boot() {
   $('bard-stage').innerHTML = bardArt();
+  guardBardArt($('bard-stage'));   // 그림이 안 오면 SVG 바드로 대신 세운다
   $('bard-name').textContent = BARD_NAME;
   $('stat-count').textContent = ALL_TRACKS.length.toLocaleString('ko-KR');
   $('credit-list').textContent = CREDITS.join(' · ');

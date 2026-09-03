@@ -327,15 +327,20 @@ body::after {
     linear-gradient(180deg, #120a06, #241408);
   box-shadow: inset 0 8px 20px rgba(0,0,0,.8), 0 0 0 3px var(--stone-dark);
 }
-/* 아궁이 위 상인방 */
+/* 아궁이 위 맨틀 — 벽면을 가로지르는 선반. 예전에는 아치와 사이가 떠서
+   허공에 매달린 널빤지처럼 보였다. 어귀 꼭대기(위에서 22%)에 살짝 겹치게
+   내려 걸치면 벽에 박아 넣은 선반으로 읽힌다. */
 .hearth::after {
   content: "";
   position: absolute;
-  left: 6%; right: 6%; top: 14%;
-  height: 9%;
+  left: 0; right: 0;
+  top: 16.5%;
+  height: 6.5%;
   border-radius: 2px;
-  background: linear-gradient(180deg, var(--wood-light), var(--wood-dark));
-  box-shadow: 0 2px 5px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.14);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.14)),
+    linear-gradient(180deg, var(--wood-light), var(--wood-dark));
+  box-shadow: 0 3px 7px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14);
 }
 .hearth:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
@@ -397,9 +402,11 @@ body::after {
   transform-origin: 50% 100%;
 }
 /* 뒤에서 앞으로. 뒤는 크고 어둡고 느리게, 앞은 작고 밝고 빠르게 — 깊이가 생긴다. */
-.fire .f1 { height: 100%; opacity: .5; translate: -50% 0; filter: saturate(.7) brightness(.72); }
-.fire .f2 { height: 82%;  opacity: .6; translate: -86% 0; filter: saturate(.85) brightness(.85); }
-.fire .f3 { height: 88%;  opacity: .6; translate: -14% 0; filter: saturate(.85) brightness(.85); }
+/* 뒷불은 장작 뒤에서 은은히 받치는 몫이다. 너무 키우면 배경이 아니라
+   주인공이 되어 화로 전체가 불기둥처럼 보인다. */
+.fire .f1 { height: 74%; opacity: .42; translate: -50% 0; filter: saturate(.65) brightness(.66); }
+.fire .f2 { height: 60%; opacity: .5;  translate: -84% 0; filter: saturate(.8) brightness(.8); }
+.fire .f3 { height: 66%; opacity: .5;  translate: -16% 0; filter: saturate(.8) brightness(.8); }
 .fire .f4 { height: 60%;  opacity: .9; translate: -64% 0; }
 .fire .f5 { height: 48%;  opacity: 1;  translate: -32% 0; }
 
@@ -1099,9 +1106,6 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   width: 62%;
   height: 30%;
   z-index: 6;
-  display: flex;
-  align-items: flex-end;       /* 가로대 위에 올라앉는다 */
-  justify-content: center;
   pointer-events: none;
 }
 /* 감자와 옥수수는 걸이대가 아니라 잉걸 위에 놓인다 (제 그림에 잿더미가 딸려 있다) */
@@ -1112,10 +1116,18 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .roast[data-seat="hang"] {
   bottom: auto;
   top: calc(100% - var(--spit-y));
-  align-items: flex-start;
 }
+.roast[data-seat="hang"] .dish { bottom: auto; top: 0; }
 
+/* 그림을 상자 바닥(=가로대)에 직접 못 박는다. 처음에는 flex 의
+   align-items:flex-end 로 앉혔는데, 휴대폰 브라우저에서 그림이 가로대 위에
+   떠 보이는 일이 있었다 — 크기가 잡히기 전의 플렉스 계산에 기대는 것보다
+   absolute + bottom:0 이 어디서든 같은 답을 낸다. */
 .roast .dish {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
   width: var(--dish-w, 60%);
   height: auto;
   object-fit: contain;
