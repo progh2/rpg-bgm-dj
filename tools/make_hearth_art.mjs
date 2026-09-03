@@ -22,8 +22,26 @@ const sharp = createRequire(path.join(process.cwd(), 'noop.js'))('sharp');
 
 const OUT = path.resolve(import.meta.dirname, '../assets/art');
 
-/** 걸이대에 걸리는 것들 — 다듬어서 세로 220 · 가로 320 안에 들어오게. */
-const DISHES = ['skewer', 'pig', 'cauldron', 'marshmallow', 'corn', 'fish'];
+/**
+ * 다듬어 낼 것들과 각자 들어갈 상자.
+ *
+ * 상자는 그림의 성격을 따른다 — 걸이대에 눕는 것은 가로로 길고, 불꽃은 세로로 길고,
+ * 잉걸은 납작하게 퍼진다. 화면에서 몇 px 로 보일지는 여기가 아니라 CSS 의
+ * --dish-w 가 정한다 (assets/art/README.md 참고).
+ */
+const BOX = {
+  'flame-a': { w: 180, h: 340 },   // 가늘고 곧게 솟는 것
+  'flame-b': { w: 270, h: 320 },   // 넓게 부푸는 것
+  'flame-c': { w: 250, h: 300 },   // 옆으로 눕는 것
+  embers:    { w: 340, h: 150 },   // 낮게 깔리는 잉걸
+  cauldron:  { w: 220, h: 300 },   // 고리에 매달려 세로로 길다
+};
+const DEFAULT_BOX = { w: 320, h: 220 };
+
+const PIECES = [
+  'skewer', 'pig', 'cauldron', 'marshmallow', 'corn', 'fish',
+  'flame-a', 'flame-b', 'flame-c', 'embers', 'logs',
+];
 
 /**
  * 옅은 알파를 0 으로 눕히고 거의 불투명한 것은 255 로 올린 뒤,
@@ -58,11 +76,10 @@ async function cleanAndBox(file) {
 
 fs.mkdirSync(OUT, { recursive: true });
 
-for (const name of [...DISHES, 'flame', 'logs']) {
+for (const name of PIECES) {
   const { img, width, height } = await cleanAndBox(`raw-${name}.png`);
 
-  // 불꽃만 세로가 길다. 나머지는 가로로 눕는다.
-  const box = name === 'flame' ? { w: 200, h: 320 } : { w: 320, h: 220 };
+  const box = BOX[name] || DEFAULT_BOX;
   const scale = Math.min(box.w / width, box.h / height, 1);
   const w = Math.max(1, Math.round(width * scale));
   const h = Math.max(1, Math.round(height * scale));

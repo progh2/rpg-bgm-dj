@@ -87,17 +87,30 @@
           <div class="hearth" id="hearth" role="button" tabindex="0"
                aria-label="화로. 눌러서 불씨를 튀겨 봅니다.">
             <span class="hearth-tag" id="hearth-tag">잉걸</span>
-            <div class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <!-- 불이 자리잡는 칸. 화로가 세로로 길어져도 이 칸의 비율은 고정이라
+                 장작·걸이대·음식의 자리가 흐트러지지 않는다. 남는 높이는 위쪽
+                 여유가 되어 불꽃이 아궁이 천장에 닿지 않는다. -->
+            <div class="firebox" aria-hidden="true">
+            <div class="sparks"><i></i><i></i><i></i><i></i></div>
+            <!-- 불멍용. 불꽃 세 모양을 다섯 자리에 놓되 장작을 사이에 끼운다 —
+                 큰 불은 장작 뒤에서 솟고 작은 불이 앞에서 핥아야 깊이가 생긴다.
+                 한 장을 반복하면 몇 초만 봐도 같은 실루엣이 도는 게 보인다. -->
+            <img class="embers" src="assets/art/hearth-embers.webp" alt="" aria-hidden="true" decoding="async">
+            <div class="fire back" aria-hidden="true">
+              <img class="f1" src="assets/art/hearth-flame-b.webp" alt="" decoding="async">
+              <img class="f2" src="assets/art/hearth-flame-a.webp" alt="" decoding="async">
+              <img class="f3" src="assets/art/hearth-flame-c.webp" alt="" decoding="async">
+            </div>
             <img class="logs" src="assets/art/hearth-logs.webp" alt="" aria-hidden="true" decoding="async">
-            <div class="fire" aria-hidden="true">
-              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
-              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
-              <img src="assets/art/hearth-flame.webp" alt="" decoding="async">
+            <div class="fire front" aria-hidden="true">
+              <img class="f4" src="assets/art/hearth-flame-a.webp" alt="" decoding="async">
+              <img class="f5" src="assets/art/hearth-flame-c.webp" alt="" decoding="async">
             </div>
             <!-- 꼬치걸이대. 음식이 공중에 뜨지 않게 받친다. 머무는 곳에 따라
                  쇠 빛이 같이 변해야 해서 그림이 아니라 CSS 로 그린다. -->
             <div class="spit" aria-hidden="true"><i class="bar"></i><i class="leg l"></i><i class="leg r"></i></div>
-            <div class="roast" id="roast" aria-hidden="true"></div>
+            <div class="roast" id="roast"></div>
+            </div><!-- /firebox -->
             <span class="hearth-dish" id="hearth-dish">빈 화로</span>
           </div>
 

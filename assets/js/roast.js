@@ -51,6 +51,7 @@ export const DISHES = {
     eaten: '속이 든든하시겠습니다.',
     img: `${ART}/hearth-cauldron.webp`,
     bubbles: true,          // 끓을 때 거품이 올라온다
+    hangs: true,            // 고리로 가로대에 매달린다 (얹히지 않는다)
   },
 
   marshmallow: {
@@ -128,7 +129,8 @@ export function startRoast({ slot, onChange, onSizzle }) {
       : '';
     slot.dataset.stage = dish.img ? stage.id : 'none';
     slot.dataset.dish = dishId;
-    slot.dataset.seat = dish.inAshes ? 'ashes' : 'spit';   // 잉걸 위인가 걸이대인가
+    // 잉걸 위 · 가로대에 매달림 · 가로대에 얹힘
+    slot.dataset.seat = dish.inAshes ? 'ashes' : dish.hangs ? 'hang' : 'spit';
     onChange?.(dish, dish.img ? stage : null);
   }
 

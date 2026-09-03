@@ -289,11 +289,15 @@ body::after {
   grid-template-columns: 1fr 1.15fr;
   gap: 14px;
   margin-top: 14px;
+  /* 화로가 세로로 길어졌다. 늘어붙게 두면 양피지가 텅 빈 큰 판이 된다. */
+  align-items: start;
 }
 
 .hearth {
   position: relative;
-  aspect-ratio: 1 / 1;
+  /* 세로로 길다. 불을 바라보라고 있는 자리라 정사각으로는 갑갑하다. */
+  aspect-ratio: 1 / 1.5;
+  container-type: size;   /* .firebox 가 cqw/cqh 로 이 칸을 잰다 */
   border-radius: 3px;
   display: grid;
   place-items: end center;
@@ -316,8 +320,10 @@ body::after {
   left: 12%; right: 12%; bottom: 0;
   height: 78%;
   border-radius: 46% 46% 4px 4px / 34% 34% 4px 4px;
+  /* 아궁이 속 불빛. 밤이 깊을수록 짙어진다 — 한밤의 불멍이 이 재생기의 쓰임이다. */
   background:
-    radial-gradient(70% 52% at 50% 100%, color-mix(in srgb, var(--flame-low) 62%, transparent) 0%, transparent 66%),
+    radial-gradient(70% 52% at 50% 100%,
+      color-mix(in srgb, var(--flame-low) calc(46% + 34% * var(--night)), transparent) 0%, transparent 66%),
     linear-gradient(180deg, #120a06, #241408);
   box-shadow: inset 0 8px 20px rgba(0,0,0,.8), 0 0 0 3px var(--stone-dark);
 }
@@ -334,16 +340,37 @@ body::after {
 .hearth:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* 장작 */
-/* 장작과 불꽃은 그림이다 (assets/art/hearth-{logs,flame}.webp).
-   흔들림은 그림에 굽지 않고 CSS 가 얹는다 — 정지 그림 한 장으로 타오르게 하려고
-   같은 불꽃을 세 장 겹쳐 크기와 박자를 어긋나게 준다. */
+/* 장작·잉걸·불꽃은 그림이다 (assets/art/hearth-*.webp).
+   흔들림은 그림에 굽지 않고 CSS 가 얹는다.
+
+   이 화로는 틀어 놓고 바라보라고 있는 것이라(불멍) 반복이 드러나면 안 된다.
+   그래서 불꽃을 세 모양으로 뽑아 다섯 자리에 뒤에서 앞으로 겹치고,
+   주기를 2.3 · 1.9 · 1.7 · 1.3 · 1.1 초로 서로 안 나누어떨어지게 두었다.
+   최소공배수가 길어 같은 모양이 다시 맞아떨어지는 데 한참 걸린다. */
+
+/* 잉걸 바닥 — 장작보다 넓고 낮게 깔려 밑동에서 새어 나온다.
+   불을 안 지핀 시간대에도 이것만은 남아 화로가 빈 상자로 보이지 않게 한다. */
+.embers {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  translate: -50% 0;
+  width: 52%;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 13px color-mix(in srgb, var(--flame) 50%, transparent));
+  animation: emberGlow 6.5s ease-in-out infinite;
+}
+@keyframes emberGlow { 0%, 100% { opacity: .72; } 50% { opacity: 1; } }
+.hearth.burning .embers { animation-duration: 4.2s; }
+
 .logs {
   position: absolute;
   bottom: 7%;
   left: 50%;
   translate: -50% 0;
   width: 42%;
-  z-index: 2;
+  z-index: 3;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
   pointer-events: none;
 }
@@ -351,43 +378,48 @@ body::after {
 /* 불꽃 */
 .fire {
   position: absolute;
-  bottom: 13%;
+  bottom: 12%;
   left: 50%;
   translate: -50% 0;
-  width: 46%;
-  height: 54%;
-  opacity: .34;
-  z-index: 1;
+  width: 54%;
+  height: 56%;
+  opacity: .2;
   pointer-events: none;
-  transition: opacity .8s var(--ease);
+  transition: opacity 1.1s var(--ease);
 }
+.fire.back  { z-index: 2; }   /* 장작 뒤에서 솟는 큰 불 */
+.fire.front { z-index: 4; }   /* 장작 앞을 핥는 작은 불 */
 .fire img {
   position: absolute;
   bottom: 0;
   left: 50%;
   width: auto;
-  height: 100%;
-  translate: -50% 0;
   transform-origin: 50% 100%;
-  /* 불꽃 그림은 주황 고정이라, 머무는 곳의 불빛색을 위에 한 겹 입힌다 */
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--flame) 60%, transparent));
 }
-.fire img:nth-child(1) { height: 100%; opacity: .5;  translate: -72% 0; }
-.fire img:nth-child(2) { height: 82%;  opacity: .75; translate: -28% 0; }
-.fire img:nth-child(3) { height: 58%;  opacity: 1;   translate: -50% 0; }
+/* 뒤에서 앞으로. 뒤는 크고 어둡고 느리게, 앞은 작고 밝고 빠르게 — 깊이가 생긴다. */
+.fire .f1 { height: 100%; opacity: .5; translate: -50% 0; filter: saturate(.7) brightness(.72); }
+.fire .f2 { height: 82%;  opacity: .6; translate: -86% 0; filter: saturate(.85) brightness(.85); }
+.fire .f3 { height: 88%;  opacity: .6; translate: -14% 0; filter: saturate(.85) brightness(.85); }
+.fire .f4 { height: 60%;  opacity: .9; translate: -64% 0; }
+.fire .f5 { height: 48%;  opacity: 1;  translate: -32% 0; }
 
-/* 불을 안 지폈어도 잉걸은 남아 있다 — 빈 상자로 보이지 않게 */
-.hearth .fire img:nth-child(1) { animation: emberBreath 4.5s ease-in-out infinite; }
-@keyframes emberBreath { 0%,100% { opacity: .34; } 50% { opacity: .55; } }
 .hearth.burning .fire { opacity: 1; }
-.hearth.burning .fire img:nth-child(1) { animation: flicker 1.7s ease-in-out infinite; }
-.hearth.burning .fire img:nth-child(2) { animation: flicker 1.3s ease-in-out infinite .2s; }
-.hearth.burning .fire img:nth-child(3) { animation: flicker 0.9s ease-in-out infinite .4s; }
-@keyframes flicker {
+.hearth.burning .fire .f1 { animation: flickerA 2.3s ease-in-out infinite; }
+.hearth.burning .fire .f2 { animation: flickerB 1.9s ease-in-out infinite .3s; }
+.hearth.burning .fire .f3 { animation: flickerA 1.7s ease-in-out infinite .7s; }
+.hearth.burning .fire .f4 { animation: flickerB 1.3s ease-in-out infinite .2s; }
+.hearth.burning .fire .f5 { animation: flickerA 1.1s ease-in-out infinite .5s; }
+@keyframes flickerA {
   0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg); }
-  30%      { transform: scaleY(1.14) scaleX(.92) skewX(3deg); }
-  60%      { transform: scaleY(.92) scaleX(1.07) skewX(-3deg); }
+  28%      { transform: scaleY(1.16) scaleX(.9) skewX(4deg); }
+  62%      { transform: scaleY(.9) scaleX(1.08) skewX(-4deg); }
 }
+@keyframes flickerB {
+  0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg); }
+  35%      { transform: scaleY(.88) scaleX(1.1) skewX(-5deg); }
+  70%      { transform: scaleY(1.2) scaleX(.92) skewX(3deg); }
+}
+
 
 /* 잉걸 — 불씨가 위로 */
 .sparks { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
@@ -435,7 +467,8 @@ body::after {
   flex-direction: column;
   justify-content: stretch;
   gap: 8px;
-  min-height: 100%;
+  /* 예전에는 min-height:100% 로 화로 높이에 맞췄다. 화로가 세로로 길어진
+     뒤로는 그러면 양피지가 텅 빈 판이 되므로, 제 내용만큼만 차지하게 둔다. */
   background:
     linear-gradient(184deg, rgba(255,255,255,.06), transparent 40%),
     repeating-linear-gradient(91deg, rgba(0,0,0,.035) 0 1px, transparent 1px 9px),
@@ -955,7 +988,10 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   .site-head { order: -2; }
   .stage-side { order: -1; position: static; }
   .hearth-row { grid-template-columns: 1fr; }
-  .hearth { aspect-ratio: 2 / 1; }
+  /* 한 칸으로 내려오면 가로를 다 쓰게 된다. 납작하게 두면 불칸이 가운데
+     작게 쪼그라들어 불멍이 안 되고, 그렇다고 정사각으로 두면 태블릿 폭에서
+     화로만 760px 이 된다. 정사각으로 두되 폭을 묶는다. */
+  .hearth { aspect-ratio: 1 / 1; width: 100%; max-width: 420px; justify-self: center; }
   .sign-time { font-size: 23px; }
   .tbtn { min-width: 36px; }
   input[type="range"] { width: 96px; }
@@ -990,9 +1026,24 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 
 /* ── 화로에 걸어 둔 것 ──────────────────────────────────────────
    그림은 한 장만 두고, 익은 정도는 filter 로 낸다. */
+/* 불 세간이 들어앉는 칸. 화로 아래쪽에 붙고 비율이 고정이라,
+   화로가 세로로 길어져도 안쪽 %% 값들이 그대로 산다. */
+.firebox {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  /* 폭에 맞추되, 화로가 납작할 때(좁은 화면에서는 2/1 이다)는 높이에 맞춘다.
+     둘 중 작은 쪽을 따르므로 어느 모양에서도 비율이 무너지지 않는다.
+     92.6 = 100 / 1.08 */
+  width: min(100cqw, 92.6cqh);
+  aspect-ratio: 1 / 1.08;
+  pointer-events: none;
+}
+
 /* 꼬치걸이대 — 두 다리 위에 가로대 하나. 음식은 이 가로대에 얹힌다.
    가로대 높이가 곧 .roast 상자의 바닥이라, 둘을 같은 값(--spit-y)으로 묶어 둔다. */
-.hearth { --spit-y: 44%; }
+.firebox { --spit-y: 44%; }
 
 .spit {
   position: absolute;
@@ -1001,7 +1052,7 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   bottom: 6%;
   height: calc(var(--spit-y) - 6%);
   width: 62%;
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
 }
 .spit i {
@@ -1023,14 +1074,22 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
   translate: -50% 0;
   width: 62%;
   height: 30%;
-  z-index: 4;
+  z-index: 6;
   display: flex;
   align-items: flex-end;       /* 가로대 위에 올라앉는다 */
   justify-content: center;
   pointer-events: none;
 }
 /* 감자와 옥수수는 걸이대가 아니라 잉걸 위에 놓인다 (제 그림에 잿더미가 딸려 있다) */
-.roast[data-seat="ashes"] { bottom: 9%; z-index: 5; }
+.roast[data-seat="ashes"] { bottom: 9%; }
+
+/* 냄비는 고리로 매달린다 — 얹히는 것과 반대로 가로대에서 아래로 내려간다.
+   그래서 상자를 뒤집어 가로대에 위를 붙이고 아래로 자란다. */
+.roast[data-seat="hang"] {
+  bottom: auto;
+  top: calc(100% - var(--spit-y));
+  align-items: flex-start;
+}
 
 .roast .dish {
   width: var(--dish-w, 60%);
@@ -1046,7 +1105,7 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .roast[data-dish="fish"]        { --dish-w: 64%; }
 .roast[data-dish="marshmallow"] { --dish-w: 56%; }
 .roast[data-dish="corn"]        { --dish-w: 46%; }
-.roast[data-dish="cauldron"]    { --dish-w: 44%; }
+.roast[data-dish="cauldron"]    { --dish-w: 30%; }
 /* 잿더미에 놓인 것은 흔들리지 않는다 */
 .roast[data-seat="ashes"] .dish { animation: none; }
 @keyframes dishHang {
