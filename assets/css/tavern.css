@@ -344,6 +344,33 @@ body::after {
 }
 .hearth:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
+/* 맨틀 위의 오르골 — 선반(top 16.5%) 위에 올라앉는다 */
+.mantel-thing {
+  position: absolute;
+  top: 16.5%;
+  right: 13%;
+  width: clamp(30px, 12%, 46px);
+  translate: 0 -92%;          /* 바닥만 선반에 걸치고 몸은 위로 */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.5));
+  transition: filter .2s;
+}
+.mantel-thing svg { display: block; width: 100%; height: auto; }
+.mantel-thing:hover { filter: drop-shadow(0 2px 3px rgba(0,0,0,.5))
+  drop-shadow(0 0 7px color-mix(in srgb, var(--accent-glow) 55%, transparent)); }
+.mantel-thing:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* 감을 때 태엽이 도는 느낌으로 까딱 */
+.mantel-thing.wound { animation: windUp .5s var(--ease); }
+@keyframes windUp {
+  0%, 100% { rotate: 0deg; }
+  30%      { rotate: -6deg; }
+  65%      { rotate: 4deg; }
+}
+
 /* 장작 */
 /* 장작·잉걸·불꽃은 그림이다 (assets/art/hearth-*.webp).
    흔들림은 그림에 굽지 않고 CSS 가 얹는다.
@@ -360,7 +387,7 @@ body::after {
   bottom: 4%;
   left: 50%;
   translate: -50% 0;
-  width: 52%;
+  width: 44%;
   z-index: 1;
   pointer-events: none;
   filter: drop-shadow(0 0 13px color-mix(in srgb, var(--flame) 50%, transparent));
@@ -374,7 +401,7 @@ body::after {
   bottom: 7%;
   left: 50%;
   translate: -50% 0;
-  width: 42%;
+  width: 34%;
   z-index: 3;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
   pointer-events: none;
@@ -386,8 +413,8 @@ body::after {
   bottom: 12%;
   left: 50%;
   translate: -50% 0;
-  width: 54%;
-  height: 56%;
+  width: 46%;
+  height: 44%;
   opacity: .2;
   pointer-events: none;
   transition: opacity 1.1s var(--ease);
@@ -407,8 +434,8 @@ body::after {
 .fire .f1 { height: 74%; opacity: .42; translate: -50% 0; filter: saturate(.65) brightness(.66); }
 .fire .f2 { height: 60%; opacity: .5;  translate: -84% 0; filter: saturate(.8) brightness(.8); }
 .fire .f3 { height: 66%; opacity: .5;  translate: -16% 0; filter: saturate(.8) brightness(.8); }
-.fire .f4 { height: 60%;  opacity: .9; translate: -64% 0; }
-.fire .f5 { height: 48%;  opacity: 1;  translate: -32% 0; }
+.fire .f4 { height: 56%;  opacity: .9; translate: -64% 0; }
+.fire .f5 { height: 44%;  opacity: 1;  translate: -32% 0; }
 
 .hearth.burning .fire { opacity: 1; }
 .hearth.burning .fire .f1 { animation: flickerA 2.3s ease-in-out infinite; }
@@ -1119,27 +1146,31 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 .roast[data-seat="hang"] .dish { bottom: auto; top: 0; }
 
-/* 그림을 상자 바닥(=가로대)에 직접 못 박는다. 처음에는 flex 의
-   align-items:flex-end 로 앉혔는데, 휴대폰 브라우저에서 그림이 가로대 위에
-   떠 보이는 일이 있었다 — 크기가 잡히기 전의 플렉스 계산에 기대는 것보다
-   absolute + bottom:0 이 어디서든 같은 답을 낸다. */
+/* 그림을 상자 바닥(=가로대)에 못 박되, 봉이 있는 것은 봉이 가로대에
+   걸리도록 제 키의 --rod-drop 만큼 아래로 내린다. 그림 바닥을 가로대에
+   앉히면 꼬치봉이 허공에 뜬다 — 봉으로 거는 물건은 봉이 기준이다.
+   (translate 의 Y%% 는 제 높이 기준이라 그림 크기가 변해도 따라온다.)
+   absolute + bottom:0 를 쓰는 이유: flex 정렬은 그림 크기가 잡히기 전의
+   계산에 기대서 휴대폰에서 떠 보인 적이 있다. */
 .roast .dish {
   position: absolute;
   bottom: 0;
   left: 50%;
-  translate: -50% 0;
+  translate: -50% var(--rod-drop, 0%);
   width: var(--dish-w, 60%);
   height: auto;
   object-fit: contain;
-  transform-origin: 50% 0%;
+  transform-origin: 50% calc(100% - var(--rod-drop, 0%));   /* 봉을 축으로 흔들린다 */
   animation: dishHang 4.2s ease-in-out infinite;
 }
 /* 크기는 서로에 대해 정한다. 상자에 맞춰 늘리면 마시멜로가 통돼지만 해진다 —
    가로대 너비를 100 으로 두고 각자 제 몫만큼만 차지하게 한다. */
-.roast[data-dish="pig"]         { --dish-w: 100%; }
-.roast[data-dish="skewer"]      { --dish-w: 84%; }
-.roast[data-dish="fish"]        { --dish-w: 64%; }
-.roast[data-dish="marshmallow"] { --dish-w: 56%; }
+/* --rod-drop 은 그림에서 봉 아래에 남는 부분의 비율 (tools/make_hearth_art.mjs
+   를 돌린 뒤 알파가 전폭에 걸치는 행을 재면 나온다) */
+.roast[data-dish="pig"]         { --dish-w: 100%; --rod-drop: 50%; }
+.roast[data-dish="skewer"]      { --dish-w: 84%;  --rod-drop: 50%; }
+.roast[data-dish="fish"]        { --dish-w: 64%;  --rod-drop: 44%; }
+.roast[data-dish="marshmallow"] { --dish-w: 56%;  --rod-drop: 48%; }
 .roast[data-dish="corn"]        { --dish-w: 46%; }
 .roast[data-dish="cauldron"]    { --dish-w: 30%; }
 /* 잿더미에 놓인 것은 흔들리지 않는다 */

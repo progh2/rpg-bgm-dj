@@ -87,6 +87,22 @@
           <div class="hearth" id="hearth" role="button" tabindex="0"
                aria-label="화로. 눌러서 불씨를 튀겨 봅니다.">
             <span class="hearth-tag" id="hearth-tag">잉걸</span>
+            <!-- 맨틀 위의 태엽 오르골. 장식처럼 놓여 있지만 감아 볼 수 있다.
+                 색이 CSS 변수를 물고 있어 머무는 곳을 따라간다. -->
+            <button class="mantel-thing" id="mantel-thing" type="button"
+                    aria-label="맨틀 위의 태엽 오르골" title="맨틀 위의 작은 상자">
+              <svg viewBox="0 0 44 32" aria-hidden="true">
+                <rect x="4" y="12" width="30" height="16" rx="2"
+                      fill="var(--wood-light)" stroke="var(--ink)" stroke-width="2"/>
+                <rect x="4" y="8" width="30" height="7" rx="2"
+                      fill="var(--wood)" stroke="var(--ink)" stroke-width="2"/>
+                <rect x="8" y="16" width="22" height="8" rx="1"
+                      fill="var(--metal-dark)" opacity=".55"/>
+                <circle cx="37" cy="20" r="3" fill="var(--metal)" stroke="var(--ink)" stroke-width="1.8"/>
+                <path d="M37 20h5" stroke="var(--metal)" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M42 17v6" stroke="var(--metal)" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+            </button>
             <!-- 불이 자리잡는 칸. 화로가 세로로 길어져도 이 칸의 비율은 고정이라
                  장작·걸이대·음식의 자리가 흐트러지지 않는다. 남는 높이는 위쪽
                  여유가 되어 불꽃이 아궁이 천장에 닿지 않는다. -->

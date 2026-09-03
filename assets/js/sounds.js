@@ -162,6 +162,21 @@ export function notYet() {
   noise(c, { gain: 0.02, decay: 0.05, hp: 1800 });  // 손끝이 스치는 정도
 }
 
+/** 태엽 오르골 — 맨틀 위의 것을 감았을 때.
+ *  오르골은 강철 빗살이라 높은 사인에 빠른 감쇠, 여린 홀수 배음 하나면 된다.
+ *  가락은 여기서 지은 여덟 음짜리 — 남의 곡을 물지 않으려고. */
+export function musicBox() {
+  const c = audio(); if (!c) return;
+  const notes = [659.26, 783.99, 1046.5, 783.99, 659.26, 523.25, 659.26, 1046.5]; // 미솔도솔미도미도
+  notes.forEach((f, i) => {
+    const t = i * 0.21;
+    partial(c, f,        0.055, 1.1, t, 'sine');
+    partial(c, f * 2.76, 0.014, 0.5, t, 'sine');   // 빗살의 어긋난 배음
+  });
+  // 태엽 긁히는 소리로 시작
+  noise(c, { gain: 0.025, decay: 0.09, hp: 2200 });
+}
+
 /** 지글거리는 소리 — 음식이 익을 때 한 번씩 */
 export function sizzle() {
   const c = audio(); if (!c) return;
@@ -187,6 +202,6 @@ export function setSfxMuted(v) {
 
 /** 음소거 상태를 존중하는 래퍼 */
 export const sfx = new Proxy(
-  { doorBell, counterBell, crackle, clink, pluck, flourish, munch, crumble, notYet, sizzle, bubble },
+  { doorBell, counterBell, crackle, clink, pluck, flourish, munch, crumble, notYet, sizzle, bubble, musicBox },
   { get: (t, k) => (...a) => { if (!sfxMuted() && t[k]) t[k](...a); } },
 );

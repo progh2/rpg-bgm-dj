@@ -669,7 +669,21 @@ function initSecrets() {
   };
   hearth.addEventListener('click', onHearth);
   hearth.addEventListener('keydown', (e) => {
+    if (e.target !== hearth) return;   // 맨틀 위 오르골에서 누른 키까지 받지 않게
     if (e.code === 'Enter' || e.code === 'Space') { e.preventDefault(); onHearth(); }
+  });
+
+  // 맨틀 위의 오르골 — 감으면 작은 가락이 돌고 야사에 적힌다
+  const trinket = $('mantel-thing');
+  trinket.addEventListener('click', (e) => {
+    e.stopPropagation();               // 화로 클릭(먹기/찌르기)까지 내려가지 않게
+    sfx.musicBox();
+    trinket.classList.add('wound');
+    setTimeout(() => trinket.classList.remove('wound'), 550);
+    const first = secrets.find('trinket');
+    if (first) return;                 // 첫 발견 인사는 onSecret 쪽이 한다
+    say(['태엽이 아직 살아 있군요.', '그 가락, 어디서 왔는지는 저도 모릅니다.',
+         '오르골은 감아 주는 사람이 있어야 돕니다.'][Math.floor(Math.random() * 3)], 'talk');
   });
 
   // 바드에게 말 걸기
@@ -698,6 +712,7 @@ function initSecrets() {
     e.stopPropagation();                       // 무대 클릭(말 걸기)까지 겹치지 않게
     setBardState(stage, 'dig');
     sfx.flourish();
+    secrets.find('lute');
     const p = currentPhase();
     const res = pickForPhase(p.id, BGM_BY_SCENE, 30);
     if (!res.tracks.length) { say('…줄이 하나 끊어졌군요. 잠시 뒤에 청해 주십시오.'); return; }
