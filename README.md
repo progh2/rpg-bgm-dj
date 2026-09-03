@@ -106,7 +106,7 @@ tools/make_bard_art.mjs    라온 넉 장 다듬기 (배경 파내기·얼굴 �
 ## 재생기 구조
 
 ```
-index.html              홀 배치
+index.html              홀 배치 (곡목은 악보대 안, 양피지 아래)
 assets/css/tavern.css   나무·돌 재질, 화로, 캐릭터 동작
 assets/js/app.js        재생 제어 · YouTube · 상태
 assets/js/bard.js       문답 정의와 곡목 짜기

@@ -289,8 +289,6 @@ body::after {
   grid-template-columns: 1fr 1.15fr;
   gap: 14px;
   margin-top: 14px;
-  /* 화로가 세로로 길어졌다. 늘어붙게 두면 양피지가 텅 빈 큰 판이 된다. */
-  align-items: start;
 }
 
 .hearth {
@@ -520,8 +518,11 @@ body::after {
   flex-direction: column;
   justify-content: stretch;
   gap: 8px;
-  /* 예전에는 min-height:100% 로 화로 높이에 맞췄다. 화로가 세로로 길어진
-     뒤로는 그러면 양피지가 텅 빈 판이 되므로, 제 내용만큼만 차지하게 둔다. */
+  /* 높이는 화로가 정한다. height:0 이 없으면 곡목 마흔 줄이 그리드 줄
+     높이를 되정의해서(내용→줄→내용 순환) 판이 1800px 까지 자란다 —
+     내용을 줄 높이 계산에서 빼고, min-height 로 화로 높이만 받는다. */
+  height: 0;
+  min-height: 100%;
   background:
     linear-gradient(184deg, rgba(255,255,255,.06), transparent 40%),
     repeating-linear-gradient(91deg, rgba(0,0,0,.035) 0 1px, transparent 1px 9px),
@@ -531,7 +532,7 @@ body::after {
 }
 
 .parchment {
-  flex: 1;
+  flex: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -584,6 +585,26 @@ body::after {
 .pc-src:hover { color: var(--accent-glow); border-bottom-color: var(--accent-glow); }
 .pc-src:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .pc-src[hidden] { display: none; }
+
+/* 글자 대신 SVG 를 넣은 단추.
+   .tbtn 에는 flex 를 주지 않는다 — 「등불 <span>꺼짐</span>」처럼 글자와 span 이
+   같이 있는 단추가 있어서, 플렉스로 바꾸면 그 사이 공백이 사라져 붙어 버린다. */
+.board-btn { display: inline-flex; align-items: center; justify-content: center; }
+.board-btn svg { display: block; }
+.tbtn svg { display: inline-block; vertical-align: -2px; }
+
+/* 악보대 안 곡목 소제목 — 판머리(board-head)의 작은 판 */
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  color: var(--metal);
+}
 
 /* ── 조작대 ─────────────────────────────────────────────────── */
 .controls {
@@ -655,7 +676,10 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
     var(--sign-bg);
   box-shadow: var(--edge-in), inset 0 0 20px rgba(0,0,0,.4);
   border-radius: 2px;
-  max-height: 350px;
+  /* 악보대에서 남는 높이를 전부 가져간다. min-height:0 이 없으면
+     플렉스가 내용만큼 늘어나 스크롤이 아니라 판이 길어진다. */
+  flex: 1;
+  min-height: 140px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--metal-dark) var(--sign-bg);
@@ -1071,6 +1095,9 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
      작게 쪼그라들어 불멍이 안 되고, 그렇다고 정사각으로 두면 태블릿 폭에서
      화로만 760px 이 된다. 정사각으로 두되 폭을 묶는다. */
   .hearth { aspect-ratio: 1 / 1; width: 100%; max-width: 420px; justify-self: center; }
+  /* 쌓인 판에서는 옆에 화로가 없다 — height:0 요령을 풀고 곡목만 높이를 묶는다 */
+  .lectern { height: auto; min-height: 0; }
+  .songlist { flex: none; max-height: 340px; }
   .sign-time { font-size: 23px; }
   .tbtn { min-width: 36px; }
   input[type="range"] { width: 96px; }

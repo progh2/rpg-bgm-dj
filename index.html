@@ -68,7 +68,7 @@
       <div class="board-head">
         <span>화 로 가</span>
         <span class="rope" aria-hidden="true"></span>
-        <button class="board-btn" id="btn-shuffle-all" title="아무 곡이나 마흔 곡 뽑기">↻</button>
+        <button class="board-btn" id="btn-shuffle-all" title="아무 곡이나 마흔 곡 뽑기" aria-label="아무 곡이나 마흔 곡 뽑기"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.7-4"/><path d="M13.8 1.5v3h-3"/></svg></button>
       </div>
       <div class="board-body">
 
@@ -161,6 +161,7 @@
           </div>
 
           <div class="lectern">
+            <!-- 곡목은 여기, 양피지 아래 — 화로가 세로로 길어지며 남던 자리다 -->
             <div class="parchment" id="parchment">
               <span class="scene-name" id="pc-scene">—</span>
               <p class="song" id="pc-song">아직 아무것도 부르지 않았습니다</p>
@@ -168,6 +169,15 @@
               <div class="meta" id="pc-meta"></div>
               <a class="pc-src" id="pc-src" href="#" target="_blank"
                  rel="noopener noreferrer external" hidden>원곡 들으러 가기 ↗</a>
+            </div>
+            <div class="list-head">
+              <span>곡 목</span>
+              <button class="board-btn" id="btn-reshuffle" title="순서 섞기" aria-label="순서 섞기"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h3l6 8h3"/><path d="M2 12h3l2.2-3"/><path d="M11.5 2.5 14 4l-2.5 1.5"/><path d="M11.5 10.5 14 12l-2.5 1.5"/></svg></button>
+            </div>
+            <div class="songlist" id="songlist" role="listbox" aria-label="곡목" tabindex="0"></div>
+            <div class="list-foot">
+              <span id="list-count">0곡</span>
+              <span id="list-desc"></span>
             </div>
           </div>
         </div>
@@ -177,8 +187,8 @@
           <button class="tbtn wide" id="btn-play" title="부르기/멈추기" aria-label="부르기">▶</button>
           <button class="tbtn" id="btn-stop"  title="그만"    aria-label="그만">■</button>
           <button class="tbtn" id="btn-next"  title="다음 곡" aria-label="다음 곡">▶▶</button>
-          <button class="tbtn" id="btn-shuffle" title="순서 섞기" aria-label="순서 섞기" aria-pressed="false">⤨</button>
-          <button class="tbtn" id="btn-repeat"  title="되풀이"   aria-label="되풀이" aria-pressed="true">↺</button>
+          <button class="tbtn" id="btn-shuffle" title="순서 섞기" aria-label="순서 섞기" aria-pressed="false"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h3l6 8h3"/><path d="M2 12h3l2.2-3"/><path d="M11.5 2.5 14 4l-2.5 1.5"/><path d="M11.5 10.5 14 12l-2.5 1.5"/></svg></button>
+          <button class="tbtn" id="btn-repeat"  title="되풀이"   aria-label="되풀이" aria-pressed="true"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5V6a2.5 2.5 0 0 1 2.5-2.5H13"/><path d="M10.5 1.5 13 3.5l-2.5 2"/><path d="M13 9.5V10a2.5 2.5 0 0 1-2.5 2.5H3"/><path d="M5.5 14.5 3 12.5l2.5-2"/></svg></button>
         </div>
 
         <div class="dials">
@@ -212,21 +222,6 @@
       </div>
     </section>
 
-    <!-- 곡목 두루마리 -->
-    <section class="board" aria-label="곡목">
-      <div class="board-head">
-        <span>곡 목</span>
-        <span class="rope" aria-hidden="true"></span>
-        <button class="board-btn" id="btn-reshuffle" title="순서 섞기">⤨</button>
-      </div>
-      <div class="board-body">
-        <div class="songlist" id="songlist" role="listbox" aria-label="곡목" tabindex="0"></div>
-        <div class="list-foot">
-          <span id="list-count">0곡</span>
-          <span id="list-desc"></span>
-        </div>
-      </div>
-    </section>
 
     <!-- 장면 서랍 -->
     <section class="board" aria-label="장면 고르기">
