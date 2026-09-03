@@ -1043,10 +1043,10 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
    가로대 너비를 100 으로 두고 각자 제 몫만큼만 차지하게 한다. */
 .roast[data-dish="pig"]         { --dish-w: 100%; }
 .roast[data-dish="skewer"]      { --dish-w: 84%; }
-.roast[data-dish="fish"]        { --dish-w: 52%; }
+.roast[data-dish="fish"]        { --dish-w: 64%; }
+.roast[data-dish="marshmallow"] { --dish-w: 56%; }
 .roast[data-dish="corn"]        { --dish-w: 46%; }
 .roast[data-dish="cauldron"]    { --dish-w: 44%; }
-.roast[data-dish="marshmallow"] { --dish-w: 38%; }
 /* 잿더미에 놓인 것은 흔들리지 않는다 */
 .roast[data-seat="ashes"] .dish { animation: none; }
 @keyframes dishHang {
