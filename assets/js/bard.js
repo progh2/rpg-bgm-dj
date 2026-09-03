@@ -185,3 +185,57 @@ export const pickChatter = (key) => {
   const arr = CHATTER[key] || CHATTER.greet;
   return arr[Math.floor(Math.random() * arr.length)];
 };
+
+
+/* ── 라온이 직접 고르는 곡목 ─────────────────────────────────────
+   문답을 거치지 않고 류트를 퉁겼을 때. 지금이 몇 시인지만 보고 짠다.
+   새벽 세 시에 축제 음악을 트는 것만 피해도 절반은 맞힌 셈이다. */
+
+const PHASE_PICK = {
+  deep_night: { scenes: ['D9_mystic', 'D2_memory', 'A4_inn', 'B5_temple', 'D1_sorrow'],
+                floor: 5, say: '이 시간에는 소리를 낮춘 것이 낫습니다. 조용한 것으로 골랐습니다.' },
+  dawn:       { scenes: ['D4_hope', 'D2_memory', 'A6_save', 'B2_town', 'D9_mystic'],
+                floor: 4, say: '곧 해가 뜹니다. 밝아 오는 결로 골랐습니다.' },
+  morning:    { scenes: ['B2_town', 'B1_overworld', 'D4_hope', 'A4_inn', 'D12_opening'],
+                floor: 4, say: '아침이니 걸음이 가벼운 것으로 골랐습니다.' },
+  day:        { scenes: ['B1_overworld', 'B7_terrain', 'B2_town', 'B6_vehicle', 'D5_heroic'],
+                floor: 4, say: '볕이 좋습니다. 길 떠나는 결로 골랐습니다.' },
+  dusk:       { scenes: ['A4_inn', 'B2_town', 'D3_love', 'D2_memory', 'D11_festival'],
+                floor: 4, say: '해가 기웁니다. 하루를 접는 결로 골랐습니다.' },
+  evening:    { scenes: ['A4_inn', 'D3_love', 'B3_castle', 'D9_mystic', 'D2_memory'],
+                floor: 4, say: '저녁입니다. 난롯가에 어울리는 것으로 골랐습니다.' },
+  night:      { scenes: ['D9_mystic', 'A4_inn', 'D2_memory', 'B5_temple', 'D1_sorrow'],
+                floor: 5, say: '밤이 깊었습니다. 거슬리지 않을 것만 골랐습니다.' },
+};
+
+/**
+ * 시각에 맞춰 곡목을 짠다.
+ * @param {string} phaseId  hearth.js 의 시간대 id
+ * @param {object} bySceneMap
+ * @param {number} size
+ * @returns {{tracks:object[], summary:string}}
+ */
+export function pickForPhase(phaseId, bySceneMap, size = 30) {
+  const plan = PHASE_PICK[phaseId] || PHASE_PICK.evening;
+  const seen = new Set();
+  const pool = [];
+  for (const scene of plan.scenes) {
+    for (const t of bySceneMap[scene] || []) {
+      if ((t.focus ?? 0) < plan.floor || seen.has(t.videoId)) continue;
+      seen.add(t.videoId);
+      pool.push({ ...t, scene });
+    }
+  }
+  // 모자라면 문턱을 한 단계 낮춰 채운다
+  if (pool.length < size) {
+    for (const scene of plan.scenes) {
+      for (const t of bySceneMap[scene] || []) {
+        if (seen.has(t.videoId)) continue;
+        seen.add(t.videoId);
+        pool.push({ ...t, scene });
+      }
+    }
+  }
+  const tracks = spreadByArtist(pool.sort(() => Math.random() - 0.5)).slice(0, size);
+  return { tracks, summary: plan.say };
+}

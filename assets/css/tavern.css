@@ -672,6 +672,30 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 /* ── 무대: 바드가 서는 자리 ─────────────────────────────────── */
 .stage-side { position: sticky; top: 22px; }
 
+/* 무대와 류트 자리를 함께 담는다 — 류트 단추가 그림 위에 얹히려면
+   기준이 될 상자가 필요한데, 무대 안쪽은 상태가 바뀔 때마다 갈린다. */
+.bard-wrap { position: relative; }
+
+/* 류트 자리 — 그림에서 류트가 차지하는 칸. 보이지는 않고 눌리기만 한다. */
+.lute-spot {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  width: min(50%, 116px);
+  top: 63%;
+  bottom: 7%;
+  margin-left: 8px;       /* 류트가 라온의 오른쪽으로 살짝 치우쳐 있다 */
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 40% 40% 46% 46%;
+  z-index: 2;
+}
+.lute-spot:hover { background: radial-gradient(60% 60% at 50% 50%,
+  color-mix(in srgb, var(--accent-glow) 22%, transparent), transparent 72%); }
+.lute-spot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 .bard-stage {
   position: relative;
   display: grid;

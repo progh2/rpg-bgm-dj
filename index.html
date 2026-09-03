@@ -215,8 +215,16 @@
     <section class="board" aria-label="음유시인">
       <div class="board-head"><span>무 대</span><span class="rope" aria-hidden="true"></span></div>
       <div class="board-body">
-        <div class="bard-stage" id="bard-stage" data-state="idle"
-             role="button" tabindex="0" aria-label="음유시인에게 말을 건다"></div>
+        <div class="bard-wrap">
+          <div class="bard-stage" id="bard-stage" data-state="idle"
+               role="button" tabindex="0" aria-label="음유시인에게 말을 건다"></div>
+          <!-- 류트 자리. 바드가 그림이 된 뒤로 눌러 볼 만한 요소가 따로 없어서,
+               그림에서 류트가 있는 칸에 투명한 단추를 얹는다. 무대의 innerHTML 은
+               상태가 바뀔 때마다 갈리므로 안에 두지 않고 형제로 둔다. -->
+          <button class="lute-spot" id="lute-spot" type="button"
+                  aria-label="라온의 류트를 퉁겨 곡을 청한다"
+                  title="류트를 퉁겨 본다 — 라온이 지금 시각에 어울리는 곡목을 짜 줍니다"></button>
+        </div>
         <div class="note" id="note">
           <span class="who" id="bard-name">음유시인</span>
           <span id="note-text">홀을 여는 중…</span>
@@ -237,9 +245,9 @@
       </div>
     </section>
 
-    <section class="board" aria-label="손님 명부">
+    <section class="board" aria-label="여관 야사">
       <div class="board-head">
-        <span>손 님 명 부</span>
+        <span>여 관 야 사</span>
         <span class="rope" aria-hidden="true"></span>
         <button class="board-btn" id="btn-ledger-toggle" aria-expanded="false"
                 aria-controls="secret-list" title="열기/닫기">▼</button>

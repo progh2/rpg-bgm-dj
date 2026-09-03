@@ -3,7 +3,7 @@
 import { BGM_BY_SCENE, SCENES, ALL_TRACKS, CREDITS } from '../../bgm-scenes.js';
 import { moodOf, moodKeyOf, MOODS } from './moods.js';
 import { HALLS, MOOD_HALL, applyHall, loadHallPref, saveHallPref } from './halls.js';
-import { QUESTIONS, buildFromAnswers, DEFAULT_ANSWERS, pickChatter, spreadByArtist } from './bard.js';
+import { QUESTIONS, buildFromAnswers, DEFAULT_ANSWERS, pickChatter, spreadByArtist, pickForPhase } from './bard.js';
 import { bardArt, setBardState, BARD_NAME, BARD_SHORT } from './character.js';
 import { icon } from './icons.js';
 import { startLight, setPhase, currentPhase, PHASES } from './hearth.js';
@@ -183,7 +183,7 @@ function renderList() {
       `<span class="n">${String(i + 1).padStart(2, '0')}</span>` +
       `<span class="t">${esc(t.title)} — ${esc(t.artist)}</span>` +
       `<span class="d">${fmt(t.length)}</span>`;
-    row.addEventListener('click', () => play(i));
+    row.addEventListener('click', () => { secrets.noteSkipped(); play(i); });
     list.appendChild(row);
   });
 }
@@ -596,13 +596,14 @@ function initMobileNote() {
 function renderSecrets() {
   const all = Object.entries(secrets.SECRETS);
   const got = secrets.found();
-  $('secret-count').textContent = `찾은 것 ${got.size} / ${all.length}`;
+  $('secret-count').textContent = `적힌 이야기 ${got.size} / ${all.length}`;
   $('secret-list').innerHTML = all.map(([id, s]) => {
     const has = got.has(id);
+    // 못 찾았어도 귀띔은 보여 준다. 이름만 ??? 로 가려 두면 감을 못 잡는다.
     return `<div class="secret-row ${has ? 'got' : ''}">
       <span class="mark">${has ? '✦' : '·'}</span>
       <span class="nm">${has ? esc(s.label) : '???'}</span>
-      <span class="ht">${has ? esc(s.hint) : '아직 찾지 못했습니다'}</span>
+      <span class="ht">${esc(has ? s.done : s.nudge)}</span>
     </div>`;
   }).join('');
 }
@@ -610,7 +611,7 @@ function renderSecrets() {
 function initSecrets() {
   secrets.onSecret((id, s, n) => {
     renderSecrets();
-    say(`— ${s.label}. 명부에 적어 두었습니다. (${n}/${Object.keys(secrets.SECRETS).length})`, 'talk');
+    say(`— ${s.label}. 야사에 적어 두었습니다. (${n}/${Object.keys(secrets.SECRETS).length})`, 'talk');
   });
 
   $('btn-ledger-toggle').addEventListener('click', (e) => {
@@ -692,16 +693,29 @@ function initSecrets() {
     if (e.code === 'Enter' || e.code === 'Space') { e.preventDefault(); talk(); }
   });
 
+  // 류트를 퉁기면 문답 없이 라온이 직접 곡목을 짠다 — 지금 시각에 맞춰서
+  $('lute-spot').addEventListener('click', (e) => {
+    e.stopPropagation();                       // 무대 클릭(말 걸기)까지 겹치지 않게
+    setBardState(stage, 'dig');
+    sfx.flourish();
+    const p = currentPhase();
+    const res = pickForPhase(p.id, BGM_BY_SCENE, 30);
+    if (!res.tracks.length) { say('…줄이 하나 끊어졌군요. 잠시 뒤에 청해 주십시오.'); return; }
+    loadQueue(res.tracks);
+    say(`${res.summary} (${p.label})`, 'talk');
+    play(0);
+  });
+
   // 잔 부딪기 — 머리말의 곡 수를 누르면
   $('stat-count').classList.add('cup');
   $('stat-count').title = '잔을 부딪쳐 본다';
   $('stat-count').addEventListener('click', () => { sfx.clink(); secrets.find('toast'); });
 
-  // 옛 주문
-  secrets.watchSpell(() => {
+  // 단골 — 건너뛰지 않고 다섯 곡을 내리 들으면 아껴 둔 곡목이 열린다
+  secrets.onBecomePatron(() => {
     const list = secrets.legendaryList(BGM_BY_SCENE);
     loadQueue(list);
-    say('…그 가락을 아시는군요. 서른네 장면에서 가장 좋은 것만 뽑아 두었습니다.', 'talk');
+    say('…끝까지 들어 주시는 분은 드뭅니다. 서른네 장면에서 가장 좋은 것만 뽑아 두었습니다.', 'talk');
     play(0);
   });
 
@@ -713,7 +727,7 @@ function initSecrets() {
 
 let roast = null;
 
-/** 먹어 본 요리를 세어 둔다 — 다 먹어 보면 명부에 적힌다 */
+/** 먹어 본 요리를 세어 둔다 — 다 먹어 보면 야사에 적힌다 */
 const EATEN_KEY = 'rpgbgm.eaten';
 function noteEaten(dish) {
   try {
@@ -797,6 +811,7 @@ function initYt() {
           releaseWake();
         } else if (e.data === YT.PlayerState.ENDED) {
           state.playing = false;
+          secrets.noteFinished();   // 끝까지 들었다
           next();
         }
         updateControls();
@@ -812,8 +827,8 @@ window.onYouTubeIframeAPIReady = initYt;
 function wire() {
   $('btn-play').addEventListener('click', togglePlay);
   $('btn-stop').addEventListener('click', stop);
-  $('btn-next').addEventListener('click', () => next());
-  $('btn-prev').addEventListener('click', prev);
+  $('btn-next').addEventListener('click', () => { secrets.noteSkipped(); next(); });
+  $('btn-prev').addEventListener('click', () => { secrets.noteSkipped(); prev(); });
 
   $('btn-shuffle').addEventListener('click', () => {
     state.shuffle = !state.shuffle; updateControls();
@@ -861,8 +876,8 @@ function wire() {
   document.addEventListener('keydown', (e) => {
     if (e.target.matches('input, textarea, select')) return;
     if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
-    else if (e.code === 'ArrowRight' && e.shiftKey) { e.preventDefault(); next(); }
-    else if (e.code === 'ArrowLeft' && e.shiftKey) { e.preventDefault(); prev(); }
+    else if (e.code === 'ArrowRight' && e.shiftKey) { e.preventDefault(); secrets.noteSkipped(); next(); }
+    else if (e.code === 'ArrowLeft' && e.shiftKey) { e.preventDefault(); secrets.noteSkipped(); prev(); }
   });
 }
 
