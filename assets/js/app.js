@@ -564,6 +564,15 @@ function renderWake() {
   else if (wakeDenied) label = '거절';
   else label = '대기';
   $('wake-state').textContent = label;
+  // 맨틀 위 등불도 같은 상태를 보여 준다
+  const lamp = $('mantel-lantern');
+  if (lamp) {
+    lamp.setAttribute('aria-pressed', String(wakeSupported && state.wakeWanted));
+    lamp.title = wakeSupported
+      ? `등불 — ${label}. 켜 두면 부르는 동안 화면이 꺼지지 않습니다`
+      : '등불 — 이 브라우저는 화면 켜두기를 지원하지 않습니다';
+    lamp.disabled = !wakeSupported;
+  }
 }
 
 /* 유튜브 계정 연결 스위치 — 켜고 끄면 임베드 호스트가 달라져 iframe 을 새로 짠다 */
@@ -571,6 +580,14 @@ function renderYtAccount() {
   const on = ytAccountOn();
   $('btn-ytaccount').setAttribute('aria-pressed', String(on));
   $('ytacct-state').textContent = on ? '연결' : '끊김';
+  // 맨틀 위 열쇠도 같은 상태를 보여 준다
+  const key = $('mantel-key');
+  if (key) {
+    key.setAttribute('aria-pressed', String(on));
+    key.title = on
+      ? '놋쇠 열쇠 — 유튜브 계정 연결됨. 빼면 추적 쿠키 없는 임베드로 돌아갑니다'
+      : '놋쇠 열쇠 — 유튜브 계정 연결. 프리미엄이면 광고가 빠집니다';
+  }
 }
 
 function initYtAccount() {
@@ -709,6 +726,14 @@ function initSecrets() {
     if (e.target !== hearth) return;   // 맨틀 위 오르골에서 누른 키까지 받지 않게
     if (e.code === 'Enter' || e.code === 'Space') { e.preventDefault(); onHearth(); }
   });
+
+  // 맨틀 위의 등불·열쇠 — 진짜 단추의 겉모습일 뿐, 일은 그쪽이 한다
+  for (const [id, target] of [['mantel-lantern', 'btn-wakelock'], ['mantel-key', 'btn-ytaccount']]) {
+    $(id).addEventListener('click', (e) => {
+      e.stopPropagation();             // 화로 클릭(먹기/찌르기)까지 내려가지 않게
+      $(target).click();
+    });
+  }
 
   // 맨틀 위의 오르골 — 감으면 작은 가락이 돌고 야사에 적힌다
   const trinket = $('mantel-thing');

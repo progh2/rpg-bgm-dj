@@ -89,6 +89,30 @@
             <span class="hearth-tag" id="hearth-tag">잉걸</span>
             <!-- 맨틀 위의 태엽 오르골. 장식처럼 놓여 있지만 감아 볼 수 있다.
                  색이 CSS 변수를 물고 있어 머무는 곳을 따라간다. -->
+            <!-- 등불 — 화면 켜두기의 상태이자 스위치. 아래 등불 단추와 같은 일을 한다. -->
+            <button class="mantel-thing mantel-lantern" id="mantel-lantern" type="button"
+                    aria-pressed="false" aria-label="맨틀 위의 등불 — 화면 켜두기"
+                    title="등불 — 켜 두면 부르는 동안 화면이 꺼지지 않습니다">
+              <svg viewBox="0 0 26 38" aria-hidden="true">
+                <path d="M13 2v4" stroke="var(--metal)" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M6 8h14l-2 -3H8z" fill="var(--metal-dark)" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round"/>
+                <rect x="6" y="8" width="14" height="20" rx="2"
+                      fill="color-mix(in srgb, var(--sign-ink) 26%, transparent)"
+                      stroke="var(--metal)" stroke-width="2"/>
+                <path class="lamp-flame" d="M13 24c3-3 2.2-6-.1-8-2.2 2-3 5 .1 8z" fill="var(--flame)"/>
+                <path d="M6 28h14l2 4H4z" fill="var(--metal-dark)" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <!-- 놋쇠 열쇠 — 유튜브 계정 연결의 상태이자 스위치. 꽂혀 있으면 연결. -->
+            <button class="mantel-thing mantel-key" id="mantel-key" type="button"
+                    aria-pressed="false" aria-label="맨틀 위의 열쇠 — 유튜브 계정 연결"
+                    title="놋쇠 열쇠 — 유튜브 계정 연결. 프리미엄이면 광고가 빠집니다">
+              <svg viewBox="0 0 40 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="5.4" fill="none" stroke="var(--metal)" stroke-width="2.6"/>
+                <circle class="key-gem" cx="8" cy="8" r="2" fill="#e33"/>
+                <path d="M13 8h22M29 8v5M34 8v6" stroke="var(--metal)" stroke-width="2.6" stroke-linecap="round"/>
+              </svg>
+            </button>
             <button class="mantel-thing" id="mantel-thing" type="button"
                     aria-label="맨틀 위의 태엽 오르골" title="맨틀 위의 작은 상자">
               <svg viewBox="0 0 44 32" aria-hidden="true">
@@ -176,7 +200,8 @@
           휴대폰에서는 <strong>다른 앱으로 넘어가면 노래가 멎을 수 있습니다.</strong>
           YouTube가 백그라운드 재생을 Premium 기능으로 묶어 둔 탓입니다.
           Premium 계정이라면 위의 <strong>유튜브 계정</strong>을 연결해 보세요 —
-          광고가 빠지고, 브라우저에 따라 백그라운드 재생이 되기도 합니다.
+          광고가 빠지고, 삼성 인터넷에서는 백그라운드 재생도 됩니다
+          (멎으면 알림의 작은 재생 단추를 한 번 눌러 주세요).
           화면이 꺼져서 멎는 것은 <strong>등불</strong>로 막을 수 있습니다.
           <a href="https://github.com/progh2/rpg-bgm-dj/blob/main/SECURITY.md" target="_blank" rel="noopener">자세히 ↗</a>
         </p>
